@@ -28,9 +28,19 @@ import {
   type ResourceTemplate,
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
+type MortgageWidget = {
+  id: string;
+  title: string;
+  templateUri: string;
+  invoking: string;
+  invoked: string;
+  html: string;
+  responseText: string;
+};
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT_DIR = process.env.ASSETS_ROOT || path.resolve(__dirname, "..", "..");
+const ASSETS_DIR = path.resolve(ROOT_DIR, "assets");
 const LOGS_DIR = path.resolve(__dirname, "..", "logs");
 
 if (!fs.existsSync(LOGS_DIR)) {
@@ -82,52 +92,108 @@ function getRecentLogs(days: number = 7): AnalyticsEvent[] {
   return logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 }
 
+function readWidgetHtml(componentName: string): string {
+  if (!fs.existsSync(ASSETS_DIR)) {
+    throw new Error(
+      `Widget assets not found. Expected directory ${ASSETS_DIR}. Run "pnpm run build" before starting the server.`
+    );
+  }
+
+  const directPath = path.join(ASSETS_DIR, `${componentName}.html`);
+  let htmlContents: string | null = null;
+
+  if (fs.existsSync(directPath)) {
+    htmlContents = fs.readFileSync(directPath, "utf8");
+  } else {
+    const candidates = fs
+      .readdirSync(ASSETS_DIR)
+      .filter(
+        (file) => file.startsWith(`${componentName}-`) && file.endsWith(".html")
+      )
+      .sort();
+    const fallback = candidates[candidates.length - 1];
+    if (fallback) {
+      htmlContents = fs.readFileSync(path.join(ASSETS_DIR, fallback), "utf8");
+    }
+  }
+
+  if (!htmlContents) {
+    throw new Error(
+      `Widget HTML for "${componentName}" not found in ${ASSETS_DIR}. Run "pnpm run build" to generate the assets.`
+    );
+  }
+
+  return htmlContents;
+}
+
+function widgetMeta(widget: MortgageWidget) {
+  return {
+    "openai/outputTemplate": widget.templateUri,
+    "openai/widgetDescription": "Displays a simple Hello World message.",
+    "openai/widgetPrefersBorder": true,
+    "openai/toolInvocation/invoking": widget.invoking,
+    "openai/toolInvocation/invoked": widget.invoked,
+    "openai/widgetAccessible": true,
+    "openai/resultCanProduceWidget": true,
+    "openai/starterPrompts": ["Show me a mortgage calculator"],
+  } as const;
+}
+
+const widgets: MortgageWidget[] = [
+  {
+    id: "mortgage-calculator",
+    title: "Mortgage Calculator",
+    templateUri: "ui://widget/mortgage-calculator.html",
+    invoking: "Opening your mortgage calculator widget...",
+    invoked: "Here is the mortgage calculator widget",
+    html: readWidgetHtml("mortgage-calculator"),
+    responseText: "Here is a mortgage calculator widget.",
+  },
+];
+
+const widgetsById = new Map<string, MortgageWidget>();
+const widgetsByUri = new Map<string, MortgageWidget>();
+
+widgets.forEach((widget) => {
+  widgetsById.set(widget.id, widget);
+  widgetsByUri.set(widget.templateUri, widget);
+});
+
 const toolInputSchema = {
   type: "object",
-  properties: {
-    purchasePrice: {
-      type: "number",
-      description: "The purchase price of the home in dollars",
-    },
-    interestRate: {
-      type: "number",
-      description: "Annual interest rate as a percentage (e.g., 7.0)",
-    },
-    loanTerm: {
-      type: "number",
-      description: "Length of the mortgage in years (e.g., 30)",
-    },
-  },
+  properties: {},
   required: [],
   additionalProperties: false,
 } as const;
 
-const toolInputParser = z.object({
-  purchasePrice: z.number().optional(),
-  interestRate: z.number().optional(),
-  loanTerm: z.number().optional(),
-});
-
-const TOOL_NAME = "mortgage-calculator-text";
-
-const tools: Tool[] = [
-  {
-    name: TOOL_NAME,
-    description:
-      "Provide a quick textual mortgage summary. This tool returns plain text only and does not render a widget.",
-    inputSchema: toolInputSchema,
-    title: "Mortgage Calculator (Text)",
-    annotations: {
-      destructiveHint: false,
-      openWorldHint: false,
-      readOnlyHint: true,
-    },
+const tools: Tool[] = widgets.map((widget) => ({
+  name: widget.id,
+  description: "Shows a simple mortgage calculator widget.",
+  inputSchema: toolInputSchema,
+  title: widget.title,
+  _meta: widgetMeta(widget),
+  annotations: {
+    destructiveHint: false,
+    openWorldHint: false,
+    readOnlyHint: true,
   },
-];
+}));
 
-const resources: Resource[] = [];
+const resources: Resource[] = widgets.map((widget) => ({
+  uri: widget.templateUri,
+  name: widget.title,
+  description: `${widget.title} widget markup`,
+  mimeType: "text/html+skybridge",
+  _meta: widgetMeta(widget),
+}));
 
-const resourceTemplates: ResourceTemplate[] = [];
+const resourceTemplates: ResourceTemplate[] = widgets.map((widget) => ({
+  uriTemplate: widget.templateUri,
+  name: widget.title,
+  description: `${widget.title} widget markup`,
+  mimeType: "text/html+skybridge",
+  _meta: widgetMeta(widget),
+}));
 
 function createMortgageCalculatorServer(): Server {
   const server = new Server(
@@ -152,7 +218,22 @@ function createMortgageCalculatorServer(): Server {
   server.setRequestHandler(
     ReadResourceRequestSchema,
     async (request: ReadResourceRequest) => {
-      throw new Error(`Unknown resource: ${request.params.uri}`);
+      const widget = widgetsByUri.get(request.params.uri);
+
+      if (!widget) {
+        throw new Error(`Unknown resource: ${request.params.uri}`);
+      }
+
+      return {
+        contents: [
+          {
+            uri: widget.templateUri,
+            mimeType: "text/html+skybridge",
+            text: widget.html,
+            _meta: widgetMeta(widget),
+          },
+        ],
+      };
     }
   );
 
@@ -175,25 +256,14 @@ function createMortgageCalculatorServer(): Server {
       console.log("Full request object:", JSON.stringify(request, null, 2));
       
       try {
-        if (request.params.name !== TOOL_NAME) {
+        const widget = widgetsById.get(request.params.name);
+
+        if (!widget) {
           logAnalytics("tool_call_error", {
             error: "Unknown tool",
             toolName: request.params.name,
           });
-          throw new Error(
-            `Unknown tool name "${request.params.name}". Refresh the connector schema to use "${TOOL_NAME}".`
-          );
-        }
-
-        let args;
-        try {
-          args = toolInputParser.parse(request.params.arguments ?? {});
-        } catch (parseError: any) {
-          logAnalytics("parameter_parse_error", {
-            error: parseError.message,
-            rawArgs: request.params.arguments,
-          });
-          throw parseError;
+          throw new Error(`Unknown tool: ${request.params.name}`);
         }
 
         // Capture user context from _meta - try multiple locations
@@ -207,18 +277,10 @@ function createMortgageCalculatorServer(): Server {
 
         const responseTime = Date.now() - startTime;
 
-        // Infer likely user query from parameters
-        const inferredQuery = [];
-        if (args.purchasePrice) inferredQuery.push(`purchasePrice: $${args.purchasePrice.toLocaleString()}`);
-        if (args.interestRate) inferredQuery.push(`interestRate: ${args.interestRate}%`);
-        if (args.loanTerm) inferredQuery.push(`loanTerm: ${args.loanTerm} years`);
-
-        const summary = "hello world";
-
         logAnalytics("tool_call_success", {
           toolName: request.params.name,
-          params: args,
-          inferredQuery: inferredQuery.length > 0 ? inferredQuery.join(", ") : "mortgage calculation",
+          params: request.params.arguments ?? {},
+          inferredQuery: "hello world widget",
           responseTime,
           userLocation: userLocation
             ? {
@@ -236,12 +298,11 @@ function createMortgageCalculatorServer(): Server {
           content: [
             {
               type: "text",
-              text: summary,
+              text: widget.responseText,
             },
           ],
-          structuredContent: {
-            message: summary,
-          },
+          structuredContent: null,
+          _meta: widgetMeta(widget),
         };
       } catch (error: any) {
         logAnalytics("tool_call_error", {
