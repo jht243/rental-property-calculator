@@ -2,9 +2,384 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Mortgage Calculator Engine</title>
+    <title>Mortgage Calculator Widget</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+        background: radial-gradient(circle at top, #1f2937, #090d16 70%);
+        color: #f9fafb;
+      }
+
+      .app {
+        width: min(900px, 100%);
+        background: rgba(13, 20, 34, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 24px 70px rgba(8, 12, 23, 0.6);
+        backdrop-filter: blur(14px);
+        display: grid;
+        gap: 24px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      header p {
+        margin: 8px 0 0;
+        color: rgba(226, 232, 240, 0.75);
+        font-size: 14px;
+      }
+
+      .section-title {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        color: rgba(226, 232, 240, 0.62);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.86);
+      }
+
+      input[type="number"],
+      select {
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(11, 18, 32, 0.6);
+        color: #f9fafb;
+        font-size: 16px;
+        padding: 10px 12px;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.35);
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(11, 18, 32, 0.6);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      button {
+        flex: 1 1 220px;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 18px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(130deg, #38bdf8, #6366f1);
+        color: #0b1120;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 36px rgba(99, 102, 241, 0.35);
+      }
+
+      button.secondary {
+        background: rgba(148, 163, 184, 0.12);
+        color: rgba(226, 232, 240, 0.85);
+        box-shadow: none;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .result-card {
+        border-radius: 14px;
+        padding: 18px;
+        background: rgba(11, 18, 32, 0.65);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: grid;
+        gap: 8px;
+      }
+
+      .result-card .label {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.68);
+      }
+
+      .result-card .value {
+        font-size: 26px;
+        font-weight: 600;
+      }
+
+      .result-card .hint {
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .summary {
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(11, 18, 32, 0.55);
+        color: rgba(226, 232, 240, 0.82);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .summary strong {
+        color: #f9fafb;
+      }
+
+      details {
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(11, 18, 32, 0.55);
+        padding: 16px 18px;
+      }
+
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: rgba(226, 232, 240, 0.88);
+        outline: none;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 8px 10px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        text-align: right;
+      }
+
+      th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(226, 232, 240, 0.6);
+      }
+
+      td.label {
+        text-align: left;
+      }
+
+      .schedule-note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.6);
+      }
+
+      @media (max-width: 560px) {
+        body {
+          padding: 18px;
+        }
+
+        .app {
+          padding: 22px;
+        }
+
+        button {
+          flex: 1 1 100%;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div class="app">
+      <header>
+        <h1>Mortgage payment estimator</h1>
+        <p>Compare loan programs, see monthly costs, and preview payoff timing. Adjust the inputs to explore scenarios.</p>
+      </header>
+
+      <section>
+        <div class="section-title">Loan basics</div>
+        <div class="grid">
+          <label>
+            Loan program
+            <select id="loan_type">
+              <option value="conventional">Conventional</option>
+              <option value="FHA">FHA</option>
+              <option value="VA">VA</option>
+              <option value="USDA">USDA</option>
+            </select>
+          </label>
+          <label>
+            Home value ($)
+            <input type="number" id="home_value" min="0" step="1000" />
+          </label>
+          <label>
+            Down payment ($)
+            <input type="number" id="down_payment_value" min="0" step="1000" />
+          </label>
+          <label>
+            Down payment (decimal)
+            <input type="number" id="down_payment_pct" min="0" max="1" step="0.01" />
+          </label>
+          <label>
+            Rate (APR decimal)
+            <input type="number" id="rate_apr" min="0" step="0.0001" />
+          </label>
+          <label>
+            Term (years)
+            <input type="number" id="term_years" min="1" step="1" />
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Start date & taxes</div>
+        <div class="grid">
+          <label>
+            First payment month
+            <input type="number" id="start_month" min="1" max="12" step="1" />
+          </label>
+          <label>
+            First payment year
+            <input type="number" id="start_year" min="2024" step="1" />
+          </label>
+          <label>
+            Property tax input (≤20 = % of value)
+            <input type="number" id="property_tax_input" min="0" step="0.01" />
+          </label>
+          <label>
+            Homeowners insurance ($/yr)
+            <input type="number" id="homeowners_insurance_yearly" min="0" step="50" />
+          </label>
+          <label>
+            HOA dues ($/mo)
+            <input type="number" id="hoa_monthly" min="0" step="10" />
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Mortgage insurance & fees</div>
+        <div class="grid">
+          <label>
+            PMI (% annual, conventional)
+            <input type="number" id="pmi_pct" min="0" step="0.0001" />
+          </label>
+          <label>
+            Upfront fee (% base loan)
+            <input type="number" id="upfront_fee_pct" min="0" step="0.0001" />
+          </label>
+          <label>
+            Annual MI fee (% of balance)
+            <input type="number" id="annual_mi_pct" min="0" step="0.0001" />
+          </label>
+          <label>
+            Finance upfront fee?
+            <div class="checkbox-row">
+              <input type="checkbox" id="finance_upfront_fee" />
+              <span style="font-size: 12px; color: rgba(226, 232, 240, 0.72);">Add fee to principal balance</span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Extra principal</div>
+        <div class="grid">
+          <label>
+            Extra payment ($/mo)
+            <input type="number" id="extra_principal_monthly" min="0" step="50" />
+          </label>
+          <label>
+            Extra starts at month index
+            <input type="number" id="extra_start_month_index" min="0" step="1" />
+          </label>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button id="calculateBtn">Recalculate</button>
+        <button class="secondary" id="resetBtn" type="button">Reset defaults</button>
+      </div>
+
+      <section>
+        <div class="cards">
+          <div class="result-card">
+            <span class="label">Monthly payment (month 0)</span>
+            <span class="value" id="total_monthly_0">$0</span>
+            <span class="hint">Includes P&I, MI, taxes, insurance, HOA (excludes extra principal).</span>
+          </div>
+          <div class="result-card">
+            <span class="label">Scheduled principal & interest</span>
+            <span class="value" id="p_and_i">$0</span>
+            <span class="hint">Level payment before extra principal or add-ons.</span>
+          </div>
+          <div class="result-card">
+            <span class="label">Total interest over loan</span>
+            <span class="value" id="total_interest">$0</span>
+            <span class="hint" id="interest_hint"></span>
+          </div>
+          <div class="result-card">
+            <span class="label">Estimated payoff date</span>
+            <span class="value" id="payoff_date">—</span>
+            <span class="hint" id="term_hint"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary" id="summaryText"></section>
+
+      <details>
+        <summary>Amortization & totals</summary>
+        <div id="totalsBreakdown" style="margin-top: 14px; font-size: 13px; line-height: 1.8;"></div>
+        <div id="schedulePreview"></div>
+        <div class="schedule-note" id="scheduleNote"></div>
+      </details>
+    </div>
+
     <script type="module">
       (function () {
         const MONTHS_IN_YEAR = 12;
@@ -393,6 +768,252 @@
         });
 
         globalThis.mortgageCalculator = mortgageCalculator;
+
+        const $ = (id) => document.getElementById(id);
+        const formatCurrency = (value) =>
+          clampNonNegative(value).toLocaleString(undefined, {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+          });
+
+        const formatCompactCurrency = (value) =>
+          clampNonNegative(value).toLocaleString(undefined, {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+            notation: "compact",
+          });
+
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+        const baseDefaults = {
+          loan_type: "conventional",
+          home_value: 450000,
+          down_payment_value: 90000,
+          down_payment_pct: 0.2,
+          rate_apr: 0.0675,
+          term_years: 30,
+          start_month: 2,
+          start_year: new Date().getFullYear(),
+          property_tax_input: 1.05,
+          homeowners_insurance_yearly: 1500,
+          hoa_monthly: 0,
+          upfront_fee_pct: 0,
+          annual_mi_pct: 0,
+          finance_upfront_fee: false,
+          extra_principal_monthly: 0,
+          extra_start_month_index: 0,
+          pmi_pct: 0.005,
+        };
+
+        const programDefaults = {
+          conventional: { pmi_pct: 0.005, upfront_fee_pct: 0, annual_mi_pct: 0, finance_upfront_fee: false },
+          FHA: { pmi_pct: 0, upfront_fee_pct: 0.0175, annual_mi_pct: 0.0085, finance_upfront_fee: true },
+          VA: { pmi_pct: 0, upfront_fee_pct: 0.023, annual_mi_pct: 0, finance_upfront_fee: true },
+          USDA: { pmi_pct: 0, upfront_fee_pct: 0.01, annual_mi_pct: 0.0035, finance_upfront_fee: true },
+        };
+
+        const inputs = {
+          loan_type: $("loan_type"),
+          home_value: $("home_value"),
+          down_payment_value: $("down_payment_value"),
+          down_payment_pct: $("down_payment_pct"),
+          rate_apr: $("rate_apr"),
+          term_years: $("term_years"),
+          start_month: $("start_month"),
+          start_year: $("start_year"),
+          property_tax_input: $("property_tax_input"),
+          homeowners_insurance_yearly: $("homeowners_insurance_yearly"),
+          hoa_monthly: $("hoa_monthly"),
+          pmi_pct: $("pmi_pct"),
+          upfront_fee_pct: $("upfront_fee_pct"),
+          annual_mi_pct: $("annual_mi_pct"),
+          finance_upfront_fee: $("finance_upfront_fee"),
+          extra_principal_monthly: $("extra_principal_monthly"),
+          extra_start_month_index: $("extra_start_month_index"),
+        };
+
+        const outputs = {
+          total_monthly_0: $("total_monthly_0"),
+          p_and_i: $("p_and_i"),
+          total_interest: $("total_interest"),
+          payoff_date: $("payoff_date"),
+          interest_hint: $("interest_hint"),
+          term_hint: $("term_hint"),
+          summaryText: $("summaryText"),
+          totalsBreakdown: $("totalsBreakdown"),
+          schedulePreview: $("schedulePreview"),
+          scheduleNote: $("scheduleNote"),
+        };
+
+        const setDefaults = (preset = baseDefaults) => {
+          Object.entries(preset).forEach(([key, value]) => {
+            if (!(key in inputs)) return;
+            if (inputs[key].type === "checkbox") {
+              inputs[key].checked = Boolean(value);
+            } else {
+              inputs[key].value = value;
+            }
+          });
+        };
+
+        const mergeProgramDefaults = () => {
+          const program = inputs.loan_type.value;
+          const defaults = programDefaults[program];
+          if (!defaults) return;
+          Object.entries(defaults).forEach(([key, value]) => {
+            if (!(key in inputs)) return;
+            if (inputs[key].type === "checkbox") {
+              inputs[key].checked = Boolean(value);
+            } else if (!inputs[key].value) {
+              inputs[key].value = value;
+            }
+          });
+        };
+
+        const readParams = () => ({
+          loan_type: inputs.loan_type.value,
+          home_value: toNumber(inputs.home_value.value),
+          down_payment_value: toNumber(inputs.down_payment_value.value),
+          down_payment_pct: toNumber(inputs.down_payment_pct.value),
+          rate_apr: toNumber(inputs.rate_apr.value),
+          term_years: toNumber(inputs.term_years.value),
+          start_month: toNumber(inputs.start_month.value),
+          start_year: toNumber(inputs.start_year.value),
+          property_tax_input: toNumber(inputs.property_tax_input.value),
+          homeowners_insurance_yearly: toNumber(inputs.homeowners_insurance_yearly.value),
+          hoa_monthly: toNumber(inputs.hoa_monthly.value),
+          upfront_fee_pct: toNumber(inputs.upfront_fee_pct.value),
+          annual_mi_pct: toNumber(inputs.annual_mi_pct.value),
+          finance_upfront_fee: Boolean(inputs.finance_upfront_fee.checked),
+          extra_principal_monthly: toNumber(inputs.extra_principal_monthly.value),
+          extra_start_month_index: toNumber(inputs.extra_start_month_index.value),
+          pmi_pct: toNumber(inputs.pmi_pct.value),
+        });
+
+        const divideSafe = (numerator, denominator) =>
+          denominator === 0 ? 0 : numerator / denominator;
+
+        const renderSummary = (calc) => {
+          const { inputs: normalized, derived, totals, payoff_date } = calc;
+          const monthsElapsed = totals.payments_made || 0;
+          const yearsElapsed = divideSafe(monthsElapsed, 12);
+          const payoffLabel = payoff_date
+            ? `${monthNames[normalizeMonth(payoff_date.month) - 1]} ${payoff_date.year}`
+            : "—";
+
+          outputs.total_monthly_0.textContent = formatCurrency(derived.total_monthly_0);
+          outputs.p_and_i.textContent = formatCurrency(derived.p_and_i);
+          outputs.total_interest.textContent = formatCurrency(totals.total_interest);
+          outputs.payoff_date.textContent = payoffLabel;
+
+          outputs.interest_hint.textContent = `Totals include ${formatCurrency(
+            totals.total_principal
+          )} principal and ${formatCurrency(totals.total_extra_principal)} extra payments.`;
+
+          outputs.term_hint.textContent = `Original term ${normalized.term_years} yrs — paid off in ${yearsElapsed.toFixed(
+            1
+          )} yrs (${monthsElapsed} months).`;
+
+          outputs.summaryText.innerHTML = `
+            For a <strong>${formatCurrency(derived.loan_amount_base)}</strong> ${normalized.loan_type.toUpperCase()} loan at
+            <strong>${(normalized.rate_apr * 100).toFixed(3)}% APR</strong>, your first full payment is
+            <strong>${formatCurrency(derived.total_monthly_0)}</strong> including taxes, insurance, and HOA. With the current
+            assumptions you would pay <strong>${formatCurrency(totals.total_interest)}</strong> in interest and
+            <strong>${formatCurrency(totals.total_of_payments)}</strong> total over the life of the loan.
+          `;
+
+          outputs.totalsBreakdown.innerHTML = `
+            <div>Tax & insurance: <strong>${formatCurrency(totals.total_tax + totals.total_ins)}</strong></div>
+            <div>Mortgage insurance: <strong>${formatCurrency(totals.total_mi)}</strong></div>
+            <div>HOA dues: <strong>${formatCurrency(totals.total_hoa)}</strong></div>
+            <div>Total paid: <strong>${formatCurrency(totals.total_of_payments)}</strong></div>
+          `;
+
+          const previewRows = calc.schedule.slice(0, 12);
+          if (previewRows.length) {
+            const rows = previewRows
+              .map((row) => {
+                const monthLabel = `${monthNames[row.date.month - 1].slice(0, 3)} ${row.date.year}`;
+                return `
+                  <tr>
+                    <td class="label">${row.index + 1}</td>
+                    <td>${monthLabel}</td>
+                    <td>${formatCurrency(row.total_payment)}</td>
+                    <td>${formatCurrency(row.principal_scheduled + row.extra_principal)}</td>
+                    <td>${formatCurrency(row.interest)}</td>
+                    <td>${formatCurrency(row.closing_balance)}</td>
+                  </tr>`;
+              })
+              .join("");
+
+            outputs.schedulePreview.innerHTML = `
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th class="label">Month</th>
+                    <th>Payment</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            `;
+            outputs.scheduleNote.textContent = `Showing first ${previewRows.length} of ${calc.schedule.length} months.`;
+          } else {
+            outputs.schedulePreview.innerHTML = "";
+            outputs.scheduleNote.textContent = "Enter loan details to view amortization.";
+          }
+        };
+
+        const calculateAndRender = () => {
+          const params = readParams();
+          const calc = mortgageCalculator.calculate_mortgage(params);
+          renderSummary(calc);
+        };
+
+        $("calculateBtn").addEventListener("click", calculateAndRender);
+        $("resetBtn").addEventListener("click", () => {
+          setDefaults(baseDefaults);
+          mergeProgramDefaults();
+          calculateAndRender();
+        });
+
+        inputs.loan_type.addEventListener("change", () => {
+          mergeProgramDefaults();
+          calculateAndRender();
+        });
+
+        Object.values(inputs).forEach((el) => {
+          const handler = () => calculateAndRender();
+          el.addEventListener("change", handler);
+          if (el.tagName === "INPUT" && el.type === "number") {
+            el.addEventListener("keyup", (evt) => {
+              if (evt.key === "Enter") handler();
+            });
+          }
+        });
+
+        setDefaults(baseDefaults);
+        mergeProgramDefaults();
+        calculateAndRender();
       })();
     </script>
   </body>
