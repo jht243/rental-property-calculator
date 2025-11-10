@@ -1101,10 +1101,12 @@ async function handleSubscribe(req: IncomingMessage, res: ServerResponse) {
         message: "Successfully subscribed! You'll receive a reminder before the deadline." 
       }));
     } catch (subscribeError: any) {
-      const msg = (subscribeError?.message || "").toLowerCase();
+      const rawMessage = String(subscribeError?.message ?? "").trim();
+      const msg = rawMessage.toLowerCase();
       const already = msg.includes('already subscribed') || msg.includes('already exists') || msg.includes('already on your list') || msg.includes('subscriber already exists') || msg.includes('already');
+
       if (already) {
-        console.log("Subscriber exists, updating metadata...");
+        console.log("Subscriber already on list, attempting update", { email, settlementId, message: rawMessage });
         try {
           await updateButtondownSubscriber(email, settlementId, settlementName, deadline || null);
           res.writeHead(200).end(JSON.stringify({ 
@@ -1112,12 +1114,20 @@ async function handleSubscribe(req: IncomingMessage, res: ServerResponse) {
             message: "Settlement added to your subscriptions!" 
           }));
         } catch (updateError: any) {
-          console.error("Update subscriber error:", updateError);
-          throw updateError;
+          console.warn("Update subscriber failed, returning graceful success", {
+            email,
+            settlementId,
+            error: updateError?.message,
+          });
+          res.writeHead(200).end(JSON.stringify({
+            success: true,
+            message: "You're already subscribed! We'll keep you posted.",
+          }));
         }
-      } else {
-        throw subscribeError;
+        return;
       }
+
+      throw subscribeError;
     }
   } catch (error: any) {
     console.error("Subscribe error:", error);
