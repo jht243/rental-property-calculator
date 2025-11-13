@@ -66,16 +66,36 @@ async function handleExportPdf(req: IncomingMessage, res: ServerResponse) {
     return;
   }
 
-  if (req.method !== "POST") {
+  if (req.method !== "POST" && req.method !== "GET") {
     try { console.warn(`[ExportPDF] 405 Method not allowed: ${req.method}`); } catch (_) {}
     res.writeHead(405, { "Content-Type": "application/json" }).end(JSON.stringify({ error: "Method not allowed" }));
     return;
   }
 
   try {
-    let body = "";
-    for await (const chunk of req) body += chunk;
-    const payload = JSON.parse(body || "{}");
+    let payload: any = {};
+    if (req.method === "POST") {
+      let body = "";
+      for await (const chunk of req) body += chunk;
+      payload = JSON.parse(body || "{}");
+    } else if (req.method === "GET") {
+      try {
+        const url = new URL(req.url || "", `http://${req.headers.host || "localhost"}`);
+        const q = url.searchParams.get("q");
+        if (q) {
+          const json = Buffer.from(q, "base64").toString("utf8");
+          payload = JSON.parse(json);
+        } else {
+          // Accept flat query params as a minimal fallback
+          const params: Record<string, any> = {};
+          url.searchParams.forEach((v, k) => { if (k !== "q") params[k] = v; });
+          payload = { params };
+        }
+      } catch (e) {
+        console.warn("[ExportPDF] GET parse error", e);
+        payload = {};
+      }
+    }
     const ua = req.headers["user-agent"] || "";
     const params = payload?.params || {};
     const monthlyPayment = payload?.monthlyPayment;
