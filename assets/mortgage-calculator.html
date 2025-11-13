@@ -2383,22 +2383,35 @@
               if (canvas && canvas.toDataURL) {
                 try { chartPngDataUrl = canvas.toDataURL('image/png'); } catch (_) {}
               }
+              try { emitTelemetry('export_pdf_click', { hasChart: !!chartPngDataUrl, chartLen: chartPngDataUrl ? chartPngDataUrl.length : 0 }); } catch (_) {}
+              console.debug('Export PDF starting', { hasChart: !!chartPngDataUrl, chartLen: chartPngDataUrl ? chartPngDataUrl.length : 0, monthlyPayment, paramKeys: Object.keys(params || {}) });
 
               let resp = null;
               for (const url of EXPORT_ENDPOINTS) {
                 try {
+                  try { emitTelemetry('export_pdf_attempt', { url }); } catch (_) {}
+                  console.debug('Export PDF POST', url);
                   resp = await postForBlob(url, { params, monthlyPayment, chartPngDataUrl });
                   if (resp && resp.ok) break;
                 } catch (_) { /* try next */ }
               }
               if (!resp || !resp.ok) {
-                showToast('error', 'Export failed');
+                let status = resp ? `${resp.status} ${resp.statusText || ''}`.trim() : 'no-response';
+                let detail = '';
+                try { detail = resp ? (await resp.text()).slice(0, 200) : ''; } catch (_) {}
+                try { emitTelemetry('export_pdf_failure', { status, detail }); } catch (_) {}
+                console.error('Export PDF failed', { status, detail });
+                showToast('error', `Export failed${status ? ` (${status})` : ''}`);
                 return;
               }
               const blob = await resp.blob();
               triggerDownload(blob, 'Mortgage_Summary.pdf');
+              try { emitTelemetry('export_pdf_success', { size: blob.size }); } catch (_) {}
+              console.debug('Export PDF success', { size: blob.size });
               showToast('success', 'PDF downloaded');
             } catch (err) {
+              try { emitTelemetry('export_pdf_failure', { error: String(err && err.message || err) }); } catch (_) {}
+              console.error('Export PDF error', err);
               showToast('error', 'Export failed');
             }
           });
