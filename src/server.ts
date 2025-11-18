@@ -365,32 +365,38 @@ function readWidgetHtml(componentName: string): string {
 
 function widgetMeta(widget: MortgageWidget, bustCache: boolean = false) {
   const templateUri = bustCache
-    ? `ui://widget/mortgage-calculator.html?v=${Date.now()}`
+    ? `ui://widget/rental-property-calculator.html?v=${Date.now()}`
     : widget.templateUri;
 
   return {
     "openai/outputTemplate": templateUri,
     "openai/widgetDescription":
-      "Interactive mortgage-planning dashboard with live FRED-sourced rate badge, configurable loan inputs, payment breakdown charts, amortization timeline, and email notifications for rate drops. Works with general prompts too — if the user says something like 'calculate my mortgage' with no numbers, the calculator opens with sensible default values and the current live rate.",
+      "Rental Property Calculator widget for analyzing single‑family and multi‑family rentals. Enter purchase, financing, rent, and expenses to calculate return on rental properties: ROI on rental property, cash‑on‑cash return, internal rate of return (IRR), capitalization rate (cap rate), net operating income (NOI), mortgage P&I, annual cash flow, equity, and a 20‑year investment summary including profit when sold. Includes Year‑1 KPIs, an expense donut, and a year‑by‑year breakdown.",
     "openai/componentDescriptions": {
-      "rate-indicator": "Header pill cluster that surfaces today's average 30-year fixed mortgage rate sourced from FRED, including the manual refresh control for forced updates.",
-      "rate-badge": "Rounded badge displaying the most recent mortgage rate percentage that auto-updates after every successful API call.",
-      "manual-refresh-button": "Circular refresh button that triggers a new call to the /api/rate endpoint and spins while the rate is being fetched.",
-      "loan-input-form": "Primary loan configuration form containing fields for program type, home value, down payment, interest rate, term, and advanced property expenses.",
-      "monthly-summary-card": "Top result card that surfaces the all-in monthly payment, highlighting cash flow at month zero with contextual hints.",
-      "quick-metrics": "Horizontal metric stack summarizing principal and interest, lifetime interest, and projected payoff date for the current scenario.",
-      "breakdown-chart": "Donut chart and companion list that visualize how the monthly payment splits across P&I, taxes, insurance, HOA dues, and mortgage insurance.",
-      "amortization-section": "Lower panels summarizing lifetime totals and a preview of the amortization schedule, including per-period balances and payments.",
-      "notification-cta": "Call-to-action button that opens the modal for subscribing to mortgage rate drop alerts via email.",
+      "rate-indicator": "Header indicator for rental analysis showing today’s mortgage rate reference to contextualize ROI on rental property and cash‑on‑cash return; includes a refresh control for current rates.",
+      "rate-badge": "Badge showing the most recent mortgage rate reference to inform rental property returns (cash‑on‑cash, IRR, cap rate); updates when refreshed.",
+      "manual-refresh-button": "Refresh to pull a new mortgage rate reference so rental property ROI, cash‑on‑cash return, and IRR reflect current rates.",
+      "loan-input-form": "Rental financing inputs—loan program, down payment, interest rate, and term—used to compute mortgage P&I for the rental property calculator and drive cash flow/NOI.",
+      "monthly-summary-card": "Year‑1 rental summary showing income after vacancy and monthly/annual cash flow to support ROI on rental property analysis.",
+      "quick-metrics": "Rental KPIs including cap rate, cash‑on‑cash return, NOI, and mortgage P&I totals for quick insight.",
+      "breakdown-chart": "Rental expense donut showing operating expenses and vacancy mix to explain NOI and cash flow.",
+      "amortization-section": "20‑year investment summary for rentals: income, expenses, cash flow, equity, cash if sold, and IRR at the chosen horizon.",
+      "notification-cta": "Optional call‑to‑action for rate‑drop updates to revisit rental property returns when interest rates move.",
     },
     "openai/widgetKeywords": [
-      "mortgage calculator",
-      "home loan planning",
-      "FRED mortgage rate",
-      "amortization schedule",
-      "monthly payment analysis",
-      "rate badge",
-      "home affordability",
+      "rental property calculator",
+      "ROI on rental property",
+      "calculate return on rental properties",
+      "rental property cash on cash return",
+      "rental property IRR",
+      "investment property cap rate",
+      "multi family NOI",
+      "rental property mortgage P&I",
+      "multi family returns",
+      "rental analysis",
+      "20 year rental projections",
+      "rental property profit when sold",
+      "rental property equity growth",
     ],
     "openai/widgetPrefersBorder": true,
     "openai/widgetCSP": {
@@ -407,26 +413,29 @@ function widgetMeta(widget: MortgageWidget, bustCache: boolean = false) {
     "openai/widgetAccessible": true,
     "openai/resultCanProduceWidget": true,
     "openai/starterPrompts": [
-      "Calculate my mortgage",
-      "Estimate my mortgage payment",
-      "Show the mortgage calculator with today's average rate and monthly payment summary",
-      "Help me explore loan scenarios for buying a $600,000 home with different down payments",
-      "Estimate monthly payments, payoff schedule, and total interest for a 15-year FHA mortgage",
-      "Refresh the live mortgage rate badge and recompute the amortization schedule",
+      "Show a rental property calculator.",
+      "Analyze the return of a multifamily property.",
+      "Calculate cashflow on this triplex.",
+      "Analyze a duplex: purchase $520,000, 20% down, 6.25% APR, rent $3,800, vacancy 6%, taxes $6,200, insurance $1,800, maintenance 8%.",
+      "Show me the ROI on a $450,000 rental with 25% down, rent $3,200, monthly expenses $1,150, over 20 years.",
+    ],
+    "openai/sampleConversations": [
+      { "user": "Calculate cash‑on‑cash return and IRR for a duplex with $520k purchase, 15% down, 6.25% for 30y, rent $3,800, vacancy 6%, taxes $6,200, insurance $1,800, maintenance 8%.", "assistant": "Here are the rental property metrics: ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, P&I totals, and a 20‑year investment summary including equity and profit when sold. Year‑1 KPIs and the expense donut are included." },
+      { "user": "How does 3% vs 4% appreciation affect profit when sold and IRR?", "assistant": "I’ll compute two scenarios and compare 20‑year ROI on rental property, IRR, cash‑on‑cash return, cap rate, NOI, annual cash flow, equity, and profit when sold." }
     ],
   } as const;
 }
 
 const widgets: MortgageWidget[] = [
   {
-    id: "mortgage-calculator",
-    title: "Mortgage Calculator – Live Rates, Payment Breakdown & Amortization Explorer",
-    templateUri: `ui://widget/mortgage-calculator.html?v=${Date.now()}`,
+    id: "rental-property-calculator",
+    title: "Rental Property Calculator — calculate ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, and 20‑year projections for single‑family and multi‑family rentals",
+    templateUri: `ui://widget/rental-property-calculator.html?v=${Date.now()}`,
     invoking:
-      "Opening the interactive mortgage calculator with live mortgage-rate badge and detailed payment analytics...",
+      "Opening the Rental Property Calculator with inputs for purchase, financing, income, and expenses to compute ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, and 20‑year projections...",
     invoked:
-      "Here is the live mortgage calculator with configurable loan inputs, rate badge, payment breakdown, and amortization insights.",
-    html: readWidgetHtml("mortgage-calculator"),
+      "Here is the Rental Property Calculator with Year‑1 KPIs, an expense donut, and a 20‑year investment summary (ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, equity, and profit when sold).",
+    html: readWidgetHtml("rental-property-calculator"),
   },
 ];
 
@@ -472,6 +481,31 @@ const toolInputSchema = {
       description: "Optional ZIP/postal code. Prefer 5-digit US ZIP if present in the user text.",
       examples: ["94110", "11215"],
     },
+    // Rental-specific inputs (accepted from prompts for widget hydration)
+    purchase_price: { type: "number", description: "Rental property purchase price (e.g., $700,000)." },
+    closing_cost: { type: "number", description: "Estimated closing costs in dollars." },
+    monthly_rent: { type: "number", description: "Total monthly rent for the property (all units)." },
+    other_monthly_income: { type: "number", description: "Other recurring monthly income (parking, laundry)." },
+    vacancy_rate_pct: { type: "number", description: "Vacancy rate as a percent number (e.g., 5 for 5%)." },
+    exp_property_tax_annual: { type: "number", description: "Annual property taxes in dollars." },
+    exp_insurance_annual: { type: "number", description: "Annual homeowners insurance in dollars." },
+    exp_hoa_annual: { type: "number", description: "Annual HOA dues in dollars." },
+    exp_maintenance_annual: { type: "number", description: "Annual maintenance cost in dollars." },
+    exp_other_annual: { type: "number", description: "Annual other operating costs in dollars." },
+    down_payment_pct: { type: "number", description: "Down payment percent (e.g., 20 for 20%)." },
+    interest_rate_pct: { type: "number", description: "Interest rate APR as a percent (e.g., 6.5)." },
+    loan_term_years: { type: "number", description: "Loan term in years (e.g., 30)." },
+    monthly_rent_increase_pct: { type: "number", description: "Annual rent increase percent." },
+    other_monthly_income_increase_pct: { type: "number", description: "Annual other income increase percent." },
+    exp_property_tax_increase_pct: { type: "number", description: "Annual tax increase percent." },
+    exp_insurance_increase_pct: { type: "number", description: "Annual insurance increase percent." },
+    exp_hoa_increase_pct: { type: "number", description: "Annual HOA increase percent." },
+    exp_maintenance_increase_pct: { type: "number", description: "Annual maintenance increase percent." },
+    exp_other_increase_pct: { type: "number", description: "Annual other cost increase percent." },
+    holding_length_years: { type: "number", description: "Holding period in years for the investment summary." },
+    cost_to_sell_pct: { type: "number", description: "Percent cost to sell at exit (e.g., 6)." },
+    value_appreciation_pct: { type: "number", description: "Annual property appreciation percent (e.g., 3)." },
+    sell_price: { type: "number", description: "Explicit sell price if known (overrides appreciation)." },
   },
   required: [],
   additionalProperties: false,
@@ -496,12 +530,37 @@ const toolInputParser = z.object({
   start_year: z.number().optional(),
   extra_principal_monthly: z.number().optional(),
   extra_start_month_index: z.number().optional(),
+  // Rental-specific fields (optional for hydration)
+  purchase_price: z.number().optional(),
+  closing_cost: z.number().optional(),
+  monthly_rent: z.number().optional(),
+  other_monthly_income: z.number().optional(),
+  vacancy_rate_pct: z.number().optional(),
+  exp_property_tax_annual: z.number().optional(),
+  exp_insurance_annual: z.number().optional(),
+  exp_hoa_annual: z.number().optional(),
+  exp_maintenance_annual: z.number().optional(),
+  exp_other_annual: z.number().optional(),
+  down_payment_pct: z.number().optional(),
+  interest_rate_pct: z.number().optional(),
+  loan_term_years: z.number().optional(),
+  monthly_rent_increase_pct: z.number().optional(),
+  other_monthly_income_increase_pct: z.number().optional(),
+  exp_property_tax_increase_pct: z.number().optional(),
+  exp_insurance_increase_pct: z.number().optional(),
+  exp_hoa_increase_pct: z.number().optional(),
+  exp_maintenance_increase_pct: z.number().optional(),
+  exp_other_increase_pct: z.number().optional(),
+  holding_length_years: z.number().optional(),
+  cost_to_sell_pct: z.number().optional(),
+  value_appreciation_pct: z.number().optional(),
+  sell_price: z.number().optional(),
 });
 
 const tools: Tool[] = widgets.map((widget) => ({
   name: widget.id,
   description:
-    "Use this for mortgage planning. It pulls live FRED rates, lets you adjust assumptions, and visualizes payments and amortization. It will also open for general prompts (e.g., 'calculate my mortgage') and start with sensible defaults if no numbers are provided. Do not use for unrelated financial products like auto loans or credit cards.",
+    "Use this for rental property analysis. Enter purchase, financing, rent, vacancy, property taxes, insurance, HOA, maintenance, appreciation, and cost to sell to calculate return on rental properties: ROI on rental property, cash‑on‑cash return, internal rate of return (IRR), capitalization rate (cap rate), net operating income (NOI), mortgage P&I totals, annual cash flow, equity, and a 20‑year investment summary including profit when sold. Supports single‑family and multi‑family rentals.",
   inputSchema: toolInputSchema,
   outputSchema: {
     type: "object",
@@ -570,7 +629,7 @@ const resources: Resource[] = widgets.map((widget) => ({
   uri: widget.templateUri,
   name: widget.title,
   description:
-    "HTML template for the mortgage calculator widget including live rate badge, calculator form, payment breakdown charts, amortization timeline, and notification modal.",
+    "HTML template for the Rental Property Calculator widget. Presents inputs for purchase, financing, rent, vacancy, taxes, insurance, HOA, and maintenance, with Year‑1 KPIs, expense donut, and a 20‑year investment summary showing ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, equity, and profit when sold.",
   mimeType: "text/html+skybridge",
   _meta: widgetMeta(widget),
 }));
@@ -579,7 +638,7 @@ const resourceTemplates: ResourceTemplate[] = widgets.map((widget) => ({
   uriTemplate: widget.templateUri,
   name: widget.title,
   description:
-    "Template descriptor for the mortgage calculator widget with live rate integration, configurable loan controls, visualization panels, and notification workflow.",
+    "Template descriptor for the Rental Property Calculator widget that analyzes single‑family and multi‑family rentals. Includes inputs for purchase, financing, rent, and operating expenses, plus Year‑1 KPIs, an expense donut, and a 20‑year investment summary including ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, equity, and profit when sold.",
   mimeType: "text/html+skybridge",
   _meta: widgetMeta(widget),
 }));
@@ -587,10 +646,10 @@ const resourceTemplates: ResourceTemplate[] = widgets.map((widget) => ({
 function createMortgageCalculatorServer(): Server {
   const server = new Server(
     {
-      name: "mortgage-calculator",
+      name: "rental-property-calculator",
       version: "0.1.0",
       description:
-        "Mortgage Calculator is a comprehensive mortgage planning assistant. It fetches authoritative rate data from the Federal Reserve (FRED), calculates monthly payments, taxes, insurance, PMI, and HOA costs, and renders interactive charts, amortization schedules, and payoff timelines so homebuyers can compare loan scenarios and understand lifetime costs before making decisions. It responds to general prompts like 'calculate my mortgage' by opening with sensible default values and the current live rate.",
+        "Rental Property Calculator is a comprehensive app for analyzing single‑family and multi‑family rentals. It calculates return on rental properties including cash‑on‑cash return, IRR, cap rate, NOI, mortgage P&I totals, annual cash flow, equity growth, and a 20‑year investment summary with profit when sold. It opens with sensible defaults and supports general prompts like ‘show a rental property calculator’.",
     },
     {
       capabilities: {
@@ -699,7 +758,7 @@ function createMortgageCalculatorServer(): Server {
         try {
           args = toolInputParser.parse(request.params.arguments ?? {});
         } catch (parseError: any) {
-          logAnalytics("parameter_parsing_error", {
+          logAnalytics("parameter_parse_error", {
             toolName: request.params.name,
             params: request.params.arguments,
             error: parseError.message,
@@ -819,6 +878,29 @@ function createMortgageCalculatorServer(): Server {
               }
             }
           }
+
+          // Rental-focused inference and mapping
+          // Map home_value -> purchase_price if explicit purchase_price wasn't provided
+          if ((args as any).purchase_price == null && typeof args.home_value === "number" && args.home_value > 0) {
+            (args as any).purchase_price = args.home_value;
+          }
+          // Infer monthly_rent if user mentions "rent $X"
+          if ((args as any).monthly_rent == null && userText) {
+            const rentMatch = userText.match(/rent[^\d$]{0,15}\$?([\d,.]+)\b/i) || userText.match(/\$\s*([\d,.]+)\b[^\n]{0,20}\brent\b/i);
+            if (rentMatch && rentMatch[1]) {
+              const rn = Number(rentMatch[1].replace(/[^0-9.]/g, ""));
+              if (Number.isFinite(rn) && rn >= 0) {
+                (args as any).monthly_rent = Math.round(rn);
+              }
+            }
+          }
+          // Compute down_payment_pct from value if possible
+          if ((args as any).down_payment_pct == null && typeof args.home_value === "number" && args.home_value > 0 && typeof args.down_payment_value === "number") {
+            const pct = (args.down_payment_value / args.home_value) * 100;
+            if (Number.isFinite(pct)) {
+              (args as any).down_payment_pct = Math.round(pct * 100) / 100;
+            }
+          }
         } catch (e) {
           console.warn("Parameter inference from meta failed", e);
         }
@@ -836,7 +918,7 @@ function createMortgageCalculatorServer(): Server {
         logAnalytics("tool_call_success", {
           toolName: request.params.name,
           params: args,
-          inferredQuery: inferredQuery.length > 0 ? inferredQuery.join(", ") : "mortgage calculator",
+          inferredQuery: inferredQuery.length > 0 ? inferredQuery.join(", ") : "rental property calculator",
           responseTime,
           device: deviceCategory,
           userLocation: userLocation
@@ -879,6 +961,31 @@ function createMortgageCalculatorServer(): Server {
           start_year: args.start_year,
           extra_principal_monthly: args.extra_principal_monthly,
           extra_start_month_index: args.extra_start_month_index,
+          // Rental-specific parameters passed through for widget hydration
+          purchase_price: (args as any).purchase_price,
+          closing_cost: (args as any).closing_cost,
+          monthly_rent: (args as any).monthly_rent,
+          other_monthly_income: (args as any).other_monthly_income,
+          vacancy_rate_pct: (args as any).vacancy_rate_pct,
+          exp_property_tax_annual: (args as any).exp_property_tax_annual,
+          exp_insurance_annual: (args as any).exp_insurance_annual,
+          exp_hoa_annual: (args as any).exp_hoa_annual,
+          exp_maintenance_annual: (args as any).exp_maintenance_annual,
+          exp_other_annual: (args as any).exp_other_annual,
+          down_payment_pct: (args as any).down_payment_pct,
+          interest_rate_pct: (args as any).interest_rate_pct,
+          loan_term_years: (args as any).loan_term_years,
+          monthly_rent_increase_pct: (args as any).monthly_rent_increase_pct,
+          other_monthly_income_increase_pct: (args as any).other_monthly_income_increase_pct,
+          exp_property_tax_increase_pct: (args as any).exp_property_tax_increase_pct,
+          exp_insurance_increase_pct: (args as any).exp_insurance_increase_pct,
+          exp_hoa_increase_pct: (args as any).exp_hoa_increase_pct,
+          exp_maintenance_increase_pct: (args as any).exp_maintenance_increase_pct,
+          exp_other_increase_pct: (args as any).exp_other_increase_pct,
+          holding_length_years: (args as any).holding_length_years,
+          cost_to_sell_pct: (args as any).cost_to_sell_pct,
+          value_appreciation_pct: (args as any).value_appreciation_pct,
+          sell_price: (args as any).sell_price,
           summary: computeSummary(args),
           suggested_followups: [
             "Help me reduce my monthly payment",
@@ -903,6 +1010,18 @@ function createMortgageCalculatorServer(): Server {
 
         console.log("[MCP] Returning outputTemplate:", (metaForReturn as any)["openai/outputTemplate"]);
         console.log("[MCP] Returning structuredContent:", structured);
+
+        // Log success analytics with rental parameters
+        try {
+          logAnalytics("tool_call_success", {
+            responseTime,
+            params: request.params.arguments || {},
+            inferredQuery: inferredQuery.join(", "),
+            userLocation,
+            userLocale,
+            device: deviceCategory,
+          });
+        } catch {}
 
         return {
           content: [],
@@ -1009,20 +1128,21 @@ function generateAnalyticsDashboard(logs: AnalyticsEvent[]): string {
       : "N/A";
 
   const paramUsage: Record<string, number> = {};
-  const categoryDist: Record<string, number> = {};
-  const companySearches: Record<string, number> = {};
+  const zipDist: Record<string, number> = {};
+  const loanTypeDist: Record<string, number> = {};
   
   successLogs.forEach((log) => {
     if (log.params) {
       Object.keys(log.params).forEach((key) => {
         if (log.params[key] !== undefined) {
           paramUsage[key] = (paramUsage[key] || 0) + 1;
-          
-          if (key === "category") {
-            categoryDist[log.params[key]] = (categoryDist[log.params[key]] || 0) + 1;
+          if (key === "zip_code") {
+            const zip = String(log.params[key]);
+            zipDist[zip] = (zipDist[zip] || 0) + 1;
           }
-          if (key === "companyName") {
-            companySearches[log.params[key]] = (companySearches[log.params[key]] || 0) + 1;
+          if (key === "loan_type") {
+            const lt = String(log.params[key]);
+            loanTypeDist[lt] = (loanTypeDist[lt] || 0) + 1;
           }
         }
       });
@@ -1075,7 +1195,7 @@ function generateAnalyticsDashboard(logs: AnalyticsEvent[]): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Class Action Finder Analytics</title>
+  <title>Rental Property Calculator Analytics</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; padding: 20px; }
@@ -1102,7 +1222,7 @@ function generateAnalyticsDashboard(logs: AnalyticsEvent[]): string {
 </head>
 <body>
   <div class="container">
-    <h1>📊 Class Action Finder Analytics</h1>
+    <h1>📊 Rental Property Calculator Analytics</h1>
     <p class="subtitle">Last 7 days • Auto-refresh every 60s</p>
     
     <div class="grid">
@@ -1147,16 +1267,16 @@ function generateAnalyticsDashboard(logs: AnalyticsEvent[]): string {
 
     <div class="grid" style="margin-bottom: 20px;">
       <div class="card">
-        <h2>Category Distribution</h2>
+        <h2>ZIP Code Distribution</h2>
         <table>
-          <thead><tr><th>Category</th><th>Searches</th></tr></thead>
+          <thead><tr><th>ZIP Code</th><th>Count</th></tr></thead>
           <tbody>
-            ${Object.entries(categoryDist).length > 0 ? Object.entries(categoryDist)
+            ${Object.entries(zipDist).length > 0 ? Object.entries(zipDist)
               .sort((a, b) => b[1] - a[1])
               .map(
-                ([cat, count]) => `
+                ([zip, count]) => `
               <tr>
-                <td>${cat}</td>
+                <td>${zip}</td>
                 <td>${count}</td>
               </tr>
             `
@@ -1167,17 +1287,16 @@ function generateAnalyticsDashboard(logs: AnalyticsEvent[]): string {
       </div>
       
       <div class="card">
-        <h2>Company Searches</h2>
+        <h2>Loan Types</h2>
         <table>
-          <thead><tr><th>Company</th><th>Searches</th></tr></thead>
+          <thead><tr><th>Loan Type</th><th>Count</th></tr></thead>
           <tbody>
-            ${Object.entries(companySearches).length > 0 ? Object.entries(companySearches)
+            ${Object.entries(loanTypeDist).length > 0 ? Object.entries(loanTypeDist)
               .sort((a, b) => b[1] - a[1])
-              .slice(0, 10)
               .map(
-                ([company, count]) => `
+                ([lt, count]) => `
               <tr>
-                <td>${company}</td>
+                <td>${lt}</td>
                 <td>${count}</td>
               </tr>
             `
@@ -1794,7 +1913,7 @@ const httpServer = createServer(
 
     // Serve alias for legacy loader path -> our main widget HTML
     if (req.method === "GET" && url.pathname === "/assets/mortgage-calculator-2d2b.html") {
-      const mainAssetPath = path.join(ASSETS_DIR, "mortgage-calculator.html");
+      const mainAssetPath = path.join(ASSETS_DIR, "rental-property-calculator.html");
       if (fs.existsSync(mainAssetPath) && fs.statSync(mainAssetPath).isFile()) {
         res.writeHead(200, {
           "Content-Type": "text/html",
@@ -1821,7 +1940,7 @@ const httpServer = createServer(
         });
 
         // If serving the main widget HTML, inject the current rate into the badge
-        if (ext === ".html" && path.basename(assetPath) === "mortgage-calculator.html") {
+        if (ext === ".html" && path.basename(assetPath) === "rental-property-calculator.html") {
           try {
             let html = fs.readFileSync(assetPath, "utf8");
             // Compute the current rate (prefer cache, otherwise fetch)
@@ -1864,7 +1983,7 @@ httpServer.on("clientError", (err: Error, socket) => {
 });
 
 httpServer.listen(port, () => {
-  console.log(`Mortgage Calculator MCP server listening on http://localhost:${port}`);
+  console.log(`Rental Property Calculator MCP server listening on http://localhost:${port}`);
   console.log(`  SSE stream: GET http://localhost:${port}${ssePath}`);
   console.log(
     `  Message post endpoint: POST http://localhost:${port}${postPath}?sessionId=...`

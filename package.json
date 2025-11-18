@@ -1,9 +1,22 @@
 {
-  "name": "mortgage-calculator-mcp-node",
+  "name": "rental-property-calculator-mcp-node",
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "description": "Mortgage Calculator MCP server that fetches live mortgage rates from the Federal Reserve (FRED), powers an interactive loan analysis widget with adjustable inputs, and delivers amortization insights, payment breakdown charts, and rate-drop notifications for homebuyers.",
+  "description": "Rental Property Calculator — calculate return on rental properties with long‑form, human‑readable analysis. Computes ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, mortgage P&I, cash flow, equity, and a 20‑year investment summary for single‑family and multi‑family rentals. Accepts purchase, financing, rent, vacancy, taxes, insurance, HOA, maintenance, appreciation, and cost‑to‑sell assumptions to calculate multi‑family returns and single‑family ROI.",
+  "keywords": [
+    "rental property calculator",
+    "calculate return on rental properties",
+    "ROI on rental property",
+    "cash on cash return",
+    "IRR",
+    "cap rate",
+    "NOI",
+    "multi family returns",
+    "rental analysis",
+    "investment property",
+    "20 year projections"
+  ],
   "scripts": {
     "start": "tsx src/server.ts"
   },

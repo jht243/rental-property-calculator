@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function MortgageHelloWorld() {
   useEffect(() => {
-    console.log("Mortgage Hello World widget mounted");
+    console.log("Rental Property Hello World widget mounted");
   }, []);
 
   return (

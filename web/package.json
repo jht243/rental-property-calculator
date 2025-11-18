@@ -1,9 +1,9 @@
 {
-  "name": "mortgage-calculator-web",
+  "name": "rental-property-calculator-web",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/main.tsx --bundle --format=esm --outfile=../assets/mortgage-calculator.js"
+    "build": "esbuild src/main.tsx --bundle --format=esm --outfile=../assets/rental-property-calculator.js"
   },
   "dependencies": {
     "react": "^18.2.0",

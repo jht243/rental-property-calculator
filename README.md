@@ -1,10 +1,10 @@
-# Mortgage Calculator - ChatGPT MCP Connector
+# Rental Property Calculator - ChatGPT MCP Connector
 
-A Model Context Protocol (MCP) server that provides an interactive mortgage calculator widget for ChatGPT. Helps users calculate monthly mortgage payments, analyze financing options, and plan their home purchase budget.
+A Model Context Protocol (MCP) server that provides an interactive rental property calculator widget for ChatGPT. Helps users estimate monthly payments for financed rentals, analyze scenarios, and plan cash flow.
 
 ## Features
 
-- 💰 Calculate monthly mortgage payments
+- 💰 Calculate monthly payments for rental properties
 - 📊 Simple inputs: purchase price, interest rate, loan term
 - 🔄 Interactive widget that appears directly in ChatGPT
 - 📈 Shows principal, interest, and total payment breakdown
@@ -43,7 +43,7 @@ Your permanent URL: `https://your-app.onrender.com/mcp`
 
 1. Open ChatGPT in **Developer Mode**
 2. Add MCP Connector with URL: `https://your-app.onrender.com/mcp`
-3. Say: **"show me a mortgage calculator"**
+3. Say: **"show me a rental property calculator"**
 4. The interactive widget appears!
 
 ## Tech Stack

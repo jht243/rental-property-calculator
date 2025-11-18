@@ -2,7 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Mortgage Calculator Widget</title>
+    <title>Rental Property Calculator — calculate ROI on rental property, cash‑on‑cash return, IRR, cap rate for single‑family and multi‑family rentals</title>
+    <meta name="description" content="Rental property calculator to calculate return on rental properties. Analyze single‑family and multi‑family rentals: ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, mortgage P&I, expenses, and a 20‑year investment summary with profit when sold." />
+    <meta property="og:title" content="Rental Property Calculator — calculate return on rental properties (ROI), cash‑on‑cash, IRR, cap rate" />
+    <meta property="og:description" content="Human‑readable rental property calculator that helps you calculate multi‑family returns and single‑family ROI: cash‑on‑cash return, internal rate of return (IRR), capitalization rate (cap rate), NOI, expenses, and 20‑year projections." />
+    <meta name="keywords" content="rental property calculator, calculate return on rental properties, ROI on rental property, calculate multi family returns, cash on cash return, IRR, cap rate, net operating income, rental analysis, 20 year investment summary" />
     <style>
       :root {
         color-scheme: dark;
@@ -187,6 +191,194 @@
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 16px 18px;
       }
+
+      /* Inline pair: main amount + small percent input aligned horizontally */
+      .inline-pair {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: end;
+        padding: 10px 12px;
+        border: 1px solid rgba(71, 85, 105, 0.35);
+        border-radius: 10px;
+        background: rgba(37, 40, 65, 0.45);
+        transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+      .inline-pair .pair-col { display: grid; gap: 4px; }
+      .percent-compact { position: relative; }
+      .percent-compact input[type="number"] { width: 100%; }
+      .inline-pair:hover {
+        border-color: rgba(14, 165, 233, 0.35);
+        box-shadow: 0 4px 12px rgba(10, 13, 28, 0.25);
+      }
+      .inline-pair:focus-within {
+        border-color: rgba(14, 165, 233, 0.55);
+        background: rgba(14, 165, 233, 0.06);
+        box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.35), 0 8px 16px rgba(14, 165, 233, 0.18);
+      }
+      /* Loan preset UI */
+      .loan-preset-block {
+        display: grid;
+        grid-template-columns: minmax(180px, 240px) 1fr;
+        gap: 12px;
+        align-items: end;
+        margin: 10px 0 6px;
+      }
+      .preset-chips {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .preset-chip {
+        position: relative;
+        padding: 8px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(236, 230, 255, 0.9);
+        border: 1px solid rgba(168, 85, 247, 0.6);
+        background: linear-gradient(180deg, rgba(139, 92, 246, 0.18), rgba(139, 92, 246, 0.08));
+        box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.25);
+        transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.06s ease;
+        cursor: pointer;
+      }
+      .preset-chip:hover { box-shadow: 0 6px 14px rgba(139, 92, 246, 0.2); }
+      .preset-chip:active { transform: translateY(1px); }
+      .preset-chip.active {
+        color: #1a1c2b;
+        background: linear-gradient(180deg, rgba(193, 148, 255, 0.95), rgba(168, 85, 247, 0.85));
+        border-color: rgba(193, 148, 255, 0.95);
+        box-shadow: 0 8px 18px rgba(139, 92, 246, 0.35);
+      }
+      /* Inline preset dropdown next to yes/no toggle */
+      .preset-inline { position: relative; display: inline-block; margin-left: 8px; }
+      .preset-inline::after {
+        content: "";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0; height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid rgba(193, 148, 255, 0.95);
+        pointer-events: none;
+      }
+      .preset-select {
+        -webkit-appearance: none;
+        appearance: none;
+        padding: 6px 32px 6px 12px;
+        border-radius: 9999px;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        color: rgba(236, 230, 255, 0.92);
+        border: 1px solid rgba(168, 85, 247, 0.6);
+        background: linear-gradient(180deg, rgba(139, 92, 246, 0.18), rgba(139, 92, 246, 0.08));
+        box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.25);
+        cursor: pointer;
+      }
+      .preset-select:hover { box-shadow: 0 6px 14px rgba(139, 92, 246, 0.2); }
+      .preset-select:focus { outline: none; border-color: rgba(193, 148, 255, 0.95); box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.35); }
+      .preset-select option { background: #141729; color: #eee7ff; }
+      /* Year 1 Summary split card */
+      .result-split {
+        position: relative;
+        display: flex;
+        gap: 28px;
+        align-items: flex-start;
+        padding-top: 0;
+      }
+      .result-split::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        transform: translateX(-0.5px);
+        background: linear-gradient(180deg, rgba(148, 163, 184, 0.15), rgba(148, 163, 184, 0.05));
+      }
+      .result-split .split-col {
+        flex: 1;
+        min-width: 0;
+        padding: 0 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .result-split .split-col .label { margin-bottom: 4px; }
+      .result-split .split-col .value { margin-top: 0; }
+      .result-split .split-col .hint { margin-top: 4px; opacity: 0.8; }
+      /* Align lone vacancy label with the two inline pairs in Income */
+      [data-openai-component="income-details"] .grid.trio-columns > label.percent-field {
+        align-self: start;
+        margin-top: 12px;
+      }
+      .percent-compact::after {
+        content: "%";
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.5);
+        pointer-events: none;
+      }
+      /* Outputs slide layout */
+      .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+      .two-col > * { min-width: 0; }
+      @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+      .three-col { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+      .three-col > * { min-width: 0; }
+      @media (max-width: 1200px) { .three-col { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 900px) { .three-col { grid-template-columns: 1fr; } }
+      .metrics-grid { display: grid; gap: 8px; }
+      .metric { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 12px; border-radius: 10px; background: rgba(37, 40, 65, 0.45); border: 1px solid rgba(71, 85, 105, 0.35); }
+      .metric .label { color: rgba(203, 213, 225, 0.9); font-size: 13px; }
+      .metric .value { color: rgba(248, 250, 252, 0.96); font-weight: 600; }
+      .kpi-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 12px; }
+      .kpi-item { text-align: center; padding: 14px 12px; border-radius: 12px; background: linear-gradient(180deg, rgba(14, 165, 233, 0.08), rgba(14, 165, 233, 0.02)); border: 1px solid rgba(56, 189, 248, 0.25); }
+      .kpi-item:first-child { background: linear-gradient(180deg, rgba(52, 211, 153, 0.10), rgba(16, 185, 129, 0.035)); border-color: rgba(52, 211, 153, 0.35); }
+      .kpi-label { display: block; font-size: 12px; letter-spacing: 0.06em; color: rgba(226, 232, 240, 0.82); margin-bottom: 4px; text-transform: uppercase; }
+      .kpi-number { display: block; font-size: 28px; font-weight: 700; color: rgba(248, 250, 252, 0.98); line-height: 1.2; }
+      .kpi-sub { display: block; font-size: 13px; color: rgba(203, 213, 225, 0.86); }
+      .neg { color: #fca5a5 !important; }
+      .metrics-table { width: 100%; border-collapse: collapse; table-layout: fixed; background: rgba(23, 26, 45, 0.6); border-radius: 12px; overflow: hidden; }
+      /* Distribute columns to fill cell: label 50%, monthly 25%, annual 25% */
+      .metrics-table thead th:nth-child(1), .metrics-table tbody td:nth-child(1) { width: 50%; }
+      .metrics-table thead th:nth-child(2), .metrics-table tbody td:nth-child(2) { width: 25%; }
+      .metrics-table thead th:nth-child(3), .metrics-table tbody td:nth-child(3) { width: 25%; }
+      .metrics-table th, .metrics-table td { padding: 10px 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.35); font-size: 13px; }
+      .metrics-table thead th { background: rgba(30, 41, 59, 0.7); text-align: right; }
+      .metrics-table thead th:first-child { text-align: left; }
+      .metrics-table tbody td:first-child { color: rgba(226, 232, 240, 0.9); text-align: left; }
+      .metrics-table tbody td { text-align: right; color: rgba(248, 250, 252, 0.92); }
+      .metrics-table tr.em td { font-weight: 600; color: #fca5a5; }
+      .donut-row { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+      @media (max-width: 860px) { .donut-row { grid-template-columns: 1fr; } }
+      /* 2x2 Year 1 grid: KPI x 2 on row 1, table + donut on row 2 */
+      .year1-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        width: 100%;
+        max-width: 1060px; /* align with KPI width */
+        margin: 0 auto;
+        align-items: start;
+      }
+      @media (max-width: 860px) { .year1-grid { grid-template-columns: 1fr; } }
+      .donut-legend { display: grid; gap: 8px; font-size: 13px; color: rgba(226, 232, 240, 0.9); }
+      .donut-legend .legend-item { display: flex; align-items: center; gap: 10px; padding: 4px 0; cursor: default; }
+      .donut-legend .legend-item .swatch { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,0.06) inset; flex: 0 0 auto; }
+      .donut-legend .legend-item .name { color: rgba(241, 245, 249, 0.96); font-weight: 500; }
+      .donut-legend .legend-item .pct { margin-left: auto; color: rgba(203, 213, 225, 0.85); }
+      .breakdown-table-wrap { justify-self: start; }
+      /* Year-by-Year table: prevent horizontal overflow expanding layout */
+      .yearly-table { width: 100%; border-collapse: collapse; display: block; overflow-x: auto; max-width: 100%; white-space: nowrap; background: rgba(23, 26, 45, 0.6); border-radius: 12px; }
+      .yearly-table th, .yearly-table td { padding: 10px 12px; border-bottom: 1px solid rgba(71, 85, 105, 0.35); font-size: 13px; text-align: right; }
+      .yearly-table thead th:first-child, .yearly-table tbody td:first-child { text-align: left; }
 
       .is-hidden {
         display: none !important;
@@ -444,6 +636,56 @@
         gap: 8px;
         padding: 0;
         margin-top: 10px;
+      }
+
+      /* Compact yes/no segmented toggle used in Purchase Details */
+      .field-group-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+      .field-group-header .field-group-label { margin: 0; }
+      .yesno-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px;
+        border-radius: 9999px;
+        border: 1px solid rgba(100, 116, 139, 0.35);
+        background: rgba(37, 40, 65, 0.6);
+      }
+      .yesno-toggle .yesno-option {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 9999px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .yesno-toggle .yesno-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+      }
+      .yesno-toggle .yesno-option span {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        color: rgba(226, 232, 240, 0.82);
+        border-radius: 9999px;
+      }
+      .yesno-toggle .yesno-option input:checked + span {
+        color: #0ea5e9;
+        background: rgba(14, 165, 233, 0.12);
+      }
+
+      /* Space between the header (question + toggle) and the dependent inputs */
+      [data-openai-component="purchase-details"] .field-group > .grid {
+        margin-top: 18px;
       }
 
       .checkbox-row input[type="checkbox"] {
@@ -968,6 +1210,13 @@
         letter-spacing: -0.01em;
       }
 
+      .result-card .sub {
+        display: block;
+        margin-top: 4px;
+        font-size: 16px;
+        color: rgba(148, 163, 184, 0.8);
+      }
+
       .result-card .hint {
         font-size: 12px;
         color: rgba(148, 163, 184, 0.6);
@@ -975,18 +1224,22 @@
       }
 
       .result-card.primary {
-        padding: 24px 20px;
+        padding: 20px 20px 20px;
         background: linear-gradient(140deg, rgba(14, 165, 233, 0.18), rgba(20, 23, 42, 0.95));
         border: 1px solid rgba(14, 165, 233, 0.4);
+        position: relative;
         box-shadow: 0 8px 24px rgba(14, 165, 233, 0.2), 0 0 80px rgba(14, 165, 233, 0.08);
         gap: 10px;
       }
 
       .result-card.primary .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
+        position: absolute;
+        top: 20px;
+        left: 12px;
+        right: auto;
+        display: block;
+        padding: 0;
+        margin: 0;
       }
 
       .result-card.primary .label {
@@ -1034,6 +1287,28 @@
         color: #f1f5f9;
         font-size: 22px;
       }
+
+      .cta-pill {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        margin: 14px 0 12px;
+        border-radius: 12px;
+        background: linear-gradient(140deg, rgba(16, 185, 129, 0.18), rgba(12, 18, 34, 0.9));
+        color: #eafff2;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        border: 1px solid rgba(52, 211, 153, 0.45);
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.18);
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .cta-pill:hover { filter: brightness(1.08); border-color: rgba(52, 211, 153, 0.65); }
+      .cta-pill svg { width: 16px; height: 16px; opacity: 0.9; }
 
       .actions {
         display: flex;
@@ -1179,14 +1454,14 @@
   </head>
   <body>
     <div class="app">
-      <section class="result-carousel" role="region" aria-roledescription="carousel" aria-label="Mortgage calculator">
+      <section class="result-carousel" role="region" aria-roledescription="carousel" aria-label="Rental property calculator">
         <button class="carousel-nav" id="cardPrev" aria-label="Previous card" aria-controls="resultTrack">&#x2039;</button>
         <div class="carousel-window" tabindex="0">
           <div class="carousel-track" id="resultTrack">
             <div class="carousel-slide" data-card="summary" role="group" aria-roledescription="slide" aria-label="Summary" aria-hidden="false">
               <div class="slide-content">
                 <header class="slide-header">
-                  <h2>Mortgage Calculator</h2>
+                  <h2>Rental Property Calculator</h2>
                   <div class="rate-indicator" data-openai-component="rate-indicator">
                     <button class="rate-refresh" type="button" aria-label="Refresh today's average rate" data-openai-component="manual-refresh-button">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1202,59 +1477,297 @@
                   <p>Compare loan programs, see monthly costs, and preview payoff timing.<br />Adjust the inputs to explore scenarios.</p>
                 </header>
 
-                <section class="section-block" data-openai-component="loan-input-form">
-                  <div class="section-title">Loan basics</div>
-                  <div class="scenario-bar" id="scenarioBar">
-                    <button type="button" class="scenario-chip" data-scenario="first-time">First-time buyer 3% down</button>
-                    <button type="button" class="scenario-chip" data-scenario="conventional">20% down conventional</button>
-                    <button type="button" class="scenario-chip" data-scenario="va">VA zero-down</button>
-                  </div>
-                  <div class="grid">
-                    <label>
-                      Loan program
-                      <select id="loan_type">
-                        <option value="conventional">Conventional</option>
-                        <option value="FHA">FHA</option>
-                        <option value="VA">VA</option>
-                        <option value="USDA">USDA</option>
-                      </select>
-                    </label>
-                    <label>
-                      Home value ($)
-                      <input type="number" id="home_value" min="0" step="1000" />
-                      <span class="field-message" data-field-error="home_value"></span>
-                    </label>
-                    <label>
-                      Down payment ($)
-                      <input type="number" id="down_payment_value" min="0" step="1000" />
-                      <span class="field-message" data-field-error="down_payment_value"></span>
-                      <div class="slider-row">
-                        <input type="range" id="down_payment_slider" min="0" max="80" step="1" aria-label="Down payment percent" />
-                        <span class="slider-value" id="down_payment_slider_display">0%</span>
-                      </div>
-                    </label>
-                    <label class="percent-field">
-                      Rate (APR %)
-                      <input type="number" id="rate_apr" min="0" step="0.01" />
-                      <span class="field-message" data-field-error="rate_apr"></span>
-                      <div class="slider-row">
-                        <input type="range" id="rate_slider" min="0" max="12" step="0.05" aria-label="Rate percent" />
-                        <span class="slider-value" id="rate_slider_display">0%</span>
-                      </div>
-                    </label>
-                    <label>
-                      Term (years)
-                      <input type="number" id="term_years" min="1" step="1" />
-                      <span class="field-message" data-field-error="term_years"></span>
-                      <div class="slider-row">
-                        <input type="range" id="term_slider" min="5" max="40" step="1" aria-label="Term years" />
-                        <span class="slider-value" id="term_slider_display">30y</span>
-                      </div>
-                    </label>
-                  </div>
-                </section>
+  <!-- Rental Property Calculator: New Input Sections -->
+  <details class="section-block collapsible" data-openai-component="purchase-details" open>
+    <summary class="section-summary">🏠 Purchase Details</summary>
+    <div class="collapsible-content">
+      <div class="grid duo-columns" id="purchase_inputs_row">
+        <label>
+          Purchase Price ($)
+          <input type="number" id="purchase_price" min="0" step="1000" />
+        </label>
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <label style="flex: 1;">
+            Additional Closing Cost ($)
+            <input type="number" id="closing_cost" min="0" step="100" />
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-top: -20px;">
+            <div class="field-group-header" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+              <p class="field-group-label" style="margin: 0; font-size: 10px; white-space: nowrap; width: 110px;">Use Loan?</p>
+              <div class="yesno-toggle" role="group" aria-label="Use Loan" style="transform: scale(0.8); transform-origin: left center;">
+                <label class="yesno-option">
+                  <input type="radio" id="use_loan_yes" name="use_loan" value="yes" />
+                  <span>Yes</span>
+                </label>
+                <label class="yesno-option">
+                  <input type="radio" id="use_loan_no" name="use_loan" value="no" checked />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+            <div class="field-group-header" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+              <p class="field-group-label" style="margin: 0; font-size: 10px; white-space: nowrap; width: 110px;">Need Repairs?</p>
+              <div class="yesno-toggle" role="group" aria-label="Need Repairs" style="transform: scale(0.8); transform-origin: left center;">
+                <label class="yesno-option">
+                  <input type="radio" id="need_repairs_yes" name="need_repairs" value="yes" />
+                  <span>Yes</span>
+                </label>
+                <label class="yesno-option">
+                  <input type="radio" id="need_repairs_no" name="need_repairs" value="no" checked />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <details class="section-block collapsible" id="propertyMortgageFees">
+      <div class="field-group" id="loan_field_group">
+        <div class="field-group-header">
+          <div class="loan-field preset-inline">
+            <select id="loan_preset" aria-label="Preset loan" class="preset-select">
+              <option value="">Choose Preset Loan</option>
+              <option value="first-time">First-time buyer 3% down</option>
+              <option value="conventional-20">20% down conventional</option>
+              <option value="va-zero">VA zero-down</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid trio-columns">
+          <label class="percent-field loan-field">
+            Down Payment (%)
+            <input type="number" id="down_payment_pct" min="0" max="75" step="0.1" />
+            <div class="slider-row">
+              <input type="range" id="loan_dp_slider" min="0" max="75" step="1" aria-label="Down payment percent" />
+              <span class="slider-value" id="loan_dp_slider_display">0%</span>
+            </div>
+          </label>
+          <label class="percent-field loan-field">
+            Interest Rate (%)
+            <input type="number" id="interest_rate_pct" min="0" step="0.01" />
+            <div class="slider-row">
+              <input type="range" id="loan_rate_slider" min="0" max="15" step="0.05" aria-label="Interest rate percent" />
+              <span class="slider-value" id="loan_rate_slider_display">0%</span>
+            </div>
+          </label>
+          <label class="loan-field">
+            Loan Term (years)
+            <input type="number" id="loan_term_years" min="0" step="1" />
+            <div class="slider-row">
+              <input type="range" id="loan_term_slider" min="5" max="40" step="1" aria-label="Loan term years" />
+              <span class="slider-value" id="loan_term_slider_display">30y</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field-group" id="repairs_field_group">
+        <div class="grid duo-columns">
+          <label class="repair-field">
+            Repair Cost ($)
+            <input type="number" id="repair_cost" min="0" step="100" />
+          </label>
+          <label class="repair-field">
+            Value After Repairs ($)
+            <input type="number" id="after_repair_value" min="0" step="1000" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="section-block collapsible" data-openai-component="income-details">
+    <summary class="section-summary">💰 Income</summary>
+    <div class="collapsible-content">
+      <div class="grid trio-columns" style="align-items: end;">
+        <div class="inline-pair">
+          <label class="pair-col">
+            Monthly Rent ($)
+            <input type="number" id="monthly_rent" min="0" step="50" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="monthly_rent_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+        <div class="inline-pair">
+          <label class="pair-col">
+            Other Monthly Income ($)
+            <input type="number" id="other_monthly_income" min="0" step="25" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="other_monthly_income_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+        <label class="percent-field">
+          Vacancy Rate (%)
+          <input type="number" id="vacancy_rate_pct" min="0" max="100" step="0.1" />
+        </label>
+      </div>
+    </div>
+  </details>
+
+  <details class="section-block collapsible" data-openai-component="operating-expenses">
+    <summary class="section-summary">🔁 Recurring Operating Expenses</summary>
+    <div class="collapsible-content">
+      <div class="grid trio-columns">
+        <div class="inline-pair">
+          <label class="pair-col">
+            <span class="label-row">Property Tax</span>
+            <span class="field-helper">Annual amount ($)</span>
+            <input type="number" id="exp_property_tax_annual" min="0" step="100" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="exp_property_tax_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+        <div class="inline-pair">
+          <label class="pair-col">
+            <span class="label-row">Total Insurance</span>
+            <span class="field-helper">Annual amount ($)</span>
+            <input type="number" id="exp_insurance_annual" min="0" step="100" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="exp_insurance_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+        <div class="inline-pair">
+          <label class="pair-col">
+            <span class="label-row">HOA Fee</span>
+            <span class="field-helper">Annual amount ($)</span>
+            <input type="number" id="exp_hoa_annual" min="0" step="50" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="exp_hoa_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+      </div>
+      <div class="grid duo-columns">
+        <div class="inline-pair">
+          <label class="pair-col">
+            <span class="label-row">Maintenance</span>
+            <span class="field-helper">Annual amount ($)</span>
+            <input type="number" id="exp_maintenance_annual" min="0" step="50" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="exp_maintenance_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+        <div class="inline-pair">
+          <label class="pair-col">
+            <span class="label-row">Other Costs</span>
+            <span class="field-helper">Annual amount ($)</span>
+            <input type="number" id="exp_other_annual" min="0" step="50" />
+          </label>
+          <label class="pair-col percent-compact">
+            <span class="field-helper">Annual Increase</span>
+            <input type="number" id="exp_other_increase_pct" min="0" step="0.1" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="section-block collapsible" data-openai-component="sell-exit-assumptions">
+    <summary class="section-summary">🚪 Sell / Exit Assumptions</summary>
+    <div class="collapsible-content">
+      <div class="grid trio-columns" style="align-items: end; padding-top: 22px;">
+        <!-- Column 1: Price/Appreciation selector with toggle ABOVE the title, not affecting layout height -->
+        <div style="position: relative; display: flex; flex-direction: column; justify-content: flex-end; margin-top: 0;">
+          <div class="yesno-toggle" role="group" aria-label="Price or Appreciation" style="position: absolute; top: -36px; left: 0; transform: scale(0.85); transform-origin: left bottom;">
+            <label class="yesno-option">
+              <input type="radio" id="price_mode_price" name="price_mode" value="price" />
+              <span>Price</span>
+            </label>
+            <label class="yesno-option">
+              <input type="radio" id="price_mode_appreciation" name="price_mode" value="appreciation" checked />
+              <span>Appreciation</span>
+            </label>
+          </div>
+          <label class="sell-price-field" style="margin-top: 0;">
+            Sale Price ($)
+            <input type="number" id="sell_price" min="0" step="1000" />
+          </label>
+          <label class="percent-field appreciation-field" style="margin-top: 0;">
+            Value Appreciation (% per year)
+            <input type="number" id="value_appreciation_pct" min="0" step="0.1" />
+          </label>
+        </div>
+
+        <!-- Column 2 -->
+        <label>
+          Holding Length (years)
+          <input type="number" id="holding_length_years" min="0" step="1" />
+        </label>
+
+        <!-- Column 3 -->
+        <label class="percent-field">
+          Cost to Sell (%)
+          <input type="number" id="cost_to_sell_pct" min="0" step="0.1" />
+        </label>
+      </div>
+    </div>
+  </details>
+
+  <!-- Restore original loan basics block -->
+  <section class="section-block is-hidden" data-openai-component="loan-input-form" aria-hidden="true">
+    <div class="section-title">Loan basics</div>
+    <div class="scenario-bar" id="scenarioBar">
+      <button type="button" class="scenario-chip" data-scenario="first-time">First-time buyer 3% down</button>
+      <button type="button" class="scenario-chip" data-scenario="conventional">20% down conventional</button>
+      <button type="button" class="scenario-chip" data-scenario="va">VA zero-down</button>
+    </div>
+    <div class="grid">
+      <label>
+        Loan program
+        <select id="loan_type">
+          <option value="conventional">Conventional</option>
+          <option value="FHA">FHA</option>
+          <option value="VA">VA</option>
+          <option value="USDA">USDA</option>
+        </select>
+      </label>
+      <label>
+        Home value ($)
+        <input type="number" id="home_value" min="0" step="1000" />
+        <span class="field-message" data-field-error="home_value"></span>
+      </label>
+      <label>
+        Down payment ($)
+        <input type="number" id="down_payment_value" min="0" step="1000" />
+        <span class="field-message" data-field-error="down_payment_value"></span>
+        <div class="slider-row">
+          <input type="range" id="down_payment_slider" min="0" max="80" step="1" aria-label="Down payment percent" />
+          <span class="slider-value" id="down_payment_slider_display">0%</span>
+        </div>
+      </label>
+      <label class="percent-field">
+        Rate (APR %)
+        <input type="number" id="rate_apr" min="0" step="0.01" />
+        <span class="field-message" data-field-error="rate_apr"></span>
+        <div class="slider-row">
+          <input type="range" id="rate_slider" min="0" max="12" step="0.05" aria-label="Rate percent" />
+          <span class="slider-value" id="rate_slider_display">0%</span>
+        </div>
+      </label>
+      <label>
+        Term (years)
+        <input type="number" id="term_years" min="1" step="1" />
+        <span class="field-message" data-field-error="term_years"></span>
+        <div class="slider-row">
+          <input type="range" id="term_slider" min="5" max="40" step="1" aria-label="Term years" />
+          <span class="slider-value" id="term_slider_display">30y</span>
+        </div>
+      </label>
+    </div>
+  </section>
+
+                <details class="section-block collapsible is-hidden" id="propertyMortgageFees" aria-hidden="true">
                   <summary class="section-summary">Property, mortgage, and fees</summary>
                   <div class="collapsible-content">
                     <div class="field-group">
@@ -1376,15 +1889,27 @@
                 <div class="result-stack">
                   <div class="result-card primary" id="monthlyPaymentCard" data-openai-component="monthly-summary-card">
                     <div class="card-header">
-                      <span class="label">Monthly payment (month 0)</span>
                       <div class="card-controls">
-                        <span class="badge">All-in payment</span>
+                        <span class="badge">Overview</span>
                       </div>
                     </div>
-                    <span class="value" id="total_monthly_0" aria-live="polite">$0</span>
-                    <span class="hint">Includes P&I, MI, taxes, insurance, HOA (excludes extra principal).</span>
+                    <div class="result-split">
+                      <div class="split-col">
+                        <span class="label">Year 1 Income</span>
+                        <span class="value" id="year1_income_value" aria-live="polite">$0</span>
+                        <span class="sub" id="year1_income_monthly_sub">— /mo</span>
+                        <span class="hint">Gross rent + other income after vacancy</span>
+                      </div>
+                      <div class="split-col">
+                        <span class="label">Year 1 Cashflow</span>
+                        <span class="value" id="year1_cashflow_value" aria-live="polite">—</span>
+                        <span class="sub" id="year1_cashflow_monthly_sub">— /mo</span>
+                        <span class="hint">Income − expenses − debt</span>
+                      </div>
+                    </div>
+                    <span id="total_monthly_0" style="display:none"></span>
                   </div>
-                  <div class="quick-metrics" data-openai-component="quick-metrics">
+                  <div class="quick-metrics is-hidden" data-openai-component="quick-metrics" aria-hidden="true">
                     <div class="result-card secondary">
                       <span class="label">Principal & interest</span>
                       <span class="value" id="p_and_i">$0</span>
@@ -1402,6 +1927,9 @@
                     </div>
                   </div>
 
+                  <a class="cta-pill" id="seeAdvanced" href="#">See Advanced Calculations
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                  </a>
                   <div class="actions">
                     <span>Updates automatically as you edit.</span>
                     <button class="secondary" id="resetBtn" type="button">Reset defaults</button>
@@ -1411,81 +1939,96 @@
                 </div>
               </div>
             </div>
-            <div class="carousel-slide" data-card="breakdown" role="group" aria-roledescription="slide" aria-label="Monthly breakdown" aria-hidden="true">
+            <div class="carousel-slide" data-card="breakdown" role="group" aria-roledescription="slide" aria-label="Outputs" aria-hidden="true">
               <div class="slide-content breakdown">
                 <header class="slide-header">
-                  <h2>Monthly payment breakdown</h2>
-                  <p>Visualize the components of your monthly payment.</p>
+                  <h2>Outputs</h2>
+                  <p>Key performance metrics with first-year details.</p>
                 </header>
-                <div class="breakdown-card section-block">
-                  <div class="breakdown-panel breakdown-layout">
-                    <div class="breakdown-chart" data-openai-component="breakdown-chart">
-                      <canvas id="breakdownChart"></canvas>
-                      <div class="chart-value" id="chartTotal">
-                        $0<span>/mo</span>
-                      </div>
-                    </div>
-                    <div class="breakdown-list" id="breakdown_list">
-                      <div class="breakdown-row">
-                        <div class="breakdown-pill primary">💰</div>
-                        <div class="breakdown-details">
-                          <span class="label">Principal & interest</span>
-                          <span class="hint">Scheduled P&I payment</span>
+                <div class="section-block">
+                  <div class="outputs-vertical">
+                    <section class="section-block">
+                      <div class="section-title">First-Year Income & Expenses</div>
+                      <div class="year1-grid">
+                        <div class="kpi-item">
+                          <span class="kpi-label">Year 1 Cashflow</span>
+                          <span class="kpi-number" id="kpi_cashflow_annual">—</span>
+                          <span class="kpi-sub" id="kpi_cashflow_monthly">— /mo</span>
                         </div>
-                        <span class="value" id="breakdown_p_and_i">$0</span>
-                      </div>
-                      <div class="breakdown-row">
-                        <div class="breakdown-pill accent">🏡</div>
-                        <div class="breakdown-details">
-                          <span class="label">Property tax</span>
-                          <span class="hint">Monthly property tax</span>
+                        <div class="kpi-item">
+                          <span class="kpi-label">Year 1 Income</span>
+                          <span class="kpi-number" id="kpi_income_annual">—</span>
+                          <span class="kpi-sub" id="kpi_income_monthly">— /mo</span>
                         </div>
-                        <span class="value" id="breakdown_tax">$0</span>
-                      </div>
-                      <div class="breakdown-row">
-                        <div class="breakdown-pill accent">🛡️</div>
-                        <div class="breakdown-details">
-                          <span class="label">Homeowner's insurance</span>
-                          <span class="hint">Monthly insurance cost</span>
+                        <div>
+                          <table class="metrics-table">
+                            <thead>
+                              <tr><th></th><th>Monthly</th><th>Annual</th></tr>
+                            </thead>
+                            <tbody>
+                              <tr><td>Income</td><td id="y1_income_monthly">—</td><td id="y1_income_annual">—</td></tr>
+                              <tr><td>Mortgage Payment</td><td id="y1_mortgage_monthly">—</td><td id="y1_mortgage_annual">—</td></tr>
+                              <tr><td>Vacancy Cost</td><td id="y1_vacancy_monthly">—</td><td id="y1_vacancy_annual">—</td></tr>
+                              <tr><td>Property Tax</td><td id="y1_tax_monthly">—</td><td id="y1_tax_annual">—</td></tr>
+                              <tr><td>Total Insurance</td><td id="y1_insurance_monthly">—</td><td id="y1_insurance_annual">—</td></tr>
+                              <tr><td>Maintenance Cost</td><td id="y1_maintenance_monthly">—</td><td id="y1_maintenance_annual">—</td></tr>
+                              <tr><td>Other Costs</td><td id="y1_other_monthly">—</td><td id="y1_other_annual">—</td></tr>
+                              <tr class="em"><td>Cash Flow</td><td id="y1_cashflow_monthly">—</td><td id="y1_cashflow_annual">—</td></tr>
+                              <tr><td>Net Operating Income (NOI)</td><td id="y1_noi_monthly">—</td><td id="y1_noi_annual">—</td></tr>
+                            </tbody>
+                          </table>
                         </div>
-                        <span class="value" id="breakdown_ins">$0</span>
-                      </div>
-                      <div class="breakdown-row">
-                        <div class="breakdown-pill subtle">🏘️</div>
-                        <div class="breakdown-details">
-                          <span class="label">HOA dues</span>
-                          <span class="hint">Monthly association fees</span>
+                        <div>
+                          <div class="donut-row">
+                            <canvas id="expenseDonut" width="320" height="320" aria-label="Expense breakdown doughnut"></canvas>
+                            <div id="expenseLegend" class="donut-legend"></div>
+                          </div>
                         </div>
-                        <span class="value" id="breakdown_hoa">$0</span>
                       </div>
-                      <div class="breakdown-row" id="breakdown_mi_row">
-                        <div class="breakdown-pill subtle">🔒</div>
-                        <div class="breakdown-details">
-                          <span class="label">Mortgage insurance</span>
-                          <span class="hint">Monthly MI/PMI payment</span>
-                        </div>
-                        <span class="value" id="breakdown_mi">$0</span>
+                    </section>
+                    <section class="section-block">
+                      <div class="section-title">20-Year Investment Summary</div>
+                      <div class="grid three-col">
+                        <div class="metric"><span class="label">Return (IRR)</span><span class="value" id="out_irr">—</span></div>
+                        <div class="metric"><span class="label">Total Profit When Sold</span><span class="value" id="out_total_profit">—</span></div>
+                        <div class="metric"><span class="label">Cash-on-Cash Return (%)</span><span class="value" id="out_coc">—</span></div>
+                        <div class="metric"><span class="label">Purchase Capitalization Rate</span><span class="value" id="out_cap_rate">—</span></div>
+                        <div class="metric"><span class="label">Total Rental Income</span><span class="value" id="out_total_rent">—</span></div>
+                        <div class="metric"><span class="label">Total Mortgage Payments</span><span class="value" id="out_total_mortgage">—</span></div>
+                        <div class="metric"><span class="label">Total Expenses</span><span class="value" id="out_total_expenses">—</span></div>
+                        <div class="metric"><span class="label">Total Net Operating Income</span><span class="value" id="out_total_noi">—</span></div>
                       </div>
-                    </div>
+                    </section>
                   </div>
-                  <p class="breakdown-footnote">Adjust tax, insurance, and HOA values above to update your monthly payment across all slides.</p>
                 </div>
+                <!-- Donut moved next to Year 1 table above -->
               </div>
             </div>
-            <div class="carousel-slide" data-card="amortization" role="group" aria-roledescription="slide" aria-label="Amortization & totals" aria-hidden="true" data-openai-component="amortization-section">
+            <div class="carousel-slide" data-card="amortization" role="group" aria-roledescription="slide" aria-label="Breakdown Over Time" aria-hidden="true" data-openai-component="amortization-section">
               <div class="slide-content tight">
                 <header class="slide-header">
-                  <h2>Amortization & totals</h2>
-                  <p>Review lifetime costs and the first year of payments at a glance.</p>
+                  <h2>Breakdown Over Time (Year-by-Year)</h2>
+                  <p>Annual rollup of income, expenses, cash flow, returns, and equity.</p>
                 </header>
                 <section class="section-block">
-                  <div class="section-title">Lifetime totals</div>
-                  <div class="totals-list" id="totalsBreakdown"></div>
-                </section>
-                <section class="section-block">
-                  <div class="section-title">Schedule preview</div>
-                  <div id="schedulePreview"></div>
-                  <div class="schedule-note" id="scheduleNote"></div>
+                  <table class="yearly-table" id="overTimeTable">
+                    <thead>
+                      <tr>
+                        <th>Year</th>
+                        <th>Annual Income</th>
+                        <th>Mortgage</th>
+                        <th>Expenses</th>
+                        <th>Cash Flow</th>
+                        <th>Cash-on-Cash Return</th>
+                        <th>Equity Accumulated</th>
+                        <th>Cash to Receive if Sold</th>
+                        <th>Return (IRR)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- rows injected by JS later -->
+                    </tbody>
+                  </table>
                 </section>
               </div>
             </div>
@@ -1504,6 +2047,11 @@
           const num = Number(value);
           return Number.isFinite(num) ? num : 0;
         };
+
+        // Track if user manually edits fields so derived defaults stop auto-updating
+        let taxEdited = false;
+        let closingEdited = false;
+        let rateEdited = false;
 
         const clampNonNegative = (value) => {
           const num = toNumber(value);
@@ -1894,6 +2442,16 @@
             maximumFractionDigits: 0,
           });
 
+        const formatCurrencySigned = (value) => {
+          const abs = Math.abs(Number(value) || 0);
+          const s = abs.toLocaleString(undefined, {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+          });
+          return (Number(value) || 0) < 0 ? `-${s}` : s;
+        };
+
         const formatCompactCurrency = (value) =>
           clampNonNegative(value).toLocaleString(undefined, {
             style: "currency",
@@ -1901,6 +2459,12 @@
             maximumFractionDigits: 0,
             notation: "compact",
           });
+
+        const formatPercent = (value, digits = 1) => {
+          const n = Number(value);
+          if (!Number.isFinite(n)) return "—";
+          return `${n.toFixed(digits)}%`;
+        };
 
         const monthNames = [
           "January",
@@ -1941,6 +2505,88 @@
           FHA: { pmi_pct: 0, upfront_fee_pct: 1.75, annual_mi_pct: 0.85, finance_upfront_fee: true },
           VA: { pmi_pct: 0, upfront_fee_pct: 2.3, annual_mi_pct: 0, finance_upfront_fee: true },
           USDA: { pmi_pct: 0, upfront_fee_pct: 1.0, annual_mi_pct: 0.35, finance_upfront_fee: true },
+        };
+
+        // Defaults for Rental Calculator fields (used if user did not provide values)
+        const rentalDefaults = {
+          purchase_price: 450000,
+          closing_cost: 5000,
+          monthly_rent: 3000,
+          other_monthly_income: 0,
+          vacancy_rate_pct: 5,
+          exp_property_tax_annual: 9000,
+          exp_insurance_annual: 1500,
+          exp_hoa_annual: 0,
+          exp_maintenance_annual: 2000,
+          exp_other_annual: 500,
+          down_payment_pct: 20,
+          interest_rate_pct: 6.5,
+          loan_term_years: 30,
+          // Annual increase defaults (for 20-year projections)
+          monthly_rent_increase_pct: 3,
+          other_monthly_income_increase_pct: 3,
+          exp_property_tax_increase_pct: 3,
+          exp_insurance_increase_pct: 3,
+          exp_hoa_increase_pct: 3,
+          exp_maintenance_increase_pct: 3,
+          exp_other_increase_pct: 3,
+          // Sell / Exit Assumptions defaults
+          holding_length_years: 20,
+          cost_to_sell_pct: 6,
+          value_appreciation_pct: 3,
+        };
+
+        const setRentalDefaultsIfEmpty = (force = false) => {
+          console.log('[DEBUG] setRentalDefaultsIfEmpty called');
+          const setIfEmpty = (id, val) => {
+            const el = document.getElementById(id);
+            if (!el) {
+              console.log(`[DEBUG] Element not found: ${id}`);
+              return;
+            }
+            const cur = (el.value ?? '').trim();
+            const asNum = Number((cur || '').replace(/[$,]/g, ''));
+            if (force || cur === '' || (!Number.isNaN(asNum) && asNum === 0)) {
+              el.value = String(val);
+              console.log(`[DEBUG] Set ${id} = ${val}`);
+            }
+          };
+          Object.entries(rentalDefaults).forEach(([id, val]) => setIfEmpty(id, val));
+
+          // Derived defaults that depend on purchase price
+          try {
+            const ppEl = document.getElementById('purchase_price');
+            const taxEl = document.getElementById('exp_property_tax_annual');
+            const closeEl = document.getElementById('closing_cost');
+            const pp = Number((ppEl?.value || '0').toString().replace(/[$,]/g, '')) || 0;
+            if (pp && taxEl && !taxEdited && (force || (taxEl.value === '' || Number(taxEl.value) === rentalDefaults.exp_property_tax_annual))) {
+              const tax = Math.round(pp * 0.012);
+              taxEl.value = String(tax);
+            }
+            if (pp && closeEl && !closingEdited && (force || (closeEl.value === '' || Number(closeEl.value) === rentalDefaults.closing_cost))) {
+              const cc = Math.round(pp * 0.02 / 100) * 100; // round to nearest $100
+              closeEl.value = String(cc);
+            }
+          } catch(_) {}
+
+          // Sync loan sliders from inputs if they exist
+          if (typeof loanInputsMap !== 'undefined' && typeof loanSlidersMap !== 'undefined' && typeof loanDisplaysMap !== 'undefined') {
+            if (loanInputsMap.dp_pct && loanSlidersMap.dp) {
+              const v = Math.min(75, Math.max(0, Number(loanInputsMap.dp_pct.value) || 0));
+              loanSlidersMap.dp.value = String(v);
+              if (loanDisplaysMap.dp) loanDisplaysMap.dp.textContent = `${v}%`;
+            }
+            if (loanInputsMap.rate_pct && loanSlidersMap.rate) {
+              const v = Math.min(15, Math.max(0, Number(loanInputsMap.rate_pct.value) || 0));
+              loanSlidersMap.rate.value = String(v);
+              if (loanDisplaysMap.rate) loanDisplaysMap.rate.textContent = `${v.toFixed(2)}%`;
+            }
+            if (loanInputsMap.term_years && loanSlidersMap.term) {
+              const v = Math.round(Math.min(40, Math.max(5, Number(loanInputsMap.term_years.value) || 30)));
+              loanSlidersMap.term.value = String(v);
+              if (loanDisplaysMap.term) loanDisplaysMap.term.textContent = `${v}y`;
+            }
+          }
         };
 
         const inputs = {
@@ -2019,6 +2665,45 @@
           totalsBreakdown: $("totalsBreakdown"),
           schedulePreview: $("schedulePreview"),
           scheduleNote: $("scheduleNote"),
+          // Year 1 Summary card (slide 1)
+          year1_income_value: $("year1_income_value"),
+          year1_cashflow_value: $("year1_cashflow_value"),
+          // Outputs slide KPIs and table
+          kpi_cashflow_annual: $("kpi_cashflow_annual"),
+          kpi_cashflow_monthly: $("kpi_cashflow_monthly"),
+          kpi_income_annual: $("kpi_income_annual"),
+          kpi_income_monthly: $("kpi_income_monthly"),
+          y1_income_monthly: $("y1_income_monthly"),
+          y1_income_annual: $("y1_income_annual"),
+          y1_mortgage_monthly: $("y1_mortgage_monthly"),
+          y1_mortgage_annual: $("y1_mortgage_annual"),
+          y1_vacancy_monthly: $("y1_vacancy_monthly"),
+          y1_vacancy_annual: $("y1_vacancy_annual"),
+          y1_tax_monthly: $("y1_tax_monthly"),
+          y1_tax_annual: $("y1_tax_annual"),
+          y1_insurance_monthly: $("y1_insurance_monthly"),
+          y1_insurance_annual: $("y1_insurance_annual"),
+          y1_maintenance_monthly: $("y1_maintenance_monthly"),
+          y1_maintenance_annual: $("y1_maintenance_annual"),
+          y1_other_monthly: $("y1_other_monthly"),
+          y1_other_annual: $("y1_other_annual"),
+          y1_cashflow_monthly: $("y1_cashflow_monthly"),
+          y1_cashflow_annual: $("y1_cashflow_annual"),
+          y1_noi_monthly: $("y1_noi_monthly"),
+          y1_noi_annual: $("y1_noi_annual"),
+          // Investment summary outputs
+          out_irr: $("out_irr"),
+          out_total_profit: $("out_total_profit"),
+          out_coc: $("out_coc"),
+          out_cap_rate: $("out_cap_rate"),
+          out_total_rent: $("out_total_rent"),
+          out_total_mortgage: $("out_total_mortgage"),
+          out_total_expenses: $("out_total_expenses"),
+          out_total_noi: $("out_total_noi"),
+          overTimeTableBody: (document.querySelector('#overTimeTable tbody')),
+          // Donut
+          expenseDonut: $("expenseDonut"),
+          expenseLegend: $("expenseLegend"),
         };
         const monthlyPaymentCard = $("monthlyPaymentCard");
         const carousel = {
@@ -2029,6 +2714,23 @@
           index: 0,
         };
         const fieldMessages = Array.from(document.querySelectorAll(".field-message"));
+
+        // CTA: Jump to the second slide (breakdown with chart)
+        const seeAdvanced = document.getElementById('seeAdvanced');
+        if (seeAdvanced) {
+          seeAdvanced.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Force navigation to the SECOND slide (index 1)
+            const targetIndex = Math.min(1, carousel.slides.length - 1);
+            carousel.index = targetIndex;
+            updateCarousel();
+            // Snap viewport to the top of the carousel region
+            const root = document.querySelector('.result-carousel');
+            setTimeout(() => {
+              root?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 20);
+          });
+        }
 
         const clearFieldErrors = () => {
           fieldMessages.forEach((span) => {
@@ -2082,71 +2784,80 @@
         };
 
         const validateInputs = () => {
-          clearFieldErrors();
-          const issues = [];
+          try {
+            clearFieldErrors();
+            const issues = [];
 
-          const homeValue = toNumber(inputs.home_value.value);
-          if (homeValue <= 0) {
-            setFieldError("home_value", "Enter a home value above 0");
-            issues.push("home_value");
+            const hv = toNumber(document.getElementById('purchase_price')?.value ?? inputs.home_value?.value ?? 0);
+            if (hv <= 0) {
+              const field = document.getElementById('purchase_price') ? 'purchase_price' : 'home_value';
+              setFieldError(field, "Enter a purchase price above 0");
+              issues.push(field);
+            }
+
+            const dpVal = toNumber(inputs.down_payment_value?.value ?? 0);
+            if (dpVal < 0) {
+              setFieldError("down_payment_value", "Cannot be negative");
+              issues.push("down_payment_value");
+            } else if (hv > 0 && dpVal > hv) {
+              setFieldError("down_payment_value", "Cannot exceed purchase price");
+              issues.push("down_payment_value");
+            }
+
+            const rateApr = toNumber(document.getElementById('interest_rate_pct')?.value ?? inputs.rate_apr?.value ?? 0);
+            if (rateApr < 0) {
+              const field = document.getElementById('interest_rate_pct') ? 'interest_rate_pct' : 'rate_apr';
+              setFieldError(field, "Rate cannot be negative");
+              issues.push(field);
+            }
+
+            const termYears = toNumber(document.getElementById('loan_term_years')?.value ?? inputs.term_years?.value ?? 30);
+            if (termYears < 1) {
+              const field = document.getElementById('loan_term_years') ? 'loan_term_years' : 'term_years';
+              setFieldError(field, "Must be at least 1 year");
+              issues.push(field);
+            }
+
+            const startMonth = toNumber(inputs.start_month?.value ?? 1);
+            if (startMonth && (startMonth < 1 || startMonth > 12)) {
+              setFieldError("start_month", "Use a month between 1 and 12");
+              issues.push("start_month");
+            }
+
+            const startYear = toNumber(inputs.start_year?.value ?? new Date().getFullYear());
+            if (startYear && startYear < 1900) {
+              setFieldError("start_year", "Year looks too early");
+              issues.push("start_year");
+            }
+
+            if (issues.length) {
+              emitTelemetry("validation_error", { fields: issues });
+              // Do not block calculations; return true so app remains usable
+              return true;
+            }
+            return true;
+          } catch (err) {
+            // Never block rendering due to missing legacy inputs
+            console.debug('validateInputs fallback', err);
+            return true;
           }
-
-          const downPaymentValue = toNumber(inputs.down_payment_value.value);
-          if (downPaymentValue < 0) {
-            setFieldError("down_payment_value", "Cannot be negative");
-            issues.push("down_payment_value");
-          } else if (homeValue > 0 && downPaymentValue > homeValue) {
-            setFieldError("down_payment_value", "Cannot exceed home value");
-            issues.push("down_payment_value");
-          }
-
-          const rateApr = toNumber(inputs.rate_apr.value);
-          if (rateApr < 0) {
-            setFieldError("rate_apr", "Rate cannot be negative");
-            issues.push("rate_apr");
-          }
-
-          const termYears = toNumber(inputs.term_years.value);
-          if (termYears < 1) {
-            setFieldError("term_years", "Must be at least 1 year");
-            issues.push("term_years");
-          }
-
-          const startMonth = toNumber(inputs.start_month.value);
-          if (startMonth && (startMonth < 1 || startMonth > 12)) {
-            setFieldError("start_month", "Use a month between 1 and 12");
-            issues.push("start_month");
-          }
-
-          const startYear = toNumber(inputs.start_year.value);
-          if (startYear && startYear < 1900) {
-            setFieldError("start_year", "Year looks too early");
-            issues.push("start_year");
-          }
-
-          if (issues.length) {
-            emitTelemetry("validation_error", { fields: issues });
-            return false;
-          }
-
-          return true;
         };
 
         const updateSliderPositions = () => {
-          const hv = toNumber(inputs.home_value.value);
+          const hv = toNumber(document.getElementById('purchase_price')?.value ?? inputs.home_value?.value ?? 0);
           if (sliders.down_payment) {
-            const dpValue = toNumber(inputs.down_payment_value.value);
+            const dpValue = toNumber(inputs.down_payment_value?.value ?? 0);
             const percent = hv > 0 ? Math.round((dpValue / hv) * 100) : 0;
             sliders.down_payment.value = String(Math.min(80, Math.max(0, percent)));
             if (sliderDisplays.down_payment) sliderDisplays.down_payment.textContent = `${sliders.down_payment.value}%`;
           }
           if (sliders.rate) {
-            const rawRate = toNumber(inputs.rate_apr.value);
+            const rawRate = toNumber(document.getElementById('interest_rate_pct')?.value ?? inputs.rate_apr?.value ?? 0);
             sliders.rate.value = String(Math.min(12, Math.max(0, rawRate)));
             if (sliderDisplays.rate) sliderDisplays.rate.textContent = `${Number(sliders.rate.value).toFixed(2)}%`;
           }
           if (sliders.term) {
-            const term = Math.round(toNumber(inputs.term_years.value) || 30);
+            const term = Math.round(toNumber(document.getElementById('loan_term_years')?.value ?? inputs.term_years?.value ?? 30));
             sliders.term.value = String(Math.min(40, Math.max(5, term)));
             if (sliderDisplays.term) sliderDisplays.term.textContent = `${sliders.term.value}y`;
           }
@@ -2155,6 +2866,7 @@
         const setDefaults = (preset = baseDefaults) => {
           Object.entries(preset).forEach(([key, value]) => {
             if (!(key in inputs)) return;
+            if (!inputs[key]) return;
             if (inputs[key].type === "checkbox") {
               inputs[key].checked = Boolean(value);
             } else {
@@ -2183,31 +2895,80 @@
           normalizePercentInputs();
         };
 
-        const readParams = () => ({
-          loan_type: inputs.loan_type.value,
-          home_value: toNumber(inputs.home_value.value),
-          down_payment_value: toNumber(inputs.down_payment_value.value),
-          down_payment_pct: 0,
-          rate_apr: toNumber(inputs.rate_apr.value) / 100,
-          term_years: toNumber(inputs.term_years.value),
-          start_month: toNumber(inputs.start_month.value),
-          start_year: toNumber(inputs.start_year.value),
-          property_tax_input: toNumber(inputs.property_tax_input.value),
-          homeowners_insurance_yearly: toNumber(inputs.homeowners_insurance_yearly.value),
-          hoa_monthly: toNumber(inputs.hoa_monthly.value),
-          upfront_fee_pct: toNumber(inputs.upfront_fee_pct.value) / 100,
-          annual_mi_pct: toNumber(inputs.annual_mi_pct.value) / 100,
-          finance_upfront_fee: Boolean(inputs.finance_upfront_fee.checked),
-          extra_principal_monthly: toNumber(inputs.extra_principal_monthly.value),
-          extra_start_month_index: toNumber(inputs.extra_start_month_index.value),
-          pmi_pct: toNumber(inputs.pmi_pct.value) / 100,
-        });
+        const readParams = () => {
+          // Prefer new Purchase Details values if present
+          const purchasePriceEl = document.getElementById('purchase_price');
+          const dpPctEl = document.getElementById('down_payment_pct');
+          const ratePctEl = document.getElementById('interest_rate_pct');
+          const termYearsEl = document.getElementById('loan_term_years');
+          const useLoanYes = document.getElementById('use_loan_yes');
+
+          const hv = toNumber(purchasePriceEl?.value ?? inputs.home_value.value);
+          const dpPct = toNumber(dpPctEl?.value ?? 0);
+          const dpValueNew = Math.round(hv * (dpPct / 100));
+          const rateAprNew = toNumber(ratePctEl?.value ?? 0) / 100;
+          const termYearsNew = toNumber(termYearsEl?.value ?? inputs.term_years.value);
+
+          const usingLoan = !!(useLoanYes && useLoanYes.checked);
+          let downPaymentValue;
+          if (usingLoan) {
+            // If percentage input is present, honor it even when it's exactly 0%
+            if (dpPctEl) {
+              const v = Number.isFinite(dpValueNew) ? dpValueNew : 0;
+              downPaymentValue = Math.max(0, Math.min(hv, v));
+            } else {
+              downPaymentValue = Math.max(0, Math.min(hv, toNumber(inputs.down_payment_value.value)));
+            }
+          } else {
+            // No loan: DP equals purchase price so nothing is financed
+            downPaymentValue = hv;
+          }
+
+          return {
+            loan_type: inputs.loan_type.value,
+            home_value: hv > 0 ? hv : toNumber(inputs.home_value.value),
+            down_payment_value: downPaymentValue,
+            down_payment_pct: hv > 0 ? (downPaymentValue / hv) : 0,
+            rate_apr: Number.isFinite(rateAprNew) && rateAprNew > 0 ? rateAprNew : toNumber(inputs.rate_apr.value) / 100,
+            term_years: Number.isFinite(termYearsNew) && termYearsNew > 0 ? termYearsNew : toNumber(inputs.term_years.value),
+            start_month: toNumber(inputs.start_month.value),
+            start_year: toNumber(inputs.start_year.value),
+            property_tax_input: toNumber(inputs.property_tax_input.value),
+            homeowners_insurance_yearly: toNumber(inputs.homeowners_insurance_yearly.value),
+            hoa_monthly: toNumber(inputs.hoa_monthly.value),
+            upfront_fee_pct: toNumber(inputs.upfront_fee_pct.value) / 100,
+            annual_mi_pct: toNumber(inputs.annual_mi_pct.value) / 100,
+            finance_upfront_fee: Boolean(inputs.finance_upfront_fee.checked),
+            extra_principal_monthly: toNumber(inputs.extra_principal_monthly.value),
+            extra_start_month_index: toNumber(inputs.extra_start_month_index.value),
+            pmi_pct: toNumber(inputs.pmi_pct.value) / 100,
+          };
+        };
+
+        const readRentalInputs = () => {
+          const rent = toNumber((document.getElementById('monthly_rent')||{}).value);
+          const other = toNumber((document.getElementById('other_monthly_income')||{}).value);
+          const vacPct = toNumber((document.getElementById('vacancy_rate_pct')||{}).value) / 100;
+          const taxAnnual = toNumber((document.getElementById('exp_property_tax_annual')||{}).value);
+          const insAnnual = toNumber((document.getElementById('exp_insurance_annual')||{}).value);
+          const hoaAnnual = toNumber((document.getElementById('exp_hoa_annual')||{}).value);
+          const maintAnnual = toNumber((document.getElementById('exp_maintenance_annual')||{}).value);
+          const otherAnnual = toNumber((document.getElementById('exp_other_annual')||{}).value);
+          const useLoanYes = document.getElementById('use_loan_yes');
+          const usingLoan = !!(useLoanYes && useLoanYes.checked);
+
+          console.log('[DEBUG readRentalInputs]', { rent, other, vacPct, taxAnnual, insAnnual, hoaAnnual, maintAnnual, otherAnnual, usingLoan });
+          return { rent, other, vacPct, taxAnnual, insAnnual, hoaAnnual, maintAnnual, otherAnnual, usingLoan };
+        };
 
         const divideSafe = (numerator, denominator) =>
           denominator === 0 ? 0 : numerator / denominator;
 
         const renderSummary = (calc) => {
+          console.log('[DEBUG] renderSummary START');
           const { inputs: normalized, derived, totals, payoff_date } = calc;
+          console.log('[DEBUG] renderSummary destructured calc');
+          console.log('[DEBUG] About to update legacy outputs...');
           const monthsElapsed = totals.payments_made || 0;
           const yearsElapsed = divideSafe(monthsElapsed, 12);
           const payoffLabel = payoff_date
@@ -2215,27 +2976,24 @@
             : "—";
 
           const monthlyPaymentEl = outputs.total_monthly_0;
-          monthlyPaymentEl.textContent = formatCurrency(derived.total_monthly_0);
+          if (monthlyPaymentEl) monthlyPaymentEl.textContent = formatCurrency(derived.total_monthly_0);
           if (monthlyPaymentCard) {
             monthlyPaymentCard.classList.remove("glow-animate");
             void monthlyPaymentCard.offsetWidth;
             monthlyPaymentCard.classList.add("glow-animate");
           }
-          outputs.p_and_i.textContent = formatCurrency(derived.p_and_i);
-          outputs.total_interest.textContent = formatCurrency(totals.total_interest);
-          outputs.payoff_date.textContent = payoffLabel;
 
-          const totalExtraPrincipal = calc.schedule.reduce((sum, row) => sum + row.extra_principal, 0);
+const totalExtraPrincipal = calc.schedule.reduce((sum, row) => sum + row.extra_principal, 0);
 
-          outputs.interest_hint.textContent = `Totals include ${formatCurrency(
-            totals.total_principal - totalExtraPrincipal
-          )} scheduled principal and ${formatCurrency(totalExtraPrincipal)} extra payments.`;
+if (outputs.interest_hint) outputs.interest_hint.textContent = `Totals include ${formatCurrency(
+  totals.total_principal - totalExtraPrincipal
+)} scheduled principal and ${formatCurrency(totalExtraPrincipal)} extra payments.`;
 
-          outputs.term_hint.textContent = `Original term ${normalized.term_years} yrs — paid off in ${yearsElapsed.toFixed(
-            1
-          )} yrs (${monthsElapsed} months).`;
+if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normalized.term_years} yrs — paid off in ${yearsElapsed.toFixed(
+  1
+)} yrs (${monthsElapsed} months).`;
 
-          outputs.totalsBreakdown.innerHTML = `
+          if (outputs.totalsBreakdown) outputs.totalsBreakdown.innerHTML = `
             <div class="totals-item">
               <span class="label">Tax & insurance</span>
               <span class="value">${formatCurrency(totals.total_tax + totals.total_ins)}</span>
@@ -2271,7 +3029,7 @@
               })
               .join("");
 
-            outputs.schedulePreview.innerHTML = `
+            if (outputs.schedulePreview) outputs.schedulePreview.innerHTML = `
               <table>
                 <thead>
                   <tr>
@@ -2286,10 +3044,283 @@
                 <tbody>${rows}</tbody>
               </table>
             `;
-            outputs.scheduleNote.textContent = `Showing first ${previewRows.length} of ${calc.schedule.length} months.`;
+            if (outputs.scheduleNote) outputs.scheduleNote.textContent = `Showing first ${previewRows.length} of ${calc.schedule.length} months.`;
           } else {
-            outputs.schedulePreview.innerHTML = "";
-            outputs.scheduleNote.textContent = "Enter loan details to view amortization.";
+            if (outputs.schedulePreview) outputs.schedulePreview.innerHTML = "";
+            if (outputs.scheduleNote) outputs.scheduleNote.textContent = "Enter loan details to view amortization.";
+          }
+          // ---------- Rental outputs wiring (Year 1) ----------
+          const r = readRentalInputs();
+          const grossMonthlyIncome = Math.max((r.rent || 0) + (r.other || 0), 0);
+          const vacancyMonthly = Math.max(grossMonthlyIncome * Math.max(r.vacPct || 0, 0), 0);
+          const incomeMonthly = grossMonthlyIncome;
+          const incomeAnnual = incomeMonthly * 12;
+          const taxMonthly = (r.taxAnnual || 0) / 12;
+          const insMonthly = (r.insAnnual || 0) / 12;
+          const hoaMonthly = (r.hoaAnnual || 0) / 12;
+          const maintMonthly = (r.maintAnnual || 0) / 12;
+          const otherMonthly = (r.otherAnnual || 0) / 12;
+          const opExMonthly = taxMonthly + insMonthly + hoaMonthly + maintMonthly + otherMonthly;
+          const noiMonthly = incomeMonthly - vacancyMonthly - opExMonthly;
+          const noiAnnual = noiMonthly * 12;
+          // Compute simple P&I from rental loan inputs to match the reference calculator
+          const hvY1 = toNumber(document.getElementById('purchase_price')?.value || 0);
+          const dpPctY1 = Math.max(0, toNumber(document.getElementById('down_payment_pct')?.value || 0)) / 100;
+          const loanAmtY1 = r.usingLoan ? Math.max(0, hvY1 * (1 - dpPctY1)) : 0;
+          const rateDecY1 = Math.max(0, toNumber(document.getElementById('interest_rate_pct')?.value || 0)) / 100;
+          const termYrsY1 = Math.max(1, Math.round(toNumber(document.getElementById('loan_term_years')?.value || 30)));
+          const mortgageMonthly = r.usingLoan ? monthly_p_and_i(loanAmtY1, rateDecY1, termYrsY1) : 0;
+          const mortgageAnnual = mortgageMonthly * 12;
+          const cashflowAnnual = noiAnnual - mortgageAnnual;
+          const cashflowMonthly = cashflowAnnual / 12;
+
+          console.log('[DEBUG Year 1 Income]', {
+            grossMonthlyIncome,
+            vacancyMonthly,
+            incomeMonthly,
+            incomeAnnual,
+            incomeAfterVacAnnual: (incomeMonthly - vacancyMonthly) * 12,
+            element: outputs.year1_income_value
+          });
+
+          const safeSet = (el, val) => { if (el) el.textContent = val; };
+          // KPIs (Outputs slide)
+          safeSet(outputs.kpi_cashflow_annual, formatCurrencySigned(cashflowAnnual));
+          if (outputs.kpi_cashflow_annual) outputs.kpi_cashflow_annual.classList.toggle('neg', cashflowAnnual < 0);
+          safeSet(outputs.kpi_cashflow_monthly, `${formatCurrencySigned(cashflowMonthly)} /mo`);
+          if (outputs.kpi_cashflow_monthly) outputs.kpi_cashflow_monthly.classList.toggle('neg', cashflowMonthly < 0);
+          safeSet(outputs.kpi_income_annual, formatCurrency(incomeAnnual));
+          safeSet(outputs.kpi_income_monthly, `${formatCurrency(incomeMonthly)} /mo`);
+
+          // Year 1 Summary card
+          const incomeAfterVacAnnual = (incomeMonthly - vacancyMonthly) * 12;
+          safeSet(outputs.year1_income_value, formatCurrency(Math.max(incomeAfterVacAnnual, 0)));
+          safeSet($("year1_income_monthly_sub"), `${formatCurrency(Math.max(incomeMonthly - vacancyMonthly, 0))} /mo`);
+          safeSet(outputs.year1_cashflow_value, formatCurrencySigned(cashflowAnnual));
+          safeSet($("year1_cashflow_monthly_sub"), `${formatCurrencySigned(cashflowMonthly)} /mo`);
+          if (outputs.year1_cashflow_value) outputs.year1_cashflow_value.classList.toggle('neg', cashflowAnnual < 0);
+
+            // Year 1 table values
+          safeSet(outputs.y1_income_monthly, formatCurrency(incomeMonthly));
+          safeSet(outputs.y1_income_annual, formatCurrency(incomeAnnual));
+          safeSet(outputs.y1_mortgage_monthly, formatCurrency(mortgageMonthly));
+          safeSet(outputs.y1_mortgage_annual, formatCurrency(mortgageAnnual));
+          safeSet(outputs.y1_vacancy_monthly, formatCurrency(vacancyMonthly));
+          safeSet(outputs.y1_vacancy_annual, formatCurrency(vacancyMonthly * 12));
+          safeSet(outputs.y1_tax_monthly, formatCurrency(taxMonthly));
+          safeSet(outputs.y1_tax_annual, formatCurrency(r.taxAnnual || 0));
+          safeSet(outputs.y1_insurance_monthly, formatCurrency(insMonthly));
+          safeSet(outputs.y1_insurance_annual, formatCurrency(r.insAnnual || 0));
+          safeSet(outputs.y1_maintenance_monthly, formatCurrency(maintMonthly));
+          safeSet(outputs.y1_maintenance_annual, formatCurrency(r.maintAnnual || 0));
+          safeSet(outputs.y1_other_monthly, formatCurrency(otherMonthly));
+          safeSet(outputs.y1_other_annual, formatCurrency(r.otherAnnual || 0));
+          safeSet(outputs.y1_cashflow_monthly, formatCurrencySigned(cashflowMonthly));
+          safeSet(outputs.y1_cashflow_annual, formatCurrencySigned(cashflowAnnual));
+          safeSet(outputs.y1_noi_monthly, formatCurrencySigned(noiMonthly));
+          safeSet(outputs.y1_noi_annual, formatCurrencySigned(noiAnnual));
+        };
+
+        // ---------- Investment summary & Over Time ----------
+        const readSellInputs = () => {
+          const modePriceEl = document.getElementById('price_mode_price');
+          // Fallback to legacy radios if new toggle not present
+          const legacyKnowYes = document.getElementById('know_sell_price_yes');
+          const knowSell = modePriceEl ? !!modePriceEl.checked : !!(legacyKnowYes && legacyKnowYes.checked);
+          return {
+            knowSell,
+            sellPrice: toNumber(document.getElementById('sell_price')?.value || 0),
+            holdYears: Math.max(0, Math.round(toNumber(document.getElementById('holding_length_years')?.value || 0))),
+            costToSellPct: Math.max(0, toNumber(document.getElementById('cost_to_sell_pct')?.value || 0)) / 100,
+            appPct: Math.max(0, toNumber(document.getElementById('value_appreciation_pct')?.value || 0)) / 100,
+          };
+        };
+
+        const readIncreaseInputs = () => {
+          const num = (id) => toNumber(document.getElementById(id)?.value || 0) / 100;
+          return {
+            rentInc: num('monthly_rent_increase_pct'),
+            otherInc: num('other_monthly_income_increase_pct'),
+            taxInc: num('exp_property_tax_increase_pct'),
+            insInc: num('exp_insurance_increase_pct'),
+            hoaInc: num('exp_hoa_increase_pct'),
+            maintInc: num('exp_maintenance_increase_pct'),
+            otherExpInc: num('exp_other_increase_pct'),
+          };
+        };
+
+        const computeIRR = (cashflows) => {
+          let low = -0.9999, high = 10.0;
+          const npv = (r) => cashflows.reduce((acc, cf, t) => acc + cf / Math.pow(1 + r, t), 0);
+          let fLow = npv(low), fHigh = npv(high);
+          if (fLow * fHigh > 0) return null;
+          for (let i = 0; i < 80; i++) {
+            const mid = (low + high) / 2;
+            const fMid = npv(mid);
+            if (Math.abs(fMid) < 1e-6) return mid * 100;
+            if (fLow * fMid <= 0) { high = mid; fHigh = fMid; } else { low = mid; fLow = fMid; }
+          }
+          return ((low + high) / 2) * 100;
+        };
+
+        const computeProForma = (calc) => {
+          const r = readRentalInputs();
+          const inc = readIncreaseInputs();
+          const sell = readSellInputs();
+          const hv = toNumber(document.getElementById('purchase_price')?.value || 0);
+          const closing = toNumber(document.getElementById('closing_cost')?.value || 0);
+          const repairs = toNumber(document.getElementById('repair_cost')?.value || 0);
+
+          const basePrice = hv;
+          const months = calc.schedule.length;
+          const holdYears = Math.max(1, sell.holdYears || 20);
+          const holdMonths = Math.min(months, holdYears * 12);
+
+          const p_and_i = calc.derived.p_and_i || 0;
+          const miByMonth = (idx) => (calc.schedule[idx]?.mi || 0);
+
+          const initialDown = clampNonNegative(calc.inputs.down_payment_value || 0);
+          const upfrontCash = clampNonNegative(calc.derived.cash_at_close_upfront_fee || 0);
+          const initialCash = (r.usingLoan ? initialDown : basePrice) + closing + repairs + upfrontCash;
+
+          const perYear = [];
+          let totalRent = 0, totalMort = 0, totalExp = 0, totalNOI = 0, totalCF = 0;
+
+          for (let y = 1; y <= holdYears; y++) {
+            const rentM = (r.rent || 0) * Math.pow(1 + (inc.rentInc || 0), y - 1);
+            // Reference calc treats rental income as rent-only; exclude Other Monthly Income from totals
+            const incomeAnnual = rentM * 12;
+            // Vacancy applied to rent only
+            const vacancyAnnual = incomeAnnual * (r.vacPct || 0);
+
+            const taxA = (r.taxAnnual || 0) * Math.pow(1 + (inc.taxInc || 0), y - 1);
+            const insA = (r.insAnnual || 0) * Math.pow(1 + (inc.insInc || 0), y - 1);
+            const hoaA = (r.hoaAnnual || 0) * Math.pow(1 + (inc.hoaInc || 0), y - 1);
+            const maintA = (r.maintAnnual || 0) * Math.pow(1 + (inc.maintInc || 0), y - 1);
+            const otherA = (r.otherAnnual || 0) * Math.pow(1 + (inc.otherExpInc || 0), y - 1);
+            const opExA = taxA + insA + hoaA + maintA + otherA;
+
+            const startIdx = (y - 1) * 12;
+            const endIdx = Math.min(y * 12, months);
+            let mortA = 0;
+            let miA = 0;
+            // Totals use P&I only (exclude MI), but cash flow/IRR subtracts MI separately
+            for (let i = startIdx; i < endIdx; i++) {
+              mortA += p_and_i;
+              miA += miByMonth(i);
+            }
+
+            const noiA = incomeAnnual - vacancyAnnual - opExA;
+            const cfA = noiA - mortA - miA;
+
+            const idxEnd = Math.min(endIdx, months) - 1;
+            const remaining = idxEnd >= 0 ? (calc.schedule[idxEnd]?.closing_balance || 0) : (calc.derived.principal_0 || 0);
+            const propertyValue = basePrice * Math.pow(1 + (sell.appPct || 0), y);
+            const equity = propertyValue - remaining;
+            const cashIfSold = propertyValue * (1 - (sell.costToSellPct || 0)) - remaining;
+
+            perYear.push({ y, incomeAnnual, mortA, opExA, cfA, equity, cashIfSold });
+
+            totalRent += incomeAnnual;
+            totalMort += mortA;
+            totalExp += opExA;
+            totalNOI += noiA;
+            totalCF += cfA;
+          }
+
+          const endValue = sell.knowSell && sell.sellPrice > 0 ? sell.sellPrice : basePrice * Math.pow(1 + (sell.appPct || 0), holdYears);
+          const sellCosts = endValue * (sell.costToSellPct || 0);
+          const remainIdx = Math.min(holdMonths, months) - 1;
+          const remainingEnd = remainIdx >= 0 ? (calc.schedule[remainIdx]?.closing_balance || 0) : 0;
+          const equityFromSale = (endValue - sellCosts) - remainingEnd;
+
+          const flows = [-initialCash];
+          for (let i = 0; i < holdYears - 1; i++) flows.push(perYear[i]?.cfA || 0);
+          const finalCF = (perYear[holdYears - 1]?.cfA || 0) + equityFromSale;
+          flows.push(finalCF);
+          const irrPct = computeIRR(flows);
+
+          const capRate = basePrice > 0 ? ((perYear[0]?.cfA || 0) + (perYear[0]?.mortA || 0)) / basePrice * 100 : null; // NOI/PurchasePrice
+          // Reference-style metrics:
+          // - Total Profit When Sold = cumulative cash flow + net sale proceeds - initial cash invested
+          // - Cash-on-Cash Return (%) [display] = Cumulative Net Cash Flow / initial cash (exclude sale proceeds)
+          const profitWhenSold = (totalCF + equityFromSale) - initialCash;
+          const cocExcludingSale = initialCash > 0 ? (totalCF / initialCash) * 100 : null;
+          const cocIncludingSale = initialCash > 0 ? (profitWhenSold / initialCash) * 100 : null;
+
+          // Expose both for potential toggling; use cocExcludingSale for display to match your reference
+          return { perYear, totals: { totalRent, totalMort, totalExp, totalNOI, totalCF, equityFromSale, irrPct, capRate, coc: cocExcludingSale, coc_incl_sale: cocIncludingSale, initialCash, profitWhenSold } };
+        };
+
+        const renderInvestmentSummary = (calc) => {
+          const pf = computeProForma(calc);
+          const t = pf.totals;
+          const safeSet = (el, v) => { if (el) el.textContent = v; };
+          safeSet(outputs.out_total_rent, formatCurrency(t.totalRent));
+          safeSet(outputs.out_total_mortgage, formatCurrency(t.totalMort));
+          safeSet(outputs.out_total_expenses, formatCurrency(t.totalExp));
+          safeSet(outputs.out_total_noi, formatCurrency(t.totalNOI));
+          safeSet(outputs.out_total_profit, formatCurrencySigned(t.profitWhenSold));
+          safeSet(outputs.out_cap_rate, t.capRate == null ? '—' : formatPercent(t.capRate));
+          // Display CoC including sale proceeds to align with your reference (~2000%)
+          safeSet(outputs.out_coc, t.coc_incl_sale == null ? '—' : formatPercent(t.coc_incl_sale));
+          safeSet(outputs.out_irr, t.irrPct == null ? '—' : formatPercent(t.irrPct));
+          return pf;
+        };
+
+        const renderOverTimeTable = (pf) => {
+          const tbody = outputs.overTimeTableBody;
+          if (!tbody) return;
+          const rows = pf.perYear.map((r) => `
+            <tr>
+              <td>${r.y}</td>
+              <td>${formatCurrency(r.incomeAnnual)}</td>
+              <td>${formatCurrency(r.mortA)}</td>
+              <td>${formatCurrency(r.opExA)}</td>
+              <td>${formatCurrencySigned(r.cfA)}</td>
+              <td>${r.y === pf.perYear.length && pf.totals.coc_incl_sale != null ? formatPercent(pf.totals.coc_incl_sale) : '—'}</td>
+              <td>${formatCurrency(r.equity)}</td>
+              <td>${formatCurrency(r.cashIfSold)}</td>
+              <td>${r.y === pf.perYear.length && pf.totals.irrPct != null ? formatPercent(pf.totals.irrPct) : '—'}</td>
+            </tr>
+          `).join('');
+          tbody.innerHTML = rows;
+        };
+
+        const renderExpenseDonut = (calc) => {
+          const r = readRentalInputs();
+          const tax = (r.taxAnnual || 0);
+          const ins = (r.insAnnual || 0);
+          const hoa = (r.hoaAnnual || 0);
+          const maint = (r.maintAnnual || 0);
+          const other = (r.otherAnnual || 0);
+          const vacancy = ((r.rent || 0) + (r.other || 0)) * 12 * (r.vacPct || 0);
+          const data = [tax, ins, hoa, maint, other, vacancy];
+          const labels = ['Tax', 'Insurance', 'HOA', 'Maintenance', 'Other', 'Vacancy'];
+          // Solid colors for clearer legend mapping
+          const colors = ['#60a5fa', '#34d399', '#fbbf24', '#f472b6', '#a78bfa', '#94a3b8'];
+          const canvas = outputs.expenseDonut;
+          if (!canvas) return;
+          // Match the chart's visual size to the height of the Year‑1 table
+          const tableEl = document.getElementById('y1_income_monthly')?.closest('table');
+          const tableH = tableEl ? tableEl.getBoundingClientRect().height : null;
+          fitCanvasToParent(canvas, tableH);
+          const ctx = canvas.getContext('2d');
+          const draw = (hi = -1) => drawDonutChart(ctx, data, colors, hi);
+          draw();
+          const total = data.reduce((s, v) => s + v, 0) || 1;
+          const legend = outputs.expenseLegend;
+          if (legend) {
+            legend.innerHTML = labels.map((l, i) => {
+              const pct = (data[i] / total) * 100;
+              return `<div class="legend-item" data-index="${i}"><span class="swatch" style="background:${colors[i]}"></span><span class="name">${l}</span> <span class="pct">${pct.toFixed(0)}%</span></div>`;
+            }).join('');
+            // Hover highlight from legend
+            Array.from(legend.querySelectorAll('.legend-item')).forEach((el) => {
+              const idx = Number(el.getAttribute('data-index'));
+              el.addEventListener('mouseenter', () => draw(idx));
+              el.addEventListener('mouseleave', () => draw(-1));
+            });
           }
         };
 
@@ -2310,45 +3341,67 @@
           canvas: $("breakdownChart"),
         };
 
-        const fitCanvasToParent = (canvas) => {
-          const rect = canvas.getBoundingClientRect();
+        const fitCanvasToParent = (canvas, matchHeightPx = null) => {
+          const parent = canvas.parentElement || canvas;
+          const parentRect = parent.getBoundingClientRect();
           const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-          const size = Math.max(140, Math.round(rect.width * dpr));
-          if (canvas.width !== size || canvas.height !== size) {
-            canvas.width = size;
-            canvas.height = size;
+          // CSS pixel size we want the canvas to render at (square)
+          const cssSize = Math.max(
+            140,
+            Math.round(
+              matchHeightPx != null && matchHeightPx > 0
+                ? matchHeightPx
+                : parentRect.width
+            )
+          );
+          // Backing store size in device pixels for sharpness
+          const backingSize = Math.round(cssSize * dpr);
+          canvas.style.width = `${cssSize}px`;
+          canvas.style.height = `${cssSize}px`;
+          if (canvas.width !== backingSize || canvas.height !== backingSize) {
+            canvas.width = backingSize;
+            canvas.height = backingSize;
           }
         };
 
-        const drawDonutChart = (ctx, data, colors) => {
+        const drawDonutChart = (ctx, data, colors, highlightIndex = -1) => {
           const canvas = ctx.canvas;
           const centerX = canvas.width / 2;
           const centerY = canvas.height / 2;
-          const radius = Math.min(canvas.width, canvas.height) * 0.42;
-          const holeRadius = radius * 0.76;
+          const radiusBase = Math.min(canvas.width, canvas.height) * 0.44;
+          const holeBase = radiusBase * 0.7;
 
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           const total = data.reduce((sum, val) => sum + val, 0);
           if (total === 0) return;
 
-          let currentAngle = -Math.PI / 2;
+          const nonZero = data.map((v, i) => ({ v, i })).filter(x => x.v > 0);
+          const gap = 0.02; // radians gap between slices for readability
+          const full = Math.PI * 2;
+          const totalGap = Math.max(0, (nonZero.length) * gap);
+          const scale = full - totalGap;
 
+          let angle = -Math.PI / 2;
           data.forEach((value, index) => {
-            const sliceAngle = (value / total) * 2 * Math.PI;
-            
+            if (value <= 0) return;
+            const proportion = value / total;
+            const sliceAngle = proportion * scale;
+            const start = angle + gap / 2;
+            const end = angle + sliceAngle - gap / 2;
+
+            const isHi = index === highlightIndex;
+            const radius = isHi ? radiusBase * 1.03 : radiusBase;
+            const holeRadius = isHi ? holeBase * 0.98 : holeBase;
+
             ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
-            ctx.arc(centerX, centerY, holeRadius, currentAngle + sliceAngle, currentAngle, true);
+            ctx.arc(centerX, centerY, radius, start, end);
+            ctx.arc(centerX, centerY, holeRadius, end, start, true);
             ctx.closePath();
-            
-            const gradient = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-            gradient.addColorStop(0, colors[index][0]);
-            gradient.addColorStop(1, colors[index][1]);
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = colors[index % colors.length];
             ctx.fill();
-            
-            currentAngle += sliceAngle;
+
+            angle += sliceAngle;
           });
         };
 
@@ -2441,13 +3494,35 @@
         };
 
         const calculateAndRender = () => {
-          if (!validateInputs()) {
+          console.log('[DEBUG] calculateAndRender called');
+          const validationResult = validateInputs();
+          console.log('[DEBUG] validateInputs result:', validationResult);
+          if (!validationResult) {
+            console.log('[DEBUG] Validation failed, exiting calculateAndRender');
             return;
           }
+          console.log('[DEBUG] Reading params...');
           const params = readParams();
+          console.log('[DEBUG] Params:', params);
+          console.log('[DEBUG] Calling calculate_mortgage...');
           const calc = mortgageCalculator.calculate_mortgage(params);
-          renderSummary(calc);
-          renderBreakdown(calc);
+          console.log('[DEBUG] Calc result:', calc);
+          console.log('[DEBUG] Calling renderSummary...');
+          try {
+            renderSummary(calc);
+            console.log('[DEBUG] renderSummary completed successfully');
+          } catch (err) {
+            console.error('[DEBUG] ERROR in renderSummary:', err);
+            console.error('[DEBUG] Stack:', err.stack);
+          }
+          // New outputs: investment summary, over-time table, expense donut
+          const pf = renderInvestmentSummary(calc);
+          renderOverTimeTable(pf);
+          renderExpenseDonut(calc);
+          // Keep legacy hook if present
+          if (typeof renderBreakdown === 'function') {
+            try { renderBreakdown(calc); } catch (_) {}
+          }
           updateCarousel();
           updateSliderPositions();
         };
@@ -2541,9 +3616,21 @@
         const resetButton = $("resetBtn");
         if (resetButton) {
           resetButton.addEventListener("click", () => {
+            clearUserInputsState();
             setDefaults(baseDefaults);
             mergeProgramDefaults();
+            setRentalDefaultsIfEmpty(true);
+            // Reset price/appreciation toggle to default (Appreciation)
+            const pmPrice = document.getElementById('price_mode_price');
+            const pmApp = document.getElementById('price_mode_appreciation');
+            if (pmPrice && pmApp) { pmPrice.checked = false; pmApp.checked = true; }
+            toggleLoanFields();
+            toggleRepairFields();
+            toggleSellFields();
+            updatePriceAppHeader?.();
+            adjustPurchaseDetailsSpacing?.();
             calculateAndRender();
+            saveUserInputsState();
           });
         }
 
@@ -2652,7 +3739,151 @@
           calculateAndRender();
         });
 
+        // ---------- Persisted user inputs (72h) via Apps SDK widgetState with localStorage fallback ----------
+        const PERSIST_KEY = "rpc_user_inputs_state_v1";
+        const PERSIST_TTL_MS = 72 * 60 * 60 * 1000;
+
+        const PERSIST_INPUT_IDS = [
+          // Income
+          'monthly_rent','other_monthly_income','vacancy_rate_pct',
+          'monthly_rent_increase_pct','other_monthly_income_increase_pct',
+          // Operating expenses
+          'exp_property_tax_annual','exp_insurance_annual','exp_hoa_annual','exp_maintenance_annual','exp_other_annual',
+          'exp_property_tax_increase_pct','exp_insurance_increase_pct','exp_hoa_increase_pct','exp_maintenance_increase_pct','exp_other_increase_pct',
+          // Purchase details / loan
+          'purchase_price','closing_cost','down_payment_pct','interest_rate_pct','loan_term_years',
+          // Repairs
+          'repair_cost','after_repair_value',
+          // Sell / exit
+          'sell_price','holding_length_years','cost_to_sell_pct','value_appreciation_pct'
+        ];
+
+        const readToggleValue = (yesId, noId) => {
+          const yes = document.getElementById(yesId);
+          const no = document.getElementById(noId);
+          return !!(yes && yes.checked);
+        };
+
+        const getInputsState = () => {
+          const inputsObj = {};
+          PERSIST_INPUT_IDS.forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            inputsObj[id] = String(el.value ?? "");
+          });
+          const state = {
+            savedAt: Date.now(),
+            inputs: inputsObj,
+            toggles: {
+              use_loan: readToggleValue('use_loan_yes','use_loan_no'),
+              need_repairs: readToggleValue('need_repairs_yes','need_repairs_no'),
+              price_mode: (document.getElementById('price_mode_price')?.checked ? 'price' : 'appreciation')
+            }
+          };
+          return state;
+        };
+
+        const saveUserInputsState = () => {
+          try {
+            const state = getInputsState();
+            // Apps SDK widgetState
+            const base = (window?.openai?.widgetState) ? { ...window.openai.widgetState } : {};
+            if (window?.openai?.setWidgetState) {
+              window.openai.setWidgetState({ ...base, rentalInputsState: state });
+            }
+            // Fallback localStorage
+            try { localStorage.setItem(PERSIST_KEY, JSON.stringify(state)); } catch(_) {}
+          } catch(_) { /* no-op */ }
+        };
+
+        const loadUserInputsState = () => {
+          let state = null;
+          try { state = window?.openai?.widgetState?.rentalInputsState || null; } catch(_) { state = null; }
+          if (!state) {
+            try { state = JSON.parse(localStorage.getItem(PERSIST_KEY) || 'null'); } catch(_) { state = null; }
+          }
+          if (!state || !state.savedAt || (Date.now() - state.savedAt) > PERSIST_TTL_MS) return null;
+          return state;
+        };
+
+        const hydrateInputsFromState = () => {
+          const state = loadUserInputsState();
+          if (!state) return false;
+          // Fill inputs
+          Object.entries(state.inputs || {}).forEach(([id, val]) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.value = String(val);
+          });
+          // If user had values for these fields, treat them as edited to avoid overwriting with derived defaults / API
+          if (state.inputs && 'exp_property_tax_annual' in state.inputs) taxEdited = true;
+          if (state.inputs && 'closing_cost' in state.inputs) closingEdited = true;
+          if (state.inputs && 'interest_rate_pct' in state.inputs) rateEdited = true;
+
+          // Radios / toggles
+          try {
+            const setRadio = (yesId, noId, on) => {
+              const yes = document.getElementById(yesId);
+              const no = document.getElementById(noId);
+              if (yes && no) { yes.checked = !!on; no.checked = !on; }
+            };
+            setRadio('use_loan_yes','use_loan_no', !!state.toggles?.use_loan);
+            setRadio('need_repairs_yes','need_repairs_no', !!state.toggles?.need_repairs);
+            const priceOn = (state.toggles?.price_mode === 'price');
+            const pmPrice = document.getElementById('price_mode_price');
+            const pmApp = document.getElementById('price_mode_appreciation');
+            if (pmPrice && pmApp) { pmPrice.checked = priceOn; pmApp.checked = !priceOn; }
+          } catch(_) {}
+          return true;
+        };
+
+        const clearUserInputsState = () => {
+          try {
+            if (window?.openai?.setWidgetState) {
+              const base = (window?.openai?.widgetState) ? { ...window.openai.widgetState } : {};
+              delete base.rentalInputsState;
+              window.openai.setWidgetState(base);
+            }
+          } catch(_) {}
+          try { localStorage.removeItem(PERSIST_KEY); } catch(_) {}
+        };
+
         loadCarouselIndex();
+
+        // Recalculate when rental & sell/exit inputs change (so Year 1 Income isn't stuck at $0)
+        const bindRecalc = (id, evt = 'input') => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener(evt, () => {
+            didUserEdit = true;
+            if (id === 'interest_rate_pct' || id === 'loan_rate_slider') rateEdited = true;
+            if (id === 'exp_property_tax_annual') taxEdited = true;
+            if (id === 'closing_cost') closingEdited = true;
+            calculateAndRender();
+            saveUserInputsState();
+          });
+        };
+        [
+          // Income
+          'monthly_rent','other_monthly_income','vacancy_rate_pct',
+          'monthly_rent_increase_pct','other_monthly_income_increase_pct',
+          // Operating expenses
+          'exp_property_tax_annual','exp_insurance_annual','exp_hoa_annual','exp_maintenance_annual','exp_other_annual',
+          'exp_property_tax_increase_pct','exp_insurance_increase_pct','exp_hoa_increase_pct','exp_maintenance_increase_pct','exp_other_increase_pct',
+          // Purchase details / loan
+          'purchase_price','closing_cost','down_payment_pct','interest_rate_pct','loan_term_years',
+          // Repairs
+          'repair_cost','after_repair_value',
+          // Sell / exit
+          'sell_price','holding_length_years','cost_to_sell_pct','value_appreciation_pct'
+        ].forEach((id) => bindRecalc(id, 'input'));
+        // Radios / toggles
+        ['use_loan_yes','use_loan_no','need_repairs_yes','need_repairs_no','know_sell_price_yes','know_sell_price_no','price_mode_price','price_mode_appreciation']
+          .forEach((id) => bindRecalc(id, 'change'));
+
+        // Explicit listeners for rate slider to set the edited flag immediately
+        const rateSlider = document.getElementById('loan_rate_slider');
+        if (rateSlider) rateSlider.addEventListener('input', () => { didUserEdit = true; rateEdited = true; });
         updateMiVisibility();
         updateCarousel();
         let resizeRaf = 0;
@@ -2804,22 +4035,195 @@
           calculateAndRender();
         });
 
-        
+        // Sliders for Purchase Details: Use Loan fields
+        const loanInputsMap = {
+          dp_pct: document.getElementById('down_payment_pct'),
+          rate_pct: document.getElementById('interest_rate_pct'),
+          term_years: document.getElementById('loan_term_years'),
+        };
+        const loanSlidersMap = {
+          dp: document.getElementById('loan_dp_slider'),
+          rate: document.getElementById('loan_rate_slider'),
+          term: document.getElementById('loan_term_slider'),
+        };
+        const loanDisplaysMap = {
+          dp: document.getElementById('loan_dp_slider_display'),
+          rate: document.getElementById('loan_rate_slider_display'),
+          term: document.getElementById('loan_term_slider_display'),
+        };
 
-        Object.values(inputs).forEach((el) => {
-          const handler = () => {
-            if (percentInputSet.has(el.id)) {
-              normalizePercentInput(el);
-            }
-            calculateAndRender();
-          };
-          el.addEventListener("change", handler);
-          if (el.tagName === "INPUT" && el.type === "number") {
-            el.addEventListener("keyup", (evt) => {
-              if (evt.key === "Enter") handler();
-            });
-          }
+        attachSlider(loanSlidersMap.dp, () => {
+          const v = Math.min(75, Math.max(0, Number(loanSlidersMap.dp.value) || 0));
+          if (loanInputsMap.dp_pct) loanInputsMap.dp_pct.value = String(v);
+          if (loanDisplaysMap.dp) loanDisplaysMap.dp.textContent = `${v}%`;
         });
+
+        attachSlider(loanSlidersMap.rate, () => {
+          const v = Math.min(15, Math.max(0, Number(loanSlidersMap.rate.value) || 0));
+          if (loanInputsMap.rate_pct) loanInputsMap.rate_pct.value = v.toFixed(2);
+          if (loanDisplaysMap.rate) loanDisplaysMap.rate.textContent = `${v.toFixed(2)}%`;
+        });
+
+        attachSlider(loanSlidersMap.term, () => {
+          const v = Math.round(Math.min(40, Math.max(5, Number(loanSlidersMap.term.value) || 30)));
+          if (loanInputsMap.term_years) loanInputsMap.term_years.value = String(v);
+          if (loanDisplaysMap.term) loanDisplaysMap.term.textContent = `${v}y`;
+        });
+
+        // Keep sliders in sync when typing numbers
+        if (loanInputsMap.dp_pct && loanSlidersMap.dp) {
+          loanInputsMap.dp_pct.addEventListener('change', () => {
+            const v = Math.min(75, Math.max(0, Number(loanInputsMap.dp_pct.value) || 0));
+            loanSlidersMap.dp.value = String(v);
+            if (loanDisplaysMap.dp) loanDisplaysMap.dp.textContent = `${v}%`;
+          });
+        }
+        if (loanInputsMap.rate_pct && loanSlidersMap.rate) {
+          loanInputsMap.rate_pct.addEventListener('change', () => {
+            const v = Math.min(15, Math.max(0, Number(loanInputsMap.rate_pct.value) || 0));
+            loanSlidersMap.rate.value = String(v);
+            if (loanDisplaysMap.rate) loanDisplaysMap.rate.textContent = `${v.toFixed(2)}%`;
+          });
+        }
+        if (loanInputsMap.term_years && loanSlidersMap.term) {
+          loanInputsMap.term_years.addEventListener('change', () => {
+            const v = Math.round(Math.min(40, Math.max(5, Number(loanInputsMap.term_years.value) || 30)));
+            loanSlidersMap.term.value = String(v);
+            if (loanDisplaysMap.term) loanDisplaysMap.term.textContent = `${v}y`;
+          });
+        }
+
+        // Initialize slider positions from current input values
+        if (loanSlidersMap.dp && loanInputsMap.dp_pct) {
+          const v = Math.min(75, Math.max(0, Number(loanInputsMap.dp_pct.value) || 0));
+          loanSlidersMap.dp.value = String(v);
+          if (loanDisplaysMap.dp) loanDisplaysMap.dp.textContent = `${v}%`;
+        }
+        if (loanSlidersMap.rate && loanInputsMap.rate_pct) {
+          const v = Math.min(15, Math.max(0, Number(loanInputsMap.rate_pct.value) || 0));
+          loanSlidersMap.rate.value = String(v);
+          if (loanDisplaysMap.rate) loanDisplaysMap.rate.textContent = `${v.toFixed(2)}%`;
+        }
+        if (loanSlidersMap.term && loanInputsMap.term_years) {
+          const v = Math.round(Math.min(40, Math.max(5, Number(loanInputsMap.term_years.value) || 30)));
+          loanSlidersMap.term.value = String(v);
+          if (loanDisplaysMap.term) loanDisplaysMap.term.textContent = `${v}y`;
+        }
+
+        const loanPresetSelect = document.getElementById('loan_preset');
+        const loanPresetChips = Array.from(document.querySelectorAll('.preset-chip'));
+
+        const setLoanPresetActive = (key) => {
+          loanPresetChips.forEach((btn) => btn.classList.toggle('active', btn.getAttribute('data-preset') === key));
+          if (loanPresetSelect && loanPresetSelect.value !== key) loanPresetSelect.value = key || '';
+        };
+
+        const applyLoanPreset = (key) => {
+          const map = {
+            'first-time': { dp: 3, term: 30 },
+            'conventional-20': { dp: 20, term: 30 },
+            'va-zero': { dp: 0, term: 30 },
+          };
+          const cfg = map[key];
+          if (!cfg) return;
+          if (loanInputsMap.dp_pct) loanInputsMap.dp_pct.value = String(cfg.dp);
+          if (loanSlidersMap.dp) loanSlidersMap.dp.value = String(cfg.dp);
+          if (loanDisplaysMap.dp) loanDisplaysMap.dp.textContent = `${cfg.dp}%`;
+          if (loanInputsMap.term_years) loanInputsMap.term_years.value = String(cfg.term);
+          if (loanSlidersMap.term) loanSlidersMap.term.value = String(cfg.term);
+          if (loanDisplaysMap.term) loanDisplaysMap.term.textContent = `${cfg.term}y`;
+        };
+
+        if (loanPresetSelect) {
+          loanPresetSelect.addEventListener('change', (e) => {
+            const key = e.target.value || '';
+            setLoanPresetActive(key);
+            applyLoanPreset(key);
+          });
+        }
+        loanPresetChips.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const key = btn.getAttribute('data-preset') || '';
+            setLoanPresetActive(key);
+            applyLoanPreset(key);
+          });
+        });
+
+        // Rental property: conditional visibility toggles
+        const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+
+        const adjustPurchaseDetailsSpacing = () => {
+          const loanOn = !!(document.getElementById('use_loan_yes') && document.getElementById('use_loan_yes').checked);
+          const repairsOn = !!(document.getElementById('need_repairs_yes') && document.getElementById('need_repairs_yes').checked);
+          const row = document.getElementById('purchase_inputs_row');
+          if (!row) return;
+          const compact = !loanOn && !repairsOn;
+          row.style.marginBottom = compact ? '8px' : '16px';
+        };
+
+        const toggleLoanFields = () => {
+          const yes = document.getElementById('use_loan_yes');
+          const show = !!(yes && yes.checked);
+          // Hide/show individual loan fields
+          qsa('.loan-field').forEach((el) => el.classList.toggle('is-hidden', !show));
+          // Collapse/expand the entire group to remove extra whitespace
+          const group = document.getElementById('loan_field_group');
+          if (group) group.classList.toggle('is-hidden', !show);
+        };
+
+        const toggleRepairFields = () => {
+          const yes = document.getElementById('need_repairs_yes');
+          const show = !!(yes && yes.checked);
+          // Hide/show individual repair fields
+          qsa('.repair-field').forEach((el) => el.classList.toggle('is-hidden', !show));
+          // Collapse/expand the entire group to remove extra whitespace
+          const group = document.getElementById('repairs_field_group');
+          if (group) group.classList.toggle('is-hidden', !show);
+        };
+
+        const updatePriceAppHeader = () => {
+          const header = document.getElementById('price_app_header');
+          if (!header) return;
+          const modePrice = document.getElementById('price_mode_price');
+          if (modePrice && modePrice.checked) {
+            header.textContent = 'Sale Price ($)';
+          } else {
+            header.textContent = 'Value Appreciation (% per year)';
+          }
+        };
+
+        const toggleSellFields = () => {
+          const modePrice = document.getElementById('price_mode_price');
+          let showPrice;
+          if (modePrice) {
+            showPrice = !!modePrice.checked;
+          } else {
+            const knowYes = document.getElementById('know_sell_price_yes');
+            showPrice = !!(knowYes && knowYes.checked);
+          }
+          qsa('.sell-price-field').forEach((el) => el.classList.toggle('is-hidden', !showPrice));
+          qsa('.appreciation-field').forEach((el) => el.classList.toggle('is-hidden', showPrice));
+          updatePriceAppHeader();
+        };
+
+        ['use_loan_yes','use_loan_no','need_repairs_yes','need_repairs_no','know_sell_price_yes','know_sell_price_no','price_mode_price','price_mode_appreciation']
+          .forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('change', () => {
+              if (id.startsWith('use_loan')) toggleLoanFields();
+              else if (id.startsWith('need_repairs')) toggleRepairFields();
+              else toggleSellFields();
+              adjustPurchaseDetailsSpacing();
+            });
+          });
+
+        // Initialize visibility on load
+        toggleLoanFields();
+        toggleRepairFields();
+        toggleSellFields();
+        updatePriceAppHeader();
+        adjustPurchaseDetailsSpacing();
 
         // Breakdown list is read-only; no input listeners needed.
 
@@ -2991,6 +4395,23 @@
           const text = `${val}%`;
           if (numEl.textContent !== text) numEl.textContent = text;
           try { numEl.setAttribute('data-rate', String(val)); } catch (_) {}
+          // Also set default interest rate input if user hasn't edited it
+          try {
+            if (!rateEdited) {
+              const rateInput = document.getElementById('interest_rate_pct');
+              if (rateInput) {
+                const f = Number(val);
+                const fmt = Number.isFinite(f) ? f.toFixed(2) : String(val);
+                rateInput.value = fmt;
+                const slider = document.getElementById('loan_rate_slider');
+                const disp = document.getElementById('loan_rate_slider_display');
+                if (slider && Number.isFinite(f)) slider.value = String(f);
+                if (disp && Number.isFinite(f)) disp.textContent = `${Number(fmt).toFixed(2)}%`;
+                calculateAndRender();
+                saveUserInputsState();
+              }
+            }
+          } catch(_) {}
           requestAnimationFrame(() => {
             if (typeof centerNotifyUnderRate === 'function') centerNotifyUnderRate();
           });
@@ -3060,7 +4481,12 @@
           };
           const setIf = (k, v) => {
             if (v !== undefined && v !== null) {
-              const keysNeedingNum = new Set(['home_value','down_payment_value','rate_apr','term_years','property_tax_input','homeowners_insurance_yearly','hoa_monthly','pmi_pct','annual_mi_pct','upfront_fee_pct','start_month','start_year','extra_principal_monthly','extra_start_month_index']);
+              const keysNeedingNum = new Set([
+                // legacy mortgage
+                'home_value','down_payment_value','rate_apr','term_years','property_tax_input','homeowners_insurance_yearly','hoa_monthly','pmi_pct','annual_mi_pct','upfront_fee_pct','start_month','start_year','extra_principal_monthly','extra_start_month_index',
+                // rental-specific
+                'purchase_price','closing_cost','monthly_rent','other_monthly_income','vacancy_rate_pct','exp_property_tax_annual','exp_insurance_annual','exp_hoa_annual','exp_maintenance_annual','exp_other_annual','down_payment_pct','interest_rate_pct','loan_term_years','monthly_rent_increase_pct','other_monthly_income_increase_pct','exp_property_tax_increase_pct','exp_insurance_increase_pct','exp_hoa_increase_pct','exp_maintenance_increase_pct','exp_other_increase_pct','holding_length_years','cost_to_sell_pct','value_appreciation_pct','sell_price'
+              ]);
               out[k] = keysNeedingNum.has(k) ? parseNumberish(v) : v;
             }
           };
@@ -3082,7 +4508,51 @@
           setIf('start_year', src.start_year);
           setIf('extra_principal_monthly', src.extra_principal_monthly);
           setIf('extra_start_month_index', src.extra_start_month_index);
+          // rental-specific overlays
+          setIf('purchase_price', src.purchase_price);
+          setIf('closing_cost', src.closing_cost);
+          setIf('monthly_rent', src.monthly_rent);
+          setIf('other_monthly_income', src.other_monthly_income);
+          setIf('vacancy_rate_pct', src.vacancy_rate_pct);
+          setIf('exp_property_tax_annual', src.exp_property_tax_annual);
+          setIf('exp_insurance_annual', src.exp_insurance_annual);
+          setIf('exp_hoa_annual', src.exp_hoa_annual);
+          setIf('exp_maintenance_annual', src.exp_maintenance_annual);
+          setIf('exp_other_annual', src.exp_other_annual);
+          setIf('down_payment_pct', src.down_payment_pct);
+          setIf('interest_rate_pct', src.interest_rate_pct);
+          setIf('loan_term_years', src.loan_term_years);
+          setIf('monthly_rent_increase_pct', src.monthly_rent_increase_pct);
+          setIf('other_monthly_income_increase_pct', src.other_monthly_income_increase_pct);
+          setIf('exp_property_tax_increase_pct', src.exp_property_tax_increase_pct);
+          setIf('exp_insurance_increase_pct', src.exp_insurance_increase_pct);
+          setIf('exp_hoa_increase_pct', src.exp_hoa_increase_pct);
+          setIf('exp_maintenance_increase_pct', src.exp_maintenance_increase_pct);
+          setIf('exp_other_increase_pct', src.exp_other_increase_pct);
+          setIf('holding_length_years', src.holding_length_years);
+          setIf('cost_to_sell_pct', src.cost_to_sell_pct);
+          setIf('value_appreciation_pct', src.value_appreciation_pct);
+          setIf('sell_price', src.sell_price);
           return out;
+        };
+        // Apply rental-provided params directly to DOM fields (keeps flow intact)
+        const applyRentalProvided = (params) => {
+          if (!params || typeof params !== 'object') return;
+          const ids = [
+            'purchase_price','closing_cost','monthly_rent','other_monthly_income','vacancy_rate_pct',
+            'exp_property_tax_annual','exp_insurance_annual','exp_hoa_annual','exp_maintenance_annual','exp_other_annual',
+            'down_payment_pct','interest_rate_pct','loan_term_years',
+            'monthly_rent_increase_pct','other_monthly_income_increase_pct','exp_property_tax_increase_pct','exp_insurance_increase_pct','exp_hoa_increase_pct','exp_maintenance_increase_pct','exp_other_increase_pct',
+            'holding_length_years','cost_to_sell_pct','value_appreciation_pct','sell_price'
+          ];
+          ids.forEach((id) => {
+            if (!(id in params)) return;
+            const el = document.getElementById(id);
+            if (!el) return;
+            const v = params[id];
+            if (el.type === 'checkbox') el.checked = Boolean(v);
+            else el.value = String(v);
+          });
         };
         const readProvidedParams = () => {
           const oa = (window && window.openai) ? window.openai : {};
@@ -3112,8 +4582,25 @@
         mergeProgramDefaults();
         if (providedParams && Object.keys(providedParams).length > 0) {
           setDefaults(providedParams);
+          applyRentalProvided(providedParams);
         }
+
+        // Hydrate from saved widget/local state BEFORE applying derived defaults
+        const hadSavedState = !!hydrateInputsFromState();
+
+        // Apply rental defaults only if nothing was previously saved
+        if (!hadSavedState) {
+          setRentalDefaultsIfEmpty(false);
+        }
+
+        // Ensure visibility and computed labels reflect hydrated/defaulted state
+        try { toggleLoanFields(); } catch(_) {}
+        try { toggleRepairFields(); } catch(_) {}
+        try { toggleSellFields(); updatePriceAppHeader?.(); } catch(_) {}
+        try { adjustPurchaseDetailsSpacing?.(); } catch(_) {}
+
         calculateAndRender();
+        saveUserInputsState();
 
         // Late overlay retry in case window.openai is attached slightly after execution
         let retries = 0;
@@ -3124,6 +4611,7 @@
             if (DEBUG_HYDRATION) console.debug('[Hydration] Late overlay with provided params', late);
             if (late.loan_type) { try { inputs.loan_type.value = late.loan_type; mergeProgramDefaults(); } catch(_){} }
             setDefaults(late);
+            applyRentalProvided(late);
             calculateAndRender();
             return true;
           }
@@ -3144,6 +4632,7 @@
             if (DEBUG_HYDRATION) console.debug('[Hydration] Event overlay from set_globals', props);
             if (props.loan_type) { try { inputs.loan_type.value = props.loan_type; mergeProgramDefaults(); } catch(_){} }
             setDefaults(props);
+            applyRentalProvided(props);
             calculateAndRender();
           }
         }, { passive: true });
