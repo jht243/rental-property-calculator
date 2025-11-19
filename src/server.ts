@@ -40,7 +40,7 @@ type MortgageWidget = {
 };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = process.env.ASSETS_ROOT || path.resolve(__dirname, "..", "..");
+const ROOT_DIR = process.env.ASSETS_ROOT || path.resolve(__dirname, "..");
 const ASSETS_DIR = path.resolve(ROOT_DIR, "assets");
 const LOGS_DIR = path.resolve(__dirname, "..", "logs");
 
@@ -364,7 +364,8 @@ function readWidgetHtml(componentName: string): string {
 }
 
 // Use git commit hash for deterministic cache-busting across deploys
-const VERSION = process.env.RENDER_GIT_COMMIT?.slice(0, 7) || Date.now().toString();
+// Added timestamp suffix to force cache invalidation for width fix
+const VERSION = (process.env.RENDER_GIT_COMMIT?.slice(0, 7) || Date.now().toString()) + '-' + Date.now();
 
 function widgetMeta(widget: MortgageWidget, bustCache: boolean = false) {
   const templateUri = bustCache
