@@ -387,7 +387,7 @@
       .metric .label { color: rgba(203, 213, 225, 0.9); font-size: 13px; }
       .metric .value { color: rgba(248, 250, 252, 0.96); font-weight: 600; }
       .kpi-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 12px; }
-      @media (max-width: 780px) { .kpi-main { grid-template-columns: 1fr; } }
+      @media (max-width: 520px) { .kpi-main { grid-template-columns: 1fr; } }
       .kpi-item { text-align: center; padding: 14px 12px; border-radius: 12px; background: linear-gradient(180deg, rgba(14, 165, 233, 0.08), rgba(14, 165, 233, 0.02)); border: 1px solid rgba(56, 189, 248, 0.25); }
       .kpi-item:first-child { background: linear-gradient(180deg, rgba(52, 211, 153, 0.10), rgba(16, 185, 129, 0.035)); border-color: rgba(52, 211, 153, 0.35); }
       .kpi-label { display: block; font-size: 12px; letter-spacing: 0.06em; color: rgba(226, 232, 240, 0.82); margin-bottom: 4px; text-transform: uppercase; }
@@ -406,7 +406,7 @@
       .metrics-table tbody td { text-align: right; color: rgba(248, 250, 252, 0.92); }
       .metrics-table tr.em td { font-weight: 600; color: #fca5a5; }
       .donut-row { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
-      @media (max-width: 860px) { .donut-row { grid-template-columns: 1fr; } }
+      @media (max-width: 520px) { .donut-row { grid-template-columns: 1fr; } }
       /* 2x2 Year 1 grid: KPI x 2 on row 1, table + donut on row 2 */
       .year1-grid {
         display: grid;
@@ -1884,23 +1884,6 @@
                     </div>
                     <span id="total_monthly_0" style="display:none"></span>
                   </div>
-                  <div class="quick-metrics" data-openai-component="quick-metrics">
-                    <div class="result-card secondary">
-                      <span class="label">Principal & interest</span>
-                      <span class="value" id="p_and_i">$0</span>
-                      <span class="hint">Level payment before extra principal or add-ons.</span>
-                    </div>
-                    <div class="result-card secondary">
-                      <span class="label">Total interest over loan</span>
-                      <span class="value" id="total_interest">$0</span>
-                      <span class="hint" id="interest_hint"></span>
-                    </div>
-                    <div class="result-card secondary">
-                      <span class="label">Estimated payoff date</span>
-                      <span class="value" id="payoff_date">—</span>
-                      <span class="hint" id="term_hint"></span>
-                    </div>
-                  </div>
 
                   <a class="cta-pill" id="showBreakdownBtn" href="#">See Advanced Calculations
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -1949,7 +1932,7 @@
                       <table class="metrics-table">
                         <thead>
                           <tr>
-                            <th>Metric</th>
+                            <th>Year 1 Data</th>
                             <th>Monthly</th>
                             <th>Annual</th>
                           </tr>
