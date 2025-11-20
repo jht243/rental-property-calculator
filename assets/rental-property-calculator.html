@@ -3825,22 +3825,20 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         const saveUserInputsState = () => {
           try {
             const state = getInputsState();
-            // Apps SDK widgetState
+            // Apps SDK widgetState (scoped to this widget instance only)
             const base = (window?.openai?.widgetState) ? { ...window.openai.widgetState } : {};
             if (window?.openai?.setWidgetState) {
               window.openai.setWidgetState({ ...base, rentalInputsState: state });
             }
-            // Fallback localStorage
-            try { localStorage.setItem(PERSIST_KEY, JSON.stringify(state)); } catch(_) {}
+            // No localStorage fallback: each new prompt = fresh widget = empty widgetState by design
           } catch(_) { /* no-op */ }
         };
 
         const loadUserInputsState = () => {
+          // Only read from Apps SDK widgetState (scoped to this widget instance)
+          // Each new prompt creates a fresh widget with empty widgetState
           let state = null;
           try { state = window?.openai?.widgetState?.rentalInputsState || null; } catch(_) { state = null; }
-          if (!state) {
-            try { state = JSON.parse(localStorage.getItem(PERSIST_KEY) || 'null'); } catch(_) { state = null; }
-          }
           if (!state || !state.savedAt || (Date.now() - state.savedAt) > PERSIST_TTL_MS) return null;
           // Invalidate old state versions (before blank-state fix)
           if (!state.version || state.version < STATE_VERSION) return null;
@@ -3895,7 +3893,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
               window.openai.setWidgetState(base);
             }
           } catch(_) {}
-          try { localStorage.removeItem(PERSIST_KEY); } catch(_) {}
+          // No localStorage to clear
         };
 
         loadCarouselIndex();
