@@ -3779,6 +3779,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         // ---------- Persisted user inputs (72h) via Apps SDK widgetState with localStorage fallback ----------
         const PERSIST_KEY = "rpc_user_inputs_state_v1";
         const PERSIST_TTL_MS = 72 * 60 * 60 * 1000;
+        const STATE_VERSION = 2; // Increment to invalidate old saved states
 
         const PERSIST_INPUT_IDS = [
           // Income
@@ -3809,6 +3810,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             inputsObj[id] = String(el.value ?? "");
           });
           const state = {
+            version: STATE_VERSION,
             savedAt: Date.now(),
             inputs: inputsObj,
             toggles: {
@@ -3840,6 +3842,8 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             try { state = JSON.parse(localStorage.getItem(PERSIST_KEY) || 'null'); } catch(_) { state = null; }
           }
           if (!state || !state.savedAt || (Date.now() - state.savedAt) > PERSIST_TTL_MS) return null;
+          // Invalidate old state versions (before blank-state fix)
+          if (!state.version || state.version < STATE_VERSION) return null;
           return state;
         };
 
