@@ -1344,7 +1344,7 @@
       }
 
       /* Push the buttons as a group to the right: first button gets auto margin */
-      #resetBtn { margin-left: auto; }
+      #printBtn { margin-left: auto; }
       .actions button svg { width: 14px; height: 14px; margin-right: 6px; display: inline-block; vertical-align: middle; }
 
       table {
@@ -1918,6 +1918,7 @@
                   </a>
                   <div class="actions">
                     <span>Updates automatically as you edit.</span>
+                    <button class="secondary" id="printBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 9V3h12v6H6Zm0 12v-5h12v5H6Zm-2-7a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4Zm14-6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>Print</button>
                     <button class="secondary" id="resetBtn" type="button">Reset defaults</button>
                     <button class="secondary" id="notifyRatesBtnBottom" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"/></svg>Get notified of rate drops</button>
                     <button class="secondary" id="feedbackBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-4 4v-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>Feedback</button>
@@ -2029,8 +2030,18 @@
                     <div class="metric"><span class="label">IRR</span><span class="value" id="out_irr">0%</span></div>
                   </div>
                 </section>
-                <div class="button-row">
-                  <button type="button" class="cta-button secondary" id="showAmortizationBtn">View Year-by-Year Breakdown →</button>
+                <div class="button-row" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; width: 100%;">
+                  <button type="button" class="cta-pill" id="backToInputsBtnBottom" style="margin: 0; width: auto;">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; transform: rotate(180deg);">
+                      <path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                    </svg>Go Back to Inputs
+                  </button>
+                  <button type="button" class="cta-pill" id="showAmortizationBtn" style="margin: 0; width: auto;">
+                    View Year-by-Year Breakdown
+                    <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px;">
+                      <path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -2068,6 +2079,18 @@
                 <tbody></tbody>
               </table>
             </section>
+            <div class="button-row" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 20px;">
+              <button type="button" class="cta-pill" id="backToInputsBtnSlide3" style="margin: 0; width: auto;">
+                <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; transform: rotate(180deg);">
+                  <path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                </svg>Go Back to Inputs
+              </button>
+              <button type="button" class="cta-pill" id="backToBreakdownBtnSlide3" style="margin: 0; width: auto;">
+                <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; transform: rotate(180deg);">
+                  <path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                </svg>Back to Breakdown
+              </button>
+            </div>
         </div>
       </div>
 
@@ -3646,6 +3669,14 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
           carousel.next.addEventListener("click", () => moveCarousel(1));
         }
 
+        const printButton = $("printBtn");
+        if (printButton) {
+          printButton.addEventListener("click", () => {
+            try { emitTelemetry("print_clicked", {}); } catch (_) {}
+            try { window.print?.(); } catch (_) {}
+          });
+        }
+
         const resetButton = $("resetBtn");
         if (resetButton) {
           resetButton.addEventListener("click", () => {
@@ -4313,6 +4344,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         const showAmortizationBtn = document.getElementById('showAmortizationBtn');
         const showAmortizationSummaryBtn = document.getElementById('showAmortizationSummaryBtn');
         const backToBreakdownBtn = document.getElementById('backToBreakdownBtn');
+        const backToInputsBtnBottom = document.getElementById('backToInputsBtnBottom');
 
         const showView = (viewToShow) => {
           [summaryView, breakdownView, amortizationView].forEach(view => {
@@ -4353,6 +4385,30 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         }
         if (backToBreakdownBtn) {
           backToBreakdownBtn.addEventListener('click', () => {
+            showView('breakdownView');
+            scrollViewToTop(breakdownView);
+          });
+        }
+
+        if (backToInputsBtnBottom) {
+          backToInputsBtnBottom.addEventListener('click', () => {
+            showView('summaryView');
+            scrollViewToTop(summaryView);
+          });
+        }
+
+        const backToInputsBtnSlide3 = document.getElementById('backToInputsBtnSlide3');
+        const backToBreakdownBtnSlide3 = document.getElementById('backToBreakdownBtnSlide3');
+
+        if (backToInputsBtnSlide3) {
+          backToInputsBtnSlide3.addEventListener('click', () => {
+            showView('summaryView');
+            scrollViewToTop(summaryView);
+          });
+        }
+
+        if (backToBreakdownBtnSlide3) {
+          backToBreakdownBtnSlide3.addEventListener('click', () => {
             showView('breakdownView');
             scrollViewToTop(breakdownView);
           });
