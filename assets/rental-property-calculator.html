@@ -1347,6 +1347,240 @@
       #printBtn { margin-left: auto; }
       .actions button svg { width: 14px; height: 14px; margin-right: 6px; display: inline-block; vertical-align: middle; }
 
+      /* Subscribe Banner */
+      .subscribe-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 4px 0 8px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, rgba(14, 165, 233, 0.12), rgba(14, 165, 233, 0.04));
+        border: 1px solid rgba(14, 165, 233, 0.18);
+        border-radius: 10px;
+      }
+
+      .subscribe-banner.is-hidden {
+        display: none;
+      }
+
+      .subscribe-banner-text {
+        font-size: 14px;
+        color: rgba(226, 232, 240, 0.9);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .subscribe-banner-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .subscribe-banner-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #0f172a;
+        background: linear-gradient(180deg, #22d3ee, #0ea5e9);
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .subscribe-banner-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+      }
+
+      .subscribe-banner-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .subscribe-banner-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 6px;
+        color: rgba(148, 163, 184, 0.8);
+        cursor: pointer;
+        transition: border-color 0.15s ease, color 0.15s ease;
+      }
+
+      .subscribe-banner-close:hover {
+        border-color: rgba(148, 163, 184, 0.6);
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      .subscribe-banner-close svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      @media (max-width: 640px) {
+        .subscribe-banner {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+          text-align: center;
+        }
+
+        .subscribe-banner-actions {
+          justify-content: center;
+        }
+      }
+
+      /* Related Calculators Section */
+      .related-calculators-section {
+        margin-top: 24px;
+        padding: 20px;
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 16px;
+        border: 1px solid rgba(71, 85, 105, 0.3);
+      }
+
+      .related-calculators-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(148, 163, 184, 0.9);
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .related-calculators-grid {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .related-calc-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #0ea5e9;
+        background: transparent;
+        border: 1px solid rgba(14, 165, 233, 0.3);
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .related-calc-btn:hover {
+        background: rgba(14, 165, 233, 0.1);
+        border-color: rgba(14, 165, 233, 0.5);
+      }
+
+      .related-calc-btn:active {
+        transform: scale(0.97);
+        background: rgba(14, 165, 233, 0.2);
+        border-color: rgba(14, 165, 233, 0.6);
+      }
+
+      .related-calc-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .related-calc-btn-center {
+        flex-basis: 100%;
+        max-width: 220px;
+        justify-content: center;
+      }
+
+      @media (max-width: 560px) {
+        .related-calculators-grid {
+          flex-direction: column;
+        }
+
+        .related-calc-btn {
+          justify-content: center;
+        }
+
+        .related-calc-btn-center {
+          max-width: none;
+        }
+      }
+
+      /* Bottom Action Buttons */
+      .bottom-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 24px;
+        padding: 20px 0;
+        border-top: 1px solid rgba(71, 85, 105, 0.3);
+      }
+
+      .bottom-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 8px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(148, 163, 184, 0.85);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.1s ease;
+        flex: 1;
+      }
+
+      .bottom-action-btn:hover {
+        color: rgba(226, 232, 240, 1);
+      }
+
+      .bottom-action-btn:active {
+        transform: scale(0.95);
+        color: #0ea5e9;
+      }
+
+      .bottom-action-btn svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+
+      @media (max-width: 560px) {
+        .bottom-actions {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .bottom-action-btn {
+          flex: 0 0 auto;
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+
+        .bottom-action-btn svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -1461,19 +1695,35 @@
 
 
             <header class="slide-header">
-              <h1>Rental Property Calculator</h1>
-              <p>Compare loan programs and see monthly costs.<br />Preview payoff timing and adjust the inputs to explore scenarios.</p>
+              <h1>The Landlord's Cash Flow Analyzer</h1>
+              <p>Aligned with Fannie Mae investment property guidelines.<br />Analyze ROI, cash-on-cash return, cap rate, and 20-year projections.</p>
               <div class="rate-cta-stack">
                 <span class="rate-badge" data-openai-component="rate-badge">
                   <span class="rate-label">TODAY'S AVERAGE RATE</span>
                   <span class="rate-num">5%</span>
                 </span>
-                <button type="button" class="rate-cta" id="notifyRatesBtn" data-openai-component="rate-indicator">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"/></svg>
-                  <span>Notify me when rates drop</span>
-                </button>
               </div>
             </header>
+
+            <!-- Subscribe Banner -->
+            <div class="subscribe-banner" id="subscribeBanner">
+              <span class="subscribe-banner-text">Want expert tips to maximize your rental property returns?</span>
+              <div class="subscribe-banner-actions">
+                <button type="button" class="subscribe-banner-btn" id="subscribeBannerBtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                  Subscribe
+                </button>
+                <button type="button" class="subscribe-banner-close" id="subscribeBannerClose" aria-label="Dismiss">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"/>
+                    <path d="m6 6 12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
 
   <!-- Rental Property Calculator: New Input Sections -->
   <details class="section-block collapsible" data-openai-component="purchase-details" open>
@@ -1916,12 +2166,76 @@
                   <a class="cta-pill" id="showBreakdownBtn" href="#">See Advanced Calculations
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                   </a>
-                  <div class="actions">
-                    <span>Updates automatically as you edit.</span>
-                    <button class="secondary" id="printBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 9V3h12v6H6Zm0 12v-5h12v5H6Zm-2-7a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4Zm14-6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>Print</button>
-                    <button class="secondary" id="resetBtn" type="button">Reset defaults</button>
-                    <button class="secondary" id="notifyRatesBtnBottom" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"/></svg>Get notified of rate drops</button>
-                    <button class="secondary" id="feedbackBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-4 4v-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>Feedback</button>
+
+                  <!-- Related Calculators Section -->
+                  <div class="related-calculators-section">
+                    <div class="related-calculators-title">Related Calculators</div>
+                    <div class="related-calculators-grid">
+                      <a href="#" class="related-calc-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                          <polyline points="17 6 23 6 23 12"/>
+                        </svg>
+                        Retirement Calculator
+                      </a>
+                      <a href="#" class="related-calc-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"/>
+                          <circle cx="12" cy="12" r="6"/>
+                          <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                        Mortgage Calculator
+                      </a>
+                      <a href="#" class="related-calc-btn related-calc-btn-center">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Investment Calculator
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Bottom Action Buttons -->
+                  <div class="bottom-actions">
+                    <button type="button" class="bottom-action-btn" id="subscribeBtnBottom">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                      </svg>
+                      Subscribe
+                    </button>
+                    <button type="button" class="bottom-action-btn" id="resetBtn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M8 16H3v5"/>
+                      </svg>
+                      Reset
+                    </button>
+                    <button type="button" class="bottom-action-btn" id="donateBtn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                      </svg>
+                      Donate
+                    </button>
+                    <button type="button" class="bottom-action-btn" id="feedbackBtn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="14" x="3" y="4" rx="2"/>
+                        <path d="M3 8h18"/>
+                        <path d="M8 4v4"/>
+                        <path d="M16 4v4"/>
+                      </svg>
+                      Feedback
+                    </button>
+                    <button type="button" class="bottom-action-btn" id="printBtn" onclick="window.print()">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9"/>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                        <rect width="12" height="8" x="6" y="14"/>
+                      </svg>
+                      Print
+                    </button>
                   </div>
                 </div>
               </div>
@@ -4309,11 +4623,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
 
         // Breakdown list is read-only; no input listeners needed.
 
-        // Notify Me When Rates Drop
-        const notifyBtn = document.getElementById('notify-btn');
-        const notifyBtnBottom = document.getElementById('notify-btn-bottom');
-
-
+        // Subscribe functionality
         const SUBSCRIBE_KEY = "mc_rates_subscribed";
         const markSubscribed = () => {
           try { localStorage.setItem(SUBSCRIBE_KEY, "1"); } catch (_) {}
@@ -4323,8 +4633,9 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
               window.openai.setWidgetState({ ...s, hasSubscribedRates: true });
             }
           } catch (_) {}
-          if (notifyBtn) notifyBtn.style.display = "none";
-          if (notifyBtnBottom) notifyBtnBottom.style.display = "none";
+          // Hide the subscribe banner
+          const subscribeBannerEl = document.getElementById('subscribeBanner');
+          if (subscribeBannerEl) subscribeBannerEl.classList.add('is-hidden');
         };
         const isSubscribed = (() => {
           try {
@@ -4333,8 +4644,6 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             return v === "1" || v === "true";
           } catch (_) { return false; }
         })();
-        if (notifyBtn && isSubscribed) { notifyBtn.style.display = "none"; }
-  if (notifyBtnBottom && isSubscribed) { notifyBtnBottom.style.display = "none"; }
 
         const summaryView = document.getElementById('summaryView');
         const breakdownView = document.getElementById('breakdownView');
@@ -4417,51 +4726,43 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         // Show summary view by default
         showView('summaryView');
 
-        if (notifyBtn) {
-          const centerNotifyUnderRate = () => {
-            const ratePill = document.querySelector('.rate-pill-stack .rate-pill');
-            const notifyButton = document.querySelector('.rate-pill-stack .notify-button');
-            if (!ratePill || !notifyButton) return;
-            const rateRect = ratePill.getBoundingClientRect();
-            const buttonRect = notifyButton.getBoundingClientRect();
-            const offset = (rateRect.width / 2) - (buttonRect.width / 2);
-            notifyButton.style.transform = `translateX(${offset}px)`;
-          };
-
-          requestAnimationFrame(centerNotifyUnderRate);
-          window.addEventListener('resize', centerNotifyUnderRate);
+        // Subscribe modal - initialize for subscribe buttons
+        const subscribeBannerBtnRef = document.getElementById('subscribeBannerBtn');
+        const subscribeBtnBottomRef = document.getElementById('subscribeBtnBottom');
+        
+        if (subscribeBannerBtnRef || subscribeBtnBottomRef) {
           let overlay, emailInput, statusEl, cancelBtn, submitBtn;
 
-          const ensureNotifyModal = () => {
+          const ensureSubscribeModal = () => {
             if (overlay) return;
             overlay = document.createElement('div');
             overlay.className = 'modal-overlay';
             overlay.innerHTML = `
-              <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="notifyTitle">
-                <h3 id="notifyTitle">Notify me when rates drop</h3>
-                <p>We'll email you when average rates drop.</p>
-                <input id="notifyEmail" type="email" placeholder="you@example.com" autocomplete="email" />
-                <div id="notifyStatus" class="modal-status"></div>
+              <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="subscribeTitle">
+                <h3 id="subscribeTitle">Subscribe for Updates</h3>
+                <p>Get expert tips to maximize your rental property returns.</p>
+                <input id="subscribeEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+                <div id="subscribeStatus" class="modal-status"></div>
                 <div class="modal-actions">
-                  <button type="button" id="notifyCancel">Cancel</button>
-                  <button type="button" id="notifySubmit" class="primary">Notify me</button>
+                  <button type="button" id="subscribeCancel">Cancel</button>
+                  <button type="button" id="subscribeSubmit" class="primary">Subscribe</button>
                 </div>
               </div>`;
             document.body.appendChild(overlay);
-            emailInput = overlay.querySelector('#notifyEmail');
-            statusEl = overlay.querySelector('#notifyStatus');
-            cancelBtn = overlay.querySelector('#notifyCancel');
-            submitBtn = overlay.querySelector('#notifySubmit');
+            emailInput = overlay.querySelector('#subscribeEmail');
+            statusEl = overlay.querySelector('#subscribeStatus');
+            cancelBtn = overlay.querySelector('#subscribeCancel');
+            submitBtn = overlay.querySelector('#subscribeSubmit');
 
             const onCancel = () => { overlay.style.display = 'none'; };
             cancelBtn.addEventListener('click', onCancel);
             overlay.addEventListener('click', (e) => { if (e.target === overlay) onCancel(); });
-            emailInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
-            submitBtn.addEventListener('click', () => submit());
+            emailInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitSubscription(); });
+            submitBtn.addEventListener('click', () => submitSubscription());
           };
 
-          const openModal = () => {
-            ensureNotifyModal();
+          const openSubscribeModal = () => {
+            ensureSubscribeModal();
             statusEl.textContent = '';
             overlay.style.display = 'flex';
             setTimeout(() => emailInput?.focus(), 0);
@@ -4482,7 +4783,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             });
           };
 
-          const submit = async () => {
+          const submitSubscription = async () => {
             const email = (emailInput?.value || '').trim();
             if (!email || !email.includes('@')) {
               statusEl.textContent = 'Please enter a valid email address.';
@@ -4497,10 +4798,9 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
               let data = {};
               const payload = {
                 email,
-                settlementId: 'mortgage_rates',
-                settlementName: 'Mortgage Rates',
+                settlementId: 'rental_property_calculator',
+                settlementName: 'Rental Property Calculator',
                 deadline: null,
-                turnstileToken: 'auto-verified-fallback',
               };
               for (const url of SUBSCRIBE_ENDPOINTS) {
                 try {
@@ -4509,18 +4809,15 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
                   try { data = raw ? JSON.parse(raw) : {}; } catch (_) { data = {}; }
                   if (resp.ok && (data?.success || data?.id)) break;
                 } catch (_) {
-                  // Network/CORS failure; clear resp so we don't report stale response
                   resp = null;
                   raw = '';
                   data = {};
-                  // try next endpoint
                 }
               }
               if (!resp) {
                 statusEl.textContent = 'Subscription failed: no response from any endpoint';
                 return;
               }
-              // raw/data already populated with the last attempt
               if (resp.ok && (data?.success || data?.id)) {
                 const code = Math.random().toString(36).slice(2, 8).toUpperCase();
                 statusEl.textContent = data.message || "You're subscribed!";
@@ -4532,17 +4829,52 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
                 statusEl.textContent = `Subscription failed: ${detail}`;
               }
             } catch (err) {
-              console.error('Notify subscription error', err);
+              console.error('Subscribe error', err);
               statusEl.textContent = 'Subscription failed. Please try again.';
             }
           };
 
-          notifyBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
-    if (notifyBtnBottom) {
-      notifyBtnBottom.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
-    }
+          // Subscribe banner button opens modal
+          if (subscribeBannerBtnRef) {
+            subscribeBannerBtnRef.addEventListener('click', (e) => { e.preventDefault(); openSubscribeModal(); });
+          }
 
- 
+          // Subscribe button at bottom opens modal  
+          if (subscribeBtnBottomRef) {
+            subscribeBtnBottomRef.addEventListener('click', (e) => { e.preventDefault(); openSubscribeModal(); });
+          }
+        }
+
+        // Subscribe banner close functionality
+        const subscribeBanner = document.getElementById('subscribeBanner');
+        const subscribeBannerClose = document.getElementById('subscribeBannerClose');
+        const BANNER_DISMISSED_KEY = 'mc_subscribe_banner_dismissed';
+
+        // Check if banner was previously dismissed
+        try {
+          if (localStorage.getItem(BANNER_DISMISSED_KEY) === '1' && subscribeBanner) {
+            subscribeBanner.classList.add('is-hidden');
+          }
+        } catch (_) {}
+
+        // Also hide banner if already subscribed
+        if (subscribeBanner && isSubscribed) {
+          subscribeBanner.classList.add('is-hidden');
+        }
+
+        if (subscribeBannerClose) {
+          subscribeBannerClose.addEventListener('click', () => {
+            if (subscribeBanner) subscribeBanner.classList.add('is-hidden');
+            try { localStorage.setItem(BANNER_DISMISSED_KEY, '1'); } catch (_) {}
+          });
+        }
+
+        // Donate button handler
+        const donateBtn = document.getElementById('donateBtn');
+        if (donateBtn) {
+          donateBtn.addEventListener('click', () => {
+            window.open('https://buymeacoffee.com/jhtep', '_blank');
+          });
         }
 
         // Load daily rate (FRED + 0.5%) and robustly update badge with retries and guard
