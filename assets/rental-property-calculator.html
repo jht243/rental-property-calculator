@@ -1216,7 +1216,7 @@
       .slide-header {
         position: relative;
         margin: 0;
-        padding: 0 0 24px;
+        padding: 10px 0 0;
       }
 
       .slide-header p {
@@ -1986,7 +1986,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin: 4px 0 8px;
+        margin: 6px 0;
         padding: 12px 18px;
         background: linear-gradient(90deg, rgba(14, 165, 233, 0.12), rgba(14, 165, 233, 0.04));
         border: 1px solid rgba(14, 165, 233, 0.18);
@@ -2374,7 +2374,9 @@
     <summary class="section-summary">
       <span class="summary-title">🏠 Purchase Details</span>
       <div class="summary-spacer"></div>
-      <div class="purchase-header-toggles" aria-label="Purchase toggles">
+    </summary>
+    <div class="collapsible-content" style="padding-top: 0;">
+      <div class="purchase-header-toggles" aria-label="Purchase toggles" style="margin-bottom: 26px; margin-top: -15px; width: 100%; justify-content: center; background: rgba(2, 6, 23, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 6px 0;">
         <div class="row">
           <p class="label">Mode</p>
           <div class="yesno-toggle" role="group" aria-label="Calculator Mode">
@@ -2415,8 +2417,6 @@
           </div>
         </div>
       </div>
-    </summary>
-    <div class="collapsible-content">
       <div class="grid duo-columns" id="purchase_inputs_row">
         <label>
           Purchase Price ($)
