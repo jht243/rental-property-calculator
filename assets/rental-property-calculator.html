@@ -253,7 +253,7 @@
       /* Inline pair: main amount + small percent input aligned horizontally */
       .inline-pair {
         display: grid;
-        grid-template-columns: 1fr 120px;
+        grid-template-columns: 1fr 72px;
         gap: 12px;
         align-items: end;
         padding: 10px 12px;
@@ -651,8 +651,8 @@
       .yearly-table thead th:first-child, .yearly-table tbody td:first-child { text-align: left; }
       @media (max-width: 720px) { .metrics-table th, .metrics-table td { font-size: 12px; padding: 8px 10px; } .kpi-number { font-size: 26px; } }
 
-      @media (max-width: 720px) { .inline-pair { grid-template-columns: 1fr 96px; } }
-      @media (max-width: 640px) { .inline-pair { grid-template-columns: 1fr 88px; } }
+      @media (max-width: 720px) { .inline-pair { grid-template-columns: 1fr 68px; } }
+      @media (max-width: 640px) { .inline-pair { grid-template-columns: 1fr 64px; } }
 
       .is-hidden {
         display: none !important;
@@ -2516,7 +2516,7 @@
             <input type="text" id="monthly_rent" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="monthly_rent_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2526,7 +2526,7 @@
             <input type="text" id="other_monthly_income" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="other_monthly_income_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2551,7 +2551,7 @@
             <input type="text" id="exp_property_tax_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_property_tax_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2562,7 +2562,7 @@
             <input type="text" id="exp_insurance_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_insurance_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2575,7 +2575,7 @@
             <input type="text" id="exp_hoa_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_hoa_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2586,7 +2586,7 @@
             <input type="text" id="exp_lawn_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_lawn_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2599,7 +2599,7 @@
             <input type="text" id="exp_maintenance_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_maintenance_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2610,7 +2610,7 @@
             <input type="text" id="exp_water_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_water_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -2623,7 +2623,7 @@
             <input type="text" id="exp_other_annual" inputmode="numeric" pattern="[0-9,]*" />
           </label>
           <label class="pair-col percent-compact">
-            <span class="field-helper">Annual Increase</span>
+            <span class="field-helper">Increase /Yr</span>
             <input type="number" id="exp_other_increase_pct" min="0" step="0.1" />
           </label>
         </div>
@@ -6574,7 +6574,9 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
           console.log('[Debug] No saved state was hydrated. Applying rental defaults.');
           setRentalDefaultsIfEmpty(true);
         } else {
-          console.log('[Debug] Saved state was hydrated. Skipping rental defaults.');
+          console.log('[Debug] Saved state was hydrated. Filling any empty price-based estimates.');
+          // Even with saved state, fill in any empty price-based estimates (lawn, water, etc.)
+          updatePriceBasedEstimates();
         }
 
         // Ensure visibility and computed labels reflect hydrated/defaulted state
