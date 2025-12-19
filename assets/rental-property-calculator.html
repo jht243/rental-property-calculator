@@ -5523,7 +5523,10 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
               const no = document.getElementById(noId);
               if (yes && no) { yes.checked = !!on; no.checked = !on; }
             };
-            setRadio('use_loan_yes','use_loan_no', !!state.toggles?.use_loan);
+            // CRITICAL: Default use_loan to TRUE if not explicitly set in saved state
+            // This matches the HTML default (use_loan_yes is checked by default)
+            const useLoanValue = state.toggles?.use_loan !== undefined ? state.toggles.use_loan : true;
+            setRadio('use_loan_yes','use_loan_no', useLoanValue);
             setRadio('need_repairs_yes','need_repairs_no', !!state.toggles?.need_repairs);
             const priceOn = (state.toggles?.price_mode === 'price');
             const pmPrice = document.getElementById('price_mode_price');
