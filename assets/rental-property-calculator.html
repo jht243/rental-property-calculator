@@ -2318,6 +2318,527 @@
           height: 180px;
         }
       }
+
+      /* Zillow Import Section */
+      .zillow-import-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(99, 102, 241, 0.06));
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        border-radius: 12px;
+      }
+
+      .zillow-import-section .zillow-import-status:empty {
+        display: none;
+      }
+
+      .zillow-import-section .zillow-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(226, 232, 240, 0.9);
+        white-space: nowrap;
+      }
+
+      .zillow-import-section .zillow-input {
+        flex: 1;
+        min-width: 200px;
+        padding: 10px 14px;
+        font: inherit;
+        font-size: 14px;
+        color: #e2e8f0;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(100, 116, 139, 0.4);
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .zillow-import-section .zillow-input:focus {
+        border-color: rgba(14, 165, 233, 0.6);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      }
+
+      .zillow-import-section .zillow-input::placeholder {
+        color: rgba(148, 163, 184, 0.6);
+      }
+
+      .zillow-import-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.1s ease, box-shadow 0.2s ease;
+      }
+
+      .zillow-import-btn:hover {
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+      }
+
+      .zillow-import-btn:active {
+        transform: scale(0.97);
+      }
+
+      .zillow-import-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .zillow-import-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .zillow-import-status {
+        width: 100%;
+        font-size: 13px;
+        color: rgba(148, 163, 184, 0.85);
+        margin-top: 4px;
+      }
+
+      .zillow-import-status.error {
+        color: #f87171;
+      }
+
+      .zillow-import-status.success {
+        color: #4ade80;
+      }
+
+      @media (max-width: 560px) {
+        .zillow-import-section {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .zillow-import-btn {
+          justify-content: center;
+        }
+      }
+
+      /* BLOCKED OUT FOR APP STORE SUBMISSION - START CSS */
+      /*
+      .bulk-search-section {
+        padding: 20px;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, rgba(30, 33, 56, 0.85), rgba(25, 28, 48, 0.9));
+        border: 1px solid rgba(71, 85, 105, 0.3);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(10, 13, 28, 0.4);
+      }
+
+      .bulk-search-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+      }
+
+      .bulk-search-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #22c55e, #0ea5e9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+
+      .bulk-search-title-wrap {
+        flex: 1;
+      }
+
+      .bulk-search-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #e2e8f0;
+        margin: 0;
+      }
+
+      .bulk-search-subtitle {
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.7);
+        margin: 2px 0 0;
+      }
+
+      .bulk-search-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .bulk-search-row.triple {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      @media (max-width: 600px) {
+        .bulk-search-row, .bulk-search-row.triple {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .bulk-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .bulk-field-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: rgba(148, 163, 184, 0.85);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .bulk-field input,
+      .bulk-field select {
+        padding: 10px 12px;
+        font: inherit;
+        font-size: 14px;
+        color: #e2e8f0;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(100, 116, 139, 0.4);
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .bulk-field input:focus,
+      .bulk-field select:focus {
+        border-color: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+      }
+
+      .bulk-field input::placeholder {
+        color: rgba(148, 163, 184, 0.5);
+      }
+
+      .bulk-search-footer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(100, 116, 139, 0.2);
+      }
+
+      .bulk-search-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.1s ease, box-shadow 0.2s ease;
+      }
+
+      .bulk-search-btn:hover {
+        box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+      }
+
+      .bulk-search-btn:active {
+        transform: scale(0.97);
+      }
+
+      .bulk-search-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .bulk-search-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .bulk-search-status {
+        font-size: 13px;
+        color: rgba(148, 163, 184, 0.85);
+      }
+
+      .bulk-search-status.error { color: #f87171; }
+      .bulk-search-status.success { color: #4ade80; }
+
+      /* Results Table */
+      .bulk-results-container {
+        margin-top: 16px;
+        display: none;
+      }
+
+      .bulk-results-container.visible { display: block; }
+
+      .bulk-results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .bulk-results-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      .bulk-results-sort {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: rgba(148, 163, 184, 0.85);
+      }
+
+      .bulk-results-sort select {
+        padding: 4px 8px;
+        font: inherit;
+        font-size: 11px;
+        color: #e2e8f0;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(100, 116, 139, 0.4);
+        border-radius: 4px;
+      }
+
+      .bulk-results-scroll {
+        max-height: 350px;
+        overflow-y: auto;
+        border: 1px solid rgba(100, 116, 139, 0.2);
+        border-radius: 8px;
+      }
+
+      .bulk-results-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .bulk-results-table th {
+        position: sticky;
+        top: 0;
+        text-align: center;
+        padding: 10px 8px;
+        font-weight: 600;
+        color: rgba(148, 163, 184, 0.9);
+        background: rgba(30, 41, 59, 0.95);
+        border-bottom: 1px solid rgba(100, 116, 139, 0.3);
+        white-space: nowrap;
+      }
+
+      .bulk-results-table td {
+        padding: 10px 8px;
+        color: #e2e8f0;
+        border-bottom: 1px solid rgba(100, 116, 139, 0.15);
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .bulk-results-table tr:hover td { background: rgba(14, 165, 233, 0.08); }
+      .bulk-results-table .rank-cell { font-weight: 700; color: #22c55e; width: 35px; }
+      .bulk-results-table .address-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+      .bulk-results-table .price-cell { font-weight: 600; white-space: nowrap; }
+      .bulk-results-table .metric-cell { font-weight: 600; color: #4ade80; white-space: nowrap; }
+      .bulk-results-table .metric-cell.negative { color: #f87171; }
+      .bulk-results-table .actions-cell { white-space: nowrap; }
+
+      .bulk-autocomplete {
+        position: relative;
+      }
+
+      .bulk-autocomplete-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        margin: 4px 0 0;
+        padding: 0;
+        list-style: none;
+        background: rgba(30, 41, 59, 0.98);
+        border: 1px solid rgba(100, 116, 139, 0.4);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        z-index: 100;
+        display: none;
+      }
+
+      .bulk-autocomplete-list.visible {
+        display: block;
+      }
+
+      .bulk-autocomplete-list li {
+        padding: 10px 12px;
+        font-size: 13px;
+        color: #e2e8f0;
+        cursor: pointer;
+        transition: background 0.1s ease;
+      }
+
+      .bulk-autocomplete-list li:hover,
+      .bulk-autocomplete-list li.highlighted {
+        background: rgba(34, 197, 94, 0.15);
+      }
+
+      .bulk-autocomplete-list li:first-child {
+        border-radius: 7px 7px 0 0;
+      }
+
+      .bulk-autocomplete-list li:last-child {
+        border-radius: 0 0 7px 7px;
+      }
+
+      .bulk-autocomplete-list li:only-child {
+        border-radius: 7px;
+      }
+
+      .bulk-autocomplete-list .no-results {
+        color: rgba(148, 163, 184, 0.7);
+        font-style: italic;
+        cursor: default;
+      }
+
+      .bulk-autocomplete-list .no-results:hover {
+        background: transparent;
+      }
+
+      .bulk-action-btns {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+
+      .bulk-load-btn, .bulk-view-btn {
+        padding: 5px 10px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .bulk-load-btn {
+        color: #0ea5e9;
+        background: rgba(14, 165, 233, 0.1);
+        border: 1px solid rgba(14, 165, 233, 0.3);
+      }
+
+      .bulk-load-btn:hover {
+        background: rgba(14, 165, 233, 0.2);
+        border-color: rgba(14, 165, 233, 0.5);
+      }
+
+      .bulk-view-btn {
+        color: #a78bfa;
+        background: rgba(167, 139, 250, 0.1);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+      }
+
+      .bulk-view-btn:hover {
+        background: rgba(167, 139, 250, 0.2);
+        border-color: rgba(167, 139, 250, 0.5);
+      }
+
+      .bulk-delete-btn {
+        color: #f87171;
+        background: rgba(248, 113, 113, 0.1);
+        border: 1px solid rgba(248, 113, 113, 0.3);
+        padding: 5px 8px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .bulk-delete-btn:hover {
+        background: rgba(248, 113, 113, 0.25);
+        border-color: rgba(248, 113, 113, 0.5);
+      }
+
+      .address-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .address-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .address-link {
+        flex-shrink: 0;
+        color: #64748b;
+        opacity: 0.7;
+        transition: opacity 0.15s, color 0.15s;
+      }
+
+      .address-link:hover {
+        opacity: 1;
+        color: #a78bfa;
+      }
+
+      .bulk-results-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .bulk-save-search-btn {
+        padding: 6px 12px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        color: #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .bulk-save-search-btn:hover {
+        background: rgba(34, 197, 94, 0.2);
+        border-color: rgba(34, 197, 94, 0.5);
+      }
+
+      @media (max-width: 560px) {
+        .bulk-search-inputs { grid-template-columns: 1fr 1fr; }
+        .bulk-results-table { font-size: 11px; }
+        .bulk-results-table .address-cell { max-width: 100px; }
+        .bulk-results-table th, .bulk-results-table td { padding: 8px 5px; }
+      }
+      BLOCKED OUT FOR APP STORE SUBMISSION - END CSS */
     </style>
   </head>
   <body>
@@ -2357,6 +2878,134 @@
                 </button>
               </div>
             </div>
+
+  <!-- Zillow Import Section -->
+  <div class="zillow-import-section" id="zillowImportSection">
+    <span class="zillow-label">🏘️ Calculate using Zillow Link:</span>
+    <input type="text" class="zillow-input" id="zillowUrlInput" placeholder="Paste Zillow listing URL (e.g., https://www.zillow.com/homedetails/...)" />
+    <button type="button" class="zillow-import-btn" id="zillowImportBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+        <path d="M9 9h6v6H9z"/>
+        <path d="M9 1v3"/>
+        <path d="M15 1v3"/>
+        <path d="M9 20v3"/>
+        <path d="M15 20v3"/>
+        <path d="M20 9h3"/>
+        <path d="M20 14h3"/>
+        <path d="M1 9h3"/>
+        <path d="M1 14h3"/>
+      </svg>
+      Calculate
+    </button>
+    <div class="zillow-import-status" id="zillowImportStatus"></div>
+  </div>
+
+  <!-- BLOCKED OUT FOR APP STORE SUBMISSION - START HTML
+  <div class="bulk-search-section" id="bulkSearchSection">
+    <div class="bulk-search-header">
+      <div class="bulk-search-icon">🔍</div>
+      <div class="bulk-search-title-wrap">
+        <h3 class="bulk-search-title">Find Best Deals</h3>
+        <p class="bulk-search-subtitle">Search properties and rank by investment potential</p>
+      </div>
+    </div>
+
+    <div class="bulk-search-row">
+      <div class="bulk-field">
+        <span class="bulk-field-label">Search By</span>
+        <select id="bulkLocationType">
+          <option value="zip">ZIP Code</option>
+          <option value="city">City / Metro</option>
+        </select>
+      </div>
+      <div class="bulk-field" id="bulkLocationField">
+        <span class="bulk-field-label">ZIP Code</span>
+        <input type="text" id="bulkZipInput" placeholder="e.g., 33316" maxlength="5" inputmode="numeric" />
+        <div class="bulk-autocomplete" id="bulkCityAutocomplete" style="display: none;">
+          <input type="text" id="bulkCityInput" placeholder="Type a city..." autocomplete="off" />
+          <ul class="bulk-autocomplete-list" id="bulkCitySuggestions"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="bulk-search-row triple">
+      <div class="bulk-field">
+        <span class="bulk-field-label">Min Price</span>
+        <input type="text" id="bulkMinPrice" placeholder="$0" inputmode="numeric" />
+      </div>
+      <div class="bulk-field">
+        <span class="bulk-field-label">Max Price</span>
+        <input type="text" id="bulkMaxPrice" placeholder="No max" inputmode="numeric" />
+      </div>
+      <div class="bulk-field">
+        <span class="bulk-field-label">Property Type</span>
+        <select id="bulkPropertyType">
+          <option value="">Any Type</option>
+          <option value="Houses">Houses</option>
+          <option value="Condos">Condos</option>
+          <option value="Townhomes">Townhomes</option>
+          <option value="Multi-family">Multi-family</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="bulk-search-footer">
+      <button type="button" class="bulk-search-btn" id="bulkSearchBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        Search Properties
+      </button>
+      <span class="bulk-search-status" id="bulkSearchStatus"></span>
+    </div>
+    <div class="bulk-results-container" id="bulkResultsContainer">
+      <div class="bulk-results-header">
+        <div class="bulk-results-title-wrap">
+          <span class="bulk-results-title" id="bulkResultsTitle">Results</span>
+          <button type="button" class="bulk-save-search-btn" id="bulkSaveSearchBtn">💾 Save This Search</button>
+        </div>
+        <div class="bulk-results-sort">
+          <span>Sort by:</span>
+          <select id="bulkSortBy">
+            <option value="capRate">Cap Rate (High→Low)</option>
+            <option value="cashFlow">Est. Cash Flow</option>
+            <option value="priceAsc">Price (Low→High)</option>
+            <option value="priceDesc">Price (High→Low)</option>
+          </select>
+        </div>
+      </div>
+      <div class="bulk-results-scroll">
+        <table class="bulk-results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Address</th>
+              <th>Price</th>
+              <th>Beds</th>
+              <th>Rent Est.</th>
+              <th>Cap Rate</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bulkResultsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Saved Searches Section (hidden by default, shown when there are saved items) -->
+  <details class="section-block collapsible saved-calcs-panel" id="savedSearchesPanel" data-openai-component="saved-searches" style="display:none">
+    <summary class="section-summary">
+      <span class="summary-title">🔍 Saved Searches</span>
+      <span class="saved-calcs-badge" id="savedSearchesBadge">0</span>
+    </summary>
+    <div class="collapsible-content">
+      <div class="saved-calcs-list-main" id="savedSearchesListMain"></div>
+    </div>
+  </details>
+  BLOCKED OUT FOR APP STORE SUBMISSION - END HTML -->
 
   <!-- Saved Calculations Section (hidden by default, shown when there are saved items) -->
   <details class="section-block collapsible saved-calcs-panel" id="savedCalcsPanel" data-openai-component="saved-calculations" style="display:none">
@@ -5453,7 +6102,8 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             toggles: {
               use_loan: readToggleValue('use_loan_yes','use_loan_no'),
               need_repairs: readToggleValue('need_repairs_yes','need_repairs_no'),
-              price_mode: (document.getElementById('price_mode_price')?.checked ? 'price' : 'appreciation')
+              price_mode: (document.getElementById('price_mode_price')?.checked ? 'price' : 'appreciation'),
+              calc_mode: (document.getElementById('mode_simple')?.checked ? 'simple' : 'advanced')
             }
           };
           return state;
@@ -5532,6 +6182,11 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             const pmPrice = document.getElementById('price_mode_price');
             const pmApp = document.getElementById('price_mode_appreciation');
             if (pmPrice && pmApp) { pmPrice.checked = priceOn; pmApp.checked = !priceOn; }
+            // Restore calc mode (simple/advanced) - default to simple if not set
+            const isSimple = state.toggles?.calc_mode !== 'advanced';
+            const modeSimple = document.getElementById('mode_simple');
+            const modeAdvanced = document.getElementById('mode_advanced');
+            if (modeSimple && modeAdvanced) { modeSimple.checked = isSimple; modeAdvanced.checked = !isSimple; }
           } catch(_) {}
           return true;
         };
@@ -6583,6 +7238,7 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
         }
 
         // Ensure visibility and computed labels reflect hydrated/defaulted state
+        try { toggleMode(); } catch(_) {}
         try { toggleLoanFields(); } catch(_) {}
         try { toggleRepairFields(); } catch(_) {}
         try { toggleSellFields(); updatePriceAppHeader?.(); } catch(_) {}
@@ -6654,6 +7310,892 @@ if (outputs.term_hint) outputs.term_hint.textContent = `Original term ${normaliz
             }
           });
         }
+
+        // Zillow Import Functionality
+        const zillowImportBtn = document.getElementById('zillowImportBtn');
+        const zillowUrlInput = document.getElementById('zillowUrlInput');
+        const zillowImportStatus = document.getElementById('zillowImportStatus');
+
+        const APIFY_TOKEN = 'YOUR_APIFY_TOKEN_HERE';
+        const APIFY_ACTOR = 'maxcopell~zillow-detail-scraper';
+
+        const importFromZillow = async () => {
+          const url = (zillowUrlInput?.value || '').trim();
+          if (!url) {
+            zillowImportStatus.textContent = 'Please enter a Zillow URL';
+            zillowImportStatus.className = 'zillow-import-status error';
+            return;
+          }
+
+          if (!url.includes('zillow.com')) {
+            zillowImportStatus.textContent = 'Please enter a valid Zillow URL';
+            zillowImportStatus.className = 'zillow-import-status error';
+            return;
+          }
+
+          zillowImportBtn.disabled = true;
+          zillowImportStatus.textContent = 'Fetching property data... (this may take 30-60 seconds)';
+          zillowImportStatus.className = 'zillow-import-status';
+
+          try {
+            const response = await fetch(
+              `https://api.apify.com/v2/acts/${APIFY_ACTOR}/run-sync-get-dataset-items?token=${APIFY_TOKEN}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  startUrls: [{ url }],
+                  maxItems: 1
+                })
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`API error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('[Zillow Import] Raw response:', data);
+
+            if (!data || data.length === 0) {
+              throw new Error('No property data returned. The listing may be unavailable.');
+            }
+
+            const property = data[0];
+            let fieldsPopulated = [];
+
+            // Map Zillow data to calculator fields
+            // Purchase Price
+            if (property.price || property.unformattedPrice) {
+              const price = property.unformattedPrice || property.price;
+              const priceNum = typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, ''), 10);
+              if (priceNum > 0) {
+                const purchasePriceInput = document.getElementById('purchase_price');
+                if (purchasePriceInput) {
+                  purchasePriceInput.value = priceNum.toLocaleString();
+                  purchasePriceInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  fieldsPopulated.push('Purchase Price');
+                }
+              }
+            }
+
+            // Property Tax (annual)
+            if (property.propertyTaxRate || property.taxAnnualAmount || property.annualTax) {
+              let taxAmount = property.taxAnnualAmount || property.annualTax;
+              if (!taxAmount && property.propertyTaxRate && property.price) {
+                const priceNum = property.unformattedPrice || parseInt(String(property.price).replace(/[^0-9]/g, ''), 10);
+                taxAmount = priceNum * (property.propertyTaxRate / 100);
+              }
+              if (taxAmount > 0) {
+                // Advanced mode tax field
+                const taxInput = document.getElementById('exp_property_tax_annual');
+                if (taxInput) {
+                  taxInput.value = Math.round(taxAmount).toLocaleString();
+                  taxInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  taxEdited = true;
+                }
+                // Simple mode tax field
+                const simpleTaxInput = document.getElementById('simple_property_tax');
+                if (simpleTaxInput) {
+                  simpleTaxInput.value = Math.round(taxAmount).toLocaleString();
+                  simpleTaxInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                fieldsPopulated.push('Property Tax');
+              }
+            }
+
+            // Rent Estimate (Zestimate rent)
+            if (property.rentZestimate || property.zestimateRent) {
+              const rent = property.rentZestimate || property.zestimateRent;
+              const rentNum = typeof rent === 'number' ? rent : parseInt(String(rent).replace(/[^0-9]/g, ''), 10);
+              if (rentNum > 0) {
+                const rentInput = document.getElementById('monthly_rent');
+                if (rentInput) {
+                  rentInput.value = rentNum.toLocaleString();
+                  rentInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  fieldsPopulated.push('Monthly Rent (Zestimate)');
+                }
+              }
+            }
+
+            // HOA Fee
+            if (property.monthlyHoaFee || property.hoaFee) {
+              const hoaMonthly = property.monthlyHoaFee || property.hoaFee;
+              const hoaNum = typeof hoaMonthly === 'number' ? hoaMonthly : parseInt(String(hoaMonthly).replace(/[^0-9]/g, ''), 10);
+              if (hoaNum > 0) {
+                const hoaInput = document.getElementById('exp_hoa_annual');
+                if (hoaInput) {
+                  hoaInput.value = (hoaNum * 12).toLocaleString(); // Convert monthly to annual
+                  hoaInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  fieldsPopulated.push('HOA Fee');
+                }
+              }
+            }
+
+            // Insurance estimate (if available)
+            if (property.annualHomeownersInsurance || property.insuranceEstimate) {
+              const insurance = property.annualHomeownersInsurance || property.insuranceEstimate;
+              const insNum = typeof insurance === 'number' ? insurance : parseInt(String(insurance).replace(/[^0-9]/g, ''), 10);
+              if (insNum > 0) {
+                const insInput = document.getElementById('exp_insurance_annual');
+                if (insInput) {
+                  insInput.value = insNum.toLocaleString();
+                  insInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  insuranceEdited = true;
+                  fieldsPopulated.push('Insurance');
+                }
+              }
+            }
+
+            // Trigger recalculation
+            calculateAndRender();
+            saveUserInputsState();
+
+            if (fieldsPopulated.length > 0) {
+              zillowImportStatus.innerHTML = `✓ Imported: ${fieldsPopulated.join(', ')}<br><span style="color: rgba(251, 191, 36, 0.9); font-size: 12px;">⚠️ Please don't forget to add your expected rental income manually.</span>`;
+              zillowImportStatus.className = 'zillow-import-status success';
+              showToast('success', `Imported ${fieldsPopulated.length} fields from Zillow`);
+            } else {
+              zillowImportStatus.textContent = 'Property found but no usable data could be extracted.';
+              zillowImportStatus.className = 'zillow-import-status error';
+            }
+
+          } catch (err) {
+            console.error('[Zillow Import] Error:', err);
+            zillowImportStatus.textContent = `Error: ${err.message}`;
+            zillowImportStatus.className = 'zillow-import-status error';
+            showToast('error', 'Failed to import from Zillow');
+          } finally {
+            zillowImportBtn.disabled = false;
+          }
+        };
+
+        if (zillowImportBtn) {
+          zillowImportBtn.addEventListener('click', importFromZillow);
+        }
+        if (zillowUrlInput) {
+          zillowUrlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') importFromZillow();
+          });
+        }
+
+        /* BLOCKED OUT FOR APP STORE SUBMISSION - START JS
+        // Bulk Search Functionality
+        const bulkSearchBtn = document.getElementById('bulkSearchBtn');
+        const bulkSearchStatus = document.getElementById('bulkSearchStatus');
+        const bulkResultsContainer = document.getElementById('bulkResultsContainer');
+        const bulkResultsBody = document.getElementById('bulkResultsBody');
+        const bulkResultsTitle = document.getElementById('bulkResultsTitle');
+        const bulkSortBy = document.getElementById('bulkSortBy');
+
+        const APIFY_ZIP_ACTOR = 'maxcopell~zillow-zip-search';
+        let bulkSearchResults = [];
+        
+        // Search cache - stores results for 24 hours
+        const SEARCH_CACHE_KEY = 'bulkSearchCache';
+        const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+        
+        function getSearchCacheKey(params) {
+          return JSON.stringify({
+            location: params.location,
+            locationType: params.locationType,
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+            propertyType: params.propertyType
+          });
+        }
+        
+        function getCachedSearch(cacheKey) {
+          try {
+            const cache = JSON.parse(localStorage.getItem(SEARCH_CACHE_KEY) || '{}');
+            const entry = cache[cacheKey];
+            if (entry && Date.now() - entry.timestamp < CACHE_DURATION_MS) {
+              return entry.results;
+            }
+          } catch (e) {
+            console.warn('[Search Cache] Error reading cache:', e);
+          }
+          return null;
+        }
+        
+        function setCachedSearch(cacheKey, results) {
+          try {
+            const cache = JSON.parse(localStorage.getItem(SEARCH_CACHE_KEY) || '{}');
+            // Clean old entries
+            Object.keys(cache).forEach(key => {
+              if (Date.now() - cache[key].timestamp > CACHE_DURATION_MS) {
+                delete cache[key];
+              }
+            });
+            cache[cacheKey] = { results, timestamp: Date.now() };
+            localStorage.setItem(SEARCH_CACHE_KEY, JSON.stringify(cache));
+          } catch (e) {
+            console.warn('[Search Cache] Error writing cache:', e);
+          }
+        }
+
+        // Map cities to multiple ZIP codes for broader coverage
+        const CITY_ZIP_CODES = {
+          'Miami, FL': ['33101', '33125', '33130', '33132', '33136', '33137', '33142', '33147'],
+          'Fort Lauderdale, FL': ['33301', '33304', '33305', '33306', '33308', '33309', '33311', '33312'],
+          'Tampa, FL': ['33602', '33603', '33604', '33605', '33606', '33607', '33609', '33611'],
+          'Orlando, FL': ['32801', '32803', '32804', '32805', '32806', '32807', '32808', '32809'],
+          'Jacksonville, FL': ['32202', '32204', '32205', '32206', '32207', '32208', '32209', '32210'],
+          'Houston, TX': ['77002', '77003', '77004', '77005', '77006', '77007', '77008', '77009'],
+          'Dallas, TX': ['75201', '75204', '75205', '75206', '75207', '75208', '75209', '75210'],
+          'Austin, TX': ['78701', '78702', '78703', '78704', '78705', '78721', '78722', '78723'],
+          'San Antonio, TX': ['78201', '78202', '78203', '78204', '78205', '78207', '78208', '78209'],
+          'Fort Worth, TX': ['76102', '76103', '76104', '76105', '76106', '76107', '76109', '76110'],
+          'Los Angeles, CA': ['90012', '90013', '90014', '90015', '90017', '90019', '90026', '90027'],
+          'San Diego, CA': ['92101', '92102', '92103', '92104', '92105', '92106', '92107', '92108'],
+          'San Francisco, CA': ['94102', '94103', '94107', '94108', '94109', '94110', '94112', '94114'],
+          'Sacramento, CA': ['95814', '95815', '95816', '95817', '95818', '95819', '95820', '95822'],
+          'San Jose, CA': ['95110', '95112', '95113', '95116', '95117', '95118', '95119', '95120'],
+          'New York, NY': ['10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009'],
+          'Philadelphia, PA': ['19102', '19103', '19104', '19106', '19107', '19121', '19122', '19123'],
+          'Boston, MA': ['02108', '02109', '02110', '02111', '02113', '02114', '02115', '02116'],
+          'Washington, DC': ['20001', '20002', '20003', '20004', '20005', '20006', '20007', '20008'],
+          'Atlanta, GA': ['30303', '30305', '30306', '30307', '30308', '30309', '30310', '30312'],
+          'Charlotte, NC': ['28202', '28203', '28204', '28205', '28206', '28207', '28208', '28209'],
+          'Nashville, TN': ['37201', '37203', '37204', '37205', '37206', '37207', '37208', '37209'],
+          'Chicago, IL': ['60601', '60602', '60603', '60604', '60605', '60606', '60607', '60608'],
+          'Phoenix, AZ': ['85003', '85004', '85006', '85007', '85008', '85009', '85012', '85013'],
+          'Denver, CO': ['80202', '80203', '80204', '80205', '80206', '80207', '80209', '80210'],
+          'Las Vegas, NV': ['89101', '89102', '89104', '89106', '89107', '89108', '89109', '89110'],
+          'Seattle, WA': ['98101', '98102', '98103', '98104', '98105', '98106', '98107', '98108'],
+          'Portland, OR': ['97201', '97202', '97203', '97204', '97205', '97206', '97209', '97210']
+        };
+
+        const fmtCurrency = (num) => {
+          if (!num && num !== 0) return '—';
+          return '$' + Number(num).toLocaleString();
+        };
+
+        const calculateCapRate = (price, monthlyRent) => {
+          if (!price || !monthlyRent) return null;
+          // Cap Rate = (Annual Rent / Price) * 100
+          // Using simple estimate: Annual NOI ≈ Rent * 12 * 0.5 (50% expense ratio)
+          const annualRent = monthlyRent * 12;
+          const estimatedNOI = annualRent * 0.5; // Conservative 50% expense ratio
+          return (estimatedNOI / price) * 100;
+        };
+
+        const calculateMonthlyCashFlow = (price, monthlyRent, downPaymentPct = 0.2, interestRate = 0.07) => {
+          if (!price || !monthlyRent) return null;
+          const downPayment = price * downPaymentPct;
+          const loanAmount = price - downPayment;
+          const monthlyRate = interestRate / 12;
+          const numPayments = 30 * 12;
+          const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+          const expenses = monthlyRent * 0.35; // 35% for taxes, insurance, maintenance, vacancy
+          return monthlyRent - monthlyPI - expenses;
+        };
+
+        const sortBulkResults = (results, sortKey) => {
+          const sorted = [...results];
+          switch (sortKey) {
+            case 'capRate':
+              return sorted.sort((a, b) => (b.capRate || 0) - (a.capRate || 0));
+            case 'cashFlow':
+              return sorted.sort((a, b) => (b.cashFlow || -Infinity) - (a.cashFlow || -Infinity));
+            case 'priceAsc':
+              return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+            case 'priceDesc':
+              return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+            default:
+              return sorted;
+          }
+        };
+
+        const renderBulkResults = () => {
+          const sortKey = bulkSortBy?.value || 'capRate';
+          const sorted = sortBulkResults(bulkSearchResults, sortKey);
+          
+          bulkResultsBody.innerHTML = sorted.map((prop, idx) => {
+            const capRateClass = prop.capRate >= 4 ? 'metric-cell' : (prop.capRate < 2 ? 'metric-cell negative' : 'metric-cell');
+            const zillowUrl = prop.detailUrl || `https://www.zillow.com/homes/${prop.zpid}_zpid/`;
+            return `
+              <tr data-zpid="${prop.zpid}">
+                <td class="rank-cell">${idx + 1}</td>
+                <td class="address-cell" title="${prop.address || ''}"><span class="address-text">${prop.addressStreet || prop.address || '—'}</span><a href="${zillowUrl}" target="_blank" rel="noopener" class="address-link" title="View on Zillow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a></td>
+                <td class="price-cell">${fmtCurrency(prop.price)}</td>
+                <td>${prop.beds || '—'}</td>
+                <td>${fmtCurrency(prop.rentEstimate)}</td>
+                <td class="${capRateClass}">${prop.capRate ? prop.capRate.toFixed(2) + '%' : '—'}</td>
+                <td class="actions-cell">
+                  <div class="bulk-action-btns">
+                    <button class="bulk-load-btn" data-idx="${idx}">Load</button>
+                    <button class="bulk-delete-btn" data-zpid="${prop.zpid}" title="Remove">✕</button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('');
+
+          // Add click handlers for Load buttons
+          bulkResultsBody.querySelectorAll('.bulk-load-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const idx = parseInt(btn.dataset.idx, 10);
+              const sorted = sortBulkResults(bulkSearchResults, bulkSortBy?.value || 'capRate');
+              const prop = sorted[idx];
+              if (prop) loadPropertyToCalculator(prop);
+            });
+          });
+
+          // Add click handlers for Delete buttons
+          bulkResultsBody.querySelectorAll('.bulk-delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const zpid = btn.dataset.zpid;
+              bulkSearchResults = bulkSearchResults.filter(p => String(p.zpid) !== String(zpid));
+              
+              // Also remove from all saved searches
+              let savedSearchesUpdated = false;
+              savedSearches.forEach(search => {
+                const before = search.results.length;
+                search.results = search.results.filter(p => String(p.zpid) !== String(zpid));
+                if (search.results.length !== before) savedSearchesUpdated = true;
+              });
+              if (savedSearchesUpdated) {
+                persistSavedSearches();
+                renderSavedSearchesList();
+              }
+              
+              renderBulkResults();
+              bulkResultsTitle.textContent = `Found ${bulkSearchResults.length} properties`;
+            });
+          });
+        };
+
+        const loadPropertyToCalculator = (prop) => {
+          // Load price
+          const priceInput = document.getElementById('purchase_price');
+          if (priceInput && prop.price) {
+            priceInput.value = prop.price.toLocaleString();
+            priceInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+
+          // Load rent estimate
+          const rentInput = document.getElementById('monthly_rent');
+          if (rentInput && prop.rentEstimate) {
+            rentInput.value = prop.rentEstimate.toLocaleString();
+            rentInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+
+          // Trigger recalculation
+          calculateAndRender();
+          saveUserInputsState();
+
+          showToast('success', `Loaded: ${prop.addressStreet || prop.address}`);
+          
+          // Scroll to calculator
+          const purchaseDetails = document.querySelector('[data-openai-component="purchase-details"]');
+          if (purchaseDetails) {
+            purchaseDetails.open = true;
+            purchaseDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        };
+
+        const runBulkSearch = async () => {
+          const locationType = document.getElementById('bulkLocationType')?.value || 'zip';
+          const zipInput = document.getElementById('bulkZipInput')?.value?.trim();
+          const cityInput = document.getElementById('bulkCityInput')?.value?.trim();
+          const location = locationType === 'zip' ? zipInput : cityInput;
+          const minPrice = parseInt((document.getElementById('bulkMinPrice')?.value || '').replace(/[^0-9]/g, ''), 10) || 0;
+          const maxPrice = parseInt((document.getElementById('bulkMaxPrice')?.value || '').replace(/[^0-9]/g, ''), 10) || 0;
+          const propertyType = document.getElementById('bulkPropertyType')?.value || '';
+          const maxResults = 100; // Max results per search
+
+          if (!location) {
+            bulkSearchStatus.textContent = locationType === 'zip' ? 'Please enter a ZIP code' : 'Please select a city';
+            bulkSearchStatus.className = 'bulk-search-status error';
+            return;
+          }
+
+          if (locationType === 'zip' && (location.length !== 5 || !/^\d+$/.test(location))) {
+            bulkSearchStatus.textContent = 'Please enter a valid 5-digit ZIP code';
+            bulkSearchStatus.className = 'bulk-search-status error';
+            return;
+          }
+
+          // Check cache first
+          const searchParams = { location, locationType, minPrice, maxPrice, propertyType };
+          const cacheKey = getSearchCacheKey(searchParams);
+          const cachedResults = getCachedSearch(cacheKey);
+          
+          if (cachedResults) {
+            console.log('[Bulk Search] Using cached results');
+            bulkSearchResults = cachedResults;
+            currentSearchLocation = location;
+            bulkResultsTitle.textContent = `Found ${bulkSearchResults.length} properties in ${location} (cached)`;
+            bulkSearchStatus.textContent = `✓ Loaded ${bulkSearchResults.length} cached results`;
+            bulkSearchStatus.className = 'bulk-search-status success';
+            renderBulkResults();
+            bulkResultsContainer.classList.add('visible');
+            return;
+          }
+
+          bulkSearchBtn.disabled = true;
+          bulkSearchStatus.textContent = 'Searching properties... (this may take 1-2 minutes)';
+          bulkSearchStatus.className = 'bulk-search-status';
+          bulkResultsContainer.classList.remove('visible');
+
+          try {
+            let zipCodes;
+
+            if (locationType === 'zip') {
+              zipCodes = [location];
+            } else {
+              // Get multiple ZIP codes for the city
+              zipCodes = CITY_ZIP_CODES[location];
+              if (!zipCodes || zipCodes.length === 0) {
+                throw new Error('City not found. Please select from suggestions.');
+              }
+            }
+
+            const inputPayload = {
+              zipCodes: zipCodes,
+              maxItems: maxResults,
+              status: 'ForSale'
+            };
+            if (minPrice > 0) inputPayload.priceMin = minPrice;
+            if (maxPrice > 0) inputPayload.priceMax = maxPrice;
+
+            console.log('[Bulk Search] Input:', inputPayload);
+
+            const response = await fetch(
+              `https://api.apify.com/v2/acts/${APIFY_ZIP_ACTOR}/run-sync-get-dataset-items?token=${APIFY_TOKEN}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(inputPayload)
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`API error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('[Bulk Search] Raw response:', data);
+
+            if (!data || data.length === 0) {
+              bulkSearchStatus.textContent = 'No properties found matching your criteria.';
+              bulkSearchStatus.className = 'bulk-search-status error';
+              return;
+            }
+
+            // Process results
+            bulkSearchResults = data.map(prop => {
+              const price = prop.unformattedPrice || prop.price;
+              const priceNum = typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, ''), 10);
+              const rentEstimate = prop.hdpData?.homeInfo?.rentZestimate || prop.rentZestimate || null;
+              const homeType = prop.hdpData?.homeInfo?.homeType || prop.homeType || '';
+              
+              return {
+                zpid: prop.zpid,
+                address: prop.address,
+                addressStreet: prop.addressStreet,
+                price: priceNum,
+                beds: prop.beds,
+                baths: prop.baths,
+                area: prop.area,
+                homeType: homeType,
+                rentEstimate: rentEstimate,
+                capRate: calculateCapRate(priceNum, rentEstimate),
+                cashFlow: calculateMonthlyCashFlow(priceNum, rentEstimate),
+                detailUrl: prop.detailUrl,
+                imgSrc: prop.imgSrc
+              };
+            }).filter(p => p.price > 0);
+
+            // Client-side property type filtering
+            if (propertyType) {
+              const typeMap = {
+                'Houses': ['SINGLE_FAMILY', 'HOUSE'],
+                'Condos': ['CONDO', 'APARTMENT'],
+                'Townhomes': ['TOWNHOUSE', 'TOWNHOME'],
+                'Multi-family': ['MULTI_FAMILY', 'DUPLEX', 'TRIPLEX', 'QUADPLEX']
+              };
+              const allowedTypes = typeMap[propertyType] || [];
+              if (allowedTypes.length > 0) {
+                bulkSearchResults = bulkSearchResults.filter(p => 
+                  allowedTypes.some(t => (p.homeType || '').toUpperCase().includes(t))
+                );
+              }
+            }
+
+            bulkSearchResults = sortBulkResults(bulkSearchResults, bulkSortBy?.value || 'capRate');
+            
+            // Cache the results for 24 hours
+            setCachedSearch(cacheKey, bulkSearchResults);
+            
+            // Store location for save search modal
+            currentSearchLocation = location;
+            
+            bulkResultsTitle.textContent = `Found ${bulkSearchResults.length} properties in ${location}`;
+            bulkSearchStatus.textContent = `✓ Found ${bulkSearchResults.length} properties`;
+            bulkSearchStatus.className = 'bulk-search-status success';
+            
+            renderBulkResults();
+            bulkResultsContainer.classList.add('visible');
+
+          } catch (err) {
+            console.error('[Bulk Search] Error:', err);
+            bulkSearchStatus.textContent = `Error: ${err.message}`;
+            bulkSearchStatus.className = 'bulk-search-status error';
+          } finally {
+            bulkSearchBtn.disabled = false;
+          }
+        };
+
+        if (bulkSearchBtn) {
+          bulkSearchBtn.addEventListener('click', runBulkSearch);
+        }
+        if (bulkSortBy) {
+          bulkSortBy.addEventListener('change', renderBulkResults);
+        }
+
+        // City autocomplete data
+        const CITY_LIST = [
+          'Miami, FL', 'Fort Lauderdale, FL', 'Tampa, FL', 'Orlando, FL', 'Jacksonville, FL',
+          'Houston, TX', 'Dallas, TX', 'Austin, TX', 'San Antonio, TX', 'Fort Worth, TX',
+          'Los Angeles, CA', 'San Diego, CA', 'San Francisco, CA', 'Sacramento, CA', 'San Jose, CA',
+          'New York, NY', 'Philadelphia, PA', 'Boston, MA', 'Washington, DC', 'Baltimore, MD',
+          'Atlanta, GA', 'Charlotte, NC', 'Nashville, TN', 'Raleigh, NC', 'Charleston, SC',
+          'Chicago, IL', 'Detroit, MI', 'Minneapolis, MN', 'Columbus, OH', 'Indianapolis, IN',
+          'Phoenix, AZ', 'Denver, CO', 'Las Vegas, NV', 'Seattle, WA', 'Portland, OR',
+          'Salt Lake City, UT', 'Kansas City, MO', 'St. Louis, MO', 'Cleveland, OH', 'Pittsburgh, PA',
+          'Milwaukee, WI', 'Cincinnati, OH', 'New Orleans, LA', 'Memphis, TN', 'Louisville, KY',
+          'Oklahoma City, OK', 'Tucson, AZ', 'Albuquerque, NM', 'Honolulu, HI', 'Anchorage, AK'
+        ];
+
+        // Location type toggle - show/hide ZIP input vs City autocomplete
+        const bulkLocationType = document.getElementById('bulkLocationType');
+        const bulkZipInput = document.getElementById('bulkZipInput');
+        const bulkCityAutocomplete = document.getElementById('bulkCityAutocomplete');
+        const bulkCityInput = document.getElementById('bulkCityInput');
+        const bulkCitySuggestions = document.getElementById('bulkCitySuggestions');
+        const bulkLocationLabel = document.querySelector('#bulkLocationField .bulk-field-label');
+        
+        if (bulkLocationType) {
+          bulkLocationType.addEventListener('change', () => {
+            const isZip = bulkLocationType.value === 'zip';
+            if (bulkZipInput) bulkZipInput.style.display = isZip ? 'block' : 'none';
+            if (bulkCityAutocomplete) bulkCityAutocomplete.style.display = isZip ? 'none' : 'block';
+            if (bulkLocationLabel) bulkLocationLabel.textContent = isZip ? 'ZIP Code' : 'City / Metro';
+            // Reset values
+            if (bulkZipInput) bulkZipInput.value = '';
+            if (bulkCityInput) bulkCityInput.value = '';
+            if (bulkCitySuggestions) bulkCitySuggestions.classList.remove('visible');
+          });
+        }
+
+        // City autocomplete functionality
+        let highlightedIndex = -1;
+        
+        if (bulkCityInput && bulkCitySuggestions) {
+          bulkCityInput.addEventListener('input', () => {
+            const query = bulkCityInput.value.trim().toLowerCase();
+            highlightedIndex = -1;
+            
+            if (query.length < 1) {
+              bulkCitySuggestions.classList.remove('visible');
+              return;
+            }
+            
+            const matches = CITY_LIST.filter(city => 
+              city.toLowerCase().includes(query)
+            ).slice(0, 8);
+            
+            if (matches.length === 0) {
+              bulkCitySuggestions.innerHTML = '<li class="no-results">No cities found</li>';
+            } else {
+              bulkCitySuggestions.innerHTML = matches.map((city, i) => 
+                `<li data-value="${city}">${city}</li>`
+              ).join('');
+            }
+            
+            bulkCitySuggestions.classList.add('visible');
+          });
+          
+          bulkCityInput.addEventListener('keydown', (e) => {
+            const items = bulkCitySuggestions.querySelectorAll('li:not(.no-results)');
+            if (!items.length) return;
+            
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              highlightedIndex = Math.max(highlightedIndex - 1, 0);
+            } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+              e.preventDefault();
+              bulkCityInput.value = items[highlightedIndex].dataset.value;
+              bulkCitySuggestions.classList.remove('visible');
+              return;
+            } else if (e.key === 'Escape') {
+              bulkCitySuggestions.classList.remove('visible');
+              return;
+            }
+            
+            items.forEach((item, i) => {
+              item.classList.toggle('highlighted', i === highlightedIndex);
+            });
+          });
+          
+          bulkCitySuggestions.addEventListener('click', (e) => {
+            if (e.target.tagName === 'LI' && e.target.dataset.value) {
+              bulkCityInput.value = e.target.dataset.value;
+              bulkCitySuggestions.classList.remove('visible');
+            }
+          });
+          
+          // Close suggestions on click outside
+          document.addEventListener('click', (e) => {
+            if (!bulkCityAutocomplete?.contains(e.target)) {
+              bulkCitySuggestions.classList.remove('visible');
+            }
+          });
+        }
+
+        // Persist bulk search inputs to localStorage
+        const BULK_SEARCH_STORAGE_KEY = 'bulkSearchInputs';
+        
+        function saveBulkSearchState() {
+          const state = {
+            locationType: document.getElementById('bulkLocationType')?.value,
+            zipCode: document.getElementById('bulkZipInput')?.value,
+            city: document.getElementById('bulkCityInput')?.value,
+            minPrice: document.getElementById('bulkMinPrice')?.value,
+            maxPrice: document.getElementById('bulkMaxPrice')?.value,
+            propertyType: document.getElementById('bulkPropertyType')?.value
+          };
+          localStorage.setItem(BULK_SEARCH_STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function restoreBulkSearchState() {
+          try {
+            const saved = localStorage.getItem(BULK_SEARCH_STORAGE_KEY);
+            if (!saved) return;
+            const state = JSON.parse(saved);
+            
+            const locationType = document.getElementById('bulkLocationType');
+            const zipInput = document.getElementById('bulkZipInput');
+            const cityInput = document.getElementById('bulkCityInput');
+            const cityAutocomplete = document.getElementById('bulkCityAutocomplete');
+            const locationLabel = document.querySelector('#bulkLocationField .bulk-field-label');
+            
+            if (locationType && state.locationType) {
+              locationType.value = state.locationType;
+              const isZip = state.locationType === 'zip';
+              if (zipInput) zipInput.style.display = isZip ? 'block' : 'none';
+              if (cityAutocomplete) cityAutocomplete.style.display = isZip ? 'none' : 'block';
+              if (locationLabel) locationLabel.textContent = isZip ? 'ZIP Code' : 'City / Metro';
+            }
+            if (zipInput && state.zipCode) zipInput.value = state.zipCode;
+            if (cityInput && state.city) cityInput.value = state.city;
+            if (document.getElementById('bulkMinPrice') && state.minPrice) {
+              document.getElementById('bulkMinPrice').value = state.minPrice;
+            }
+            if (document.getElementById('bulkMaxPrice') && state.maxPrice) {
+              document.getElementById('bulkMaxPrice').value = state.maxPrice;
+            }
+            if (document.getElementById('bulkPropertyType') && state.propertyType) {
+              document.getElementById('bulkPropertyType').value = state.propertyType;
+            }
+          } catch (e) {
+            console.warn('[Bulk Search] Could not restore state:', e);
+          }
+        }
+
+        // Restore state on load FIRST
+        restoreBulkSearchState();
+
+        // Price input formatting with commas
+        const formatPriceInput = (input) => {
+          if (!input) return;
+          input.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+              value = parseInt(value, 10).toLocaleString('en-US');
+            }
+            e.target.value = value;
+            saveBulkSearchState();
+          });
+        };
+        formatPriceInput(document.getElementById('bulkMinPrice'));
+        formatPriceInput(document.getElementById('bulkMaxPrice'));
+
+        // Add change listeners to save state
+        ['bulkLocationType', 'bulkZipInput', 'bulkCityInput', 'bulkPropertyType'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('change', saveBulkSearchState);
+          if (el) el.addEventListener('input', saveBulkSearchState);
+        });
+
+        // ==================== SAVED SEARCHES ====================
+        const SAVED_SEARCHES_KEY = 'savedSearches';
+        let savedSearches = [];
+        let saveSearchOverlay = null;
+        let currentSearchLocation = '';
+
+        function loadSavedSearches() {
+          try {
+            const stored = localStorage.getItem(SAVED_SEARCHES_KEY);
+            savedSearches = stored ? JSON.parse(stored) : [];
+          } catch (e) {
+            savedSearches = [];
+          }
+        }
+
+        function persistSavedSearches() {
+          localStorage.setItem(SAVED_SEARCHES_KEY, JSON.stringify(savedSearches));
+        }
+
+        function renderSavedSearchesList() {
+          const container = document.getElementById('savedSearchesListMain');
+          if (!container) return;
+          
+          if (savedSearches.length === 0) {
+            container.innerHTML = '<div class="saved-calcs-empty">No saved searches yet. Run a search and click "Save This Search" to save results.</div>';
+            return;
+          }
+          
+          container.innerHTML = savedSearches.map((search) => `
+            <div class="saved-calc-item" data-id="${search.id}">
+              <div class="saved-calc-info">
+                <div class="saved-calc-name">${search.name}</div>
+                <div class="saved-calc-meta">${search.results.length} properties · ${new Date(search.savedAt).toLocaleDateString()}</div>
+              </div>
+              <div class="saved-calc-actions">
+                <button type="button" class="load-btn" title="Load">Load</button>
+                <button type="button" class="delete-btn" title="Delete">✕</button>
+              </div>
+            </div>
+          `).join('');
+          
+          // Bind actions
+          container.querySelectorAll('.saved-calc-item').forEach(item => {
+            const id = item.dataset.id;
+            item.querySelector('.load-btn')?.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const search = savedSearches.find(s => s.id === id);
+              if (search) {
+                bulkSearchResults = search.results;
+                renderBulkResults();
+                bulkResultsTitle.textContent = `${search.name} (${search.results.length} properties)`;
+                bulkResultsContainer.classList.add('visible');
+                showToast('success', `Loaded: ${search.name}`);
+              }
+            });
+            item.querySelector('.delete-btn')?.addEventListener('click', (e) => {
+              e.stopPropagation();
+              savedSearches = savedSearches.filter(s => s.id !== id);
+              persistSavedSearches();
+              renderSavedSearchesList();
+              updateSavedSearchesCount();
+              showToast('success', 'Search deleted');
+            });
+            item.addEventListener('click', () => {
+              const search = savedSearches.find(s => s.id === id);
+              if (search) {
+                bulkSearchResults = search.results;
+                renderBulkResults();
+                bulkResultsTitle.textContent = `${search.name} (${search.results.length} properties)`;
+                bulkResultsContainer.classList.add('visible');
+                showToast('success', `Loaded: ${search.name}`);
+              }
+            });
+          });
+        }
+
+        function updateSavedSearchesCount() {
+          const badgeEl = document.getElementById('savedSearchesBadge');
+          const panelEl = document.getElementById('savedSearchesPanel');
+          if (badgeEl) {
+            badgeEl.textContent = savedSearches.length;
+            badgeEl.setAttribute('data-count', savedSearches.length);
+          }
+          if (panelEl) {
+            panelEl.style.display = savedSearches.length > 0 ? '' : 'none';
+          }
+        }
+
+        function ensureSaveSearchModal() {
+          if (saveSearchOverlay) return;
+          saveSearchOverlay = document.createElement('div');
+          saveSearchOverlay.className = 'modal-overlay save-calc-modal';
+          saveSearchOverlay.innerHTML = `
+            <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="saveSearchTitle">
+              <h3 id="saveSearchTitle">Save Search Results</h3>
+              <p>Give this search a name (e.g., location or criteria)</p>
+              <input type="text" id="saveSearchName" placeholder="Fort Lauderdale $500k-$900k" />
+              <div class="modal-actions">
+                <button type="button" id="saveSearchCancel">Cancel</button>
+                <button type="button" id="saveSearchSubmit" class="primary">Save</button>
+              </div>
+            </div>`;
+          document.body.appendChild(saveSearchOverlay);
+          
+          saveSearchOverlay.querySelector('#saveSearchSubmit').addEventListener('click', () => {
+            const nameInput = saveSearchOverlay.querySelector('#saveSearchName');
+            const name = nameInput.value.trim();
+            if (!name) {
+              nameInput.focus();
+              return;
+            }
+            
+            const newSearch = {
+              id: Date.now().toString(),
+              name: name,
+              results: [...bulkSearchResults],
+              savedAt: new Date().toISOString()
+            };
+            savedSearches.unshift(newSearch);
+            persistSavedSearches();
+            renderSavedSearchesList();
+            updateSavedSearchesCount();
+            
+            saveSearchOverlay.style.display = 'none';
+            showToast('success', 'Search saved!');
+          });
+          
+          saveSearchOverlay.querySelector('#saveSearchCancel').addEventListener('click', () => {
+            saveSearchOverlay.style.display = 'none';
+          });
+          
+          saveSearchOverlay.addEventListener('click', (e) => {
+            if (e.target === saveSearchOverlay) {
+              saveSearchOverlay.style.display = 'none';
+            }
+          });
+        }
+
+        function showSaveSearchModal() {
+          ensureSaveSearchModal();
+          const nameInput = saveSearchOverlay.querySelector('#saveSearchName');
+          nameInput.value = currentSearchLocation || '';
+          saveSearchOverlay.style.display = 'flex';
+          setTimeout(() => nameInput.focus(), 100);
+        }
+
+        // Save Search button handler
+        const bulkSaveSearchBtn = document.getElementById('bulkSaveSearchBtn');
+        if (bulkSaveSearchBtn) {
+          bulkSaveSearchBtn.addEventListener('click', () => {
+            if (bulkSearchResults.length === 0) {
+              showToast('error', 'No results to save');
+              return;
+            }
+            showSaveSearchModal();
+          });
+        }
+
+        // Load and render saved searches on init
+        loadSavedSearches();
+        renderSavedSearchesList();
+        updateSavedSearchesCount();
+        BLOCKED OUT FOR APP STORE SUBMISSION - END JS */
 
         // Component loaded telemetry (Apps SDK guidance)
         emitTelemetry("component_loaded", {});
