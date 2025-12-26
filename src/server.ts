@@ -1062,6 +1062,10 @@ const analyticsPath = "/analytics";
 const trackEventPath = "/api/track";
 const healthPath = "/health";
 const ratePath = "/api/rate";
+const domainVerificationPath = "/.well-known/openai-apps-challenge";
+const domainVerificationToken =
+  process.env.OPENAI_DOMAIN_VERIFICATION_TOKEN ??
+  "ntB2CvhfuXkV6Jlr_gkg3RaRF_AgtxrENJWykmlFLwI";
 
 const ANALYTICS_PASSWORD = process.env.ANALYTICS_PASSWORD || "changeme123";
 
@@ -1856,6 +1860,13 @@ const httpServer = createServer(
 
     if (req.method === "GET" && url.pathname === healthPath) {
       res.writeHead(200, { "Content-Type": "text/plain" }).end("OK");
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname === domainVerificationPath) {
+      res.writeHead(200, { "Content-Type": "text/plain" }).end(
+        domainVerificationToken
+      );
       return;
     }
 
