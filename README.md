@@ -66,3 +66,5 @@ ANALYTICS_PASSWORD=your_password
 ## License
 
 MIT
+
+For questions, bug reports, or support, please contact support@layer3labs.io.
