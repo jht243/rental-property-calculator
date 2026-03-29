@@ -624,7 +624,7 @@ const tools: Tool[] = widgets.map((widget) => ({
   annotations: {
     destructiveHint: false,
     openWorldHint: false,
-    readOnlyHint: false,
+    readOnlyHint: true,
   },
 }));
 
