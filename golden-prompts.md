@@ -1,6 +1,6 @@
-# Golden Prompt Set - Rental Property Calculator
+# Golden Prompt Set - Rental Property Analyzer
 
-This document contains test prompts to validate the Rental Property Calculator connector's metadata and behavior.
+This document contains test prompts to validate the Rental Property Analyzer connector's metadata and behavior.
 
 ## Purpose
 Use these prompts to test:
@@ -13,27 +13,27 @@ Use these prompts to test:
 ## Direct Prompts (Should ALWAYS trigger the connector)
 
 ### 1. Explicit Tool Name
-**Prompt**: "Calculate my mortgage payment"
+**Prompt**: "Show me a rental property calculator"
 **Expected**: ✅ Calls `rental-property-calculator` with default values
 **Status**: [ ] Pass / [ ] Fail
 
-### 2. Specific Amount
-**Prompt**: "Calculate mortgage for a $350,000 house"
-**Expected**: ✅ Calls `rental-property-calculator` with homePrice=350000
+### 2. Specific Purchase Price
+**Prompt**: "Analyze a $500,000 rental property"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=500000
 **Status**: [ ] Pass / [ ] Fail
 
-### 3. Monthly Payment Query
-**Prompt**: "What's my monthly payment for a $400k home?"
-**Expected**: ✅ Calls `rental-property-calculator` with homePrice=400000
+### 3. Purchase Price + Rent
+**Prompt**: "Analyze a $500,000 rental with $3,000/month rent"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=500000, monthly_rent=3000
 **Status**: [ ] Pass / [ ] Fail
 
-### 4. Detailed Parameters
-**Prompt**: "Calculate mortgage for $500k home with $100k down and 7% interest"
-**Expected**: ✅ Calls `rental-property-calculator` with all parameters
+### 4. Full Financing Details
+**Prompt**: "Calculate cash flow on a $500k rental, 20% down, 6.5% rate, 30-year loan, rent $3,000"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=500000, down_payment_pct=20, interest_rate_pct=6.5, loan_term_years=30, monthly_rent=3000
 **Status**: [ ] Pass / [ ] Fail
 
-### 5. Budget Planning
-**Prompt**: "Help me plan my home purchase budget"
+### 5. Multi-Family Property
+**Prompt**: "Analyze the return of a multifamily property"
 **Expected**: ✅ Calls `rental-property-calculator` with default values
 **Status**: [ ] Pass / [ ] Fail
 
@@ -41,29 +41,29 @@ Use these prompts to test:
 
 ## Indirect Prompts (Should trigger the connector)
 
-### 6. Affordability Question
-**Prompt**: "How much house can I afford?"
-**Expected**: ✅ Calls `rental-property-calculator` to help estimate
+### 6. ROI Question
+**Prompt**: "What's the ROI on a $450,000 rental with $3,200/month rent?"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=450000, monthly_rent=3200
 **Status**: [ ] Pass / [ ] Fail
 
-### 7. Total Cost Query
-**Prompt**: "What's the total cost of a 30-year mortgage?"
-**Expected**: ✅ Calls `rental-property-calculator` with loanTerm=30
+### 7. Cash Flow Query
+**Prompt**: "Calculate cashflow on this triplex"
+**Expected**: ✅ Calls `rental-property-calculator` with default values
 **Status**: [ ] Pass / [ ] Fail
 
-### 8. Rate Comparison
-**Prompt**: "Compare mortgage rates at 6% vs 7%"
-**Expected**: ✅ Calls `rental-property-calculator` twice or shows comparison
+### 8. Cap Rate Question
+**Prompt**: "What's the cap rate on a $600k property with $4,000 monthly rent?"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=600000, monthly_rent=4000
 **Status**: [ ] Pass / [ ] Fail
 
-### 9. Payment Breakdown
-**Prompt**: "Break down my monthly mortgage costs"
-**Expected**: ✅ Calls `rental-property-calculator`
+### 9. Investment Comparison
+**Prompt**: "Should I buy a rental property for $350,000?"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=350000
 **Status**: [ ] Pass / [ ] Fail
 
-### 10. Loan Term Comparison
-**Prompt**: "Should I get a 15 or 30 year mortgage?"
-**Expected**: ✅ Calls `rental-property-calculator` to compare
+### 10. Detailed Scenario
+**Prompt**: "Analyze a duplex: purchase $520,000, 20% down, 6.25% APR, rent $3,800, vacancy 6%, taxes $6,200, insurance $1,800"
+**Expected**: ✅ Calls `rental-property-calculator` with all parameters populated
 **Status**: [ ] Pass / [ ] Fail
 
 ---
@@ -75,24 +75,24 @@ Use these prompts to test:
 **Expected**: ❌ Does NOT call `rental-property-calculator` (use web search)
 **Status**: [ ] Pass / [ ] Fail
 
-### 12. Legal Advice
-**Prompt**: "Can I break my mortgage contract?"
-**Expected**: ❌ Does NOT call `rental-property-calculator` (legal advice)
-**Status**: [ ] Pass / [ ] Fail
-
-### 13. Refinancing Details
-**Prompt**: "Should I refinance my existing mortgage?"
+### 12. General Advice
+**Prompt**: "Is now a good time to buy a house?"
 **Expected**: ❌ Does NOT call `rental-property-calculator` (general advice)
 **Status**: [ ] Pass / [ ] Fail
 
-### 14. Unrelated Topics
+### 13. Legal Question
+**Prompt**: "What are the tax implications of owning rental property?"
+**Expected**: ❌ Does NOT call `rental-property-calculator` (general knowledge)
+**Status**: [ ] Pass / [ ] Fail
+
+### 14. Unrelated Topic
 **Prompt**: "What's the weather today?"
 **Expected**: ❌ Does NOT call `rental-property-calculator` (unrelated)
 **Status**: [ ] Pass / [ ] Fail
 
-### 15. Credit Score
-**Prompt**: "What credit score do I need for a mortgage?"
-**Expected**: ❌ Does NOT call `rental-property-calculator` (general knowledge)
+### 15. Home Purchase (Not Rental)
+**Prompt**: "Calculate my mortgage payment for a home I'll live in"
+**Expected**: ⚠️ May or may not call `rental-property-calculator` (primary residence, not rental investment)
 **Status**: [ ] Pass / [ ] Fail
 
 ---
@@ -100,28 +100,28 @@ Use these prompts to test:
 ## Edge Cases
 
 ### 16. Ambiguous Intent
-**Prompt**: "Tell me about settlements"
-**Expected**: ⚠️ May or may not call `find-settlements` (clarification needed)
+**Prompt**: "Help me with a property"
+**Expected**: ⚠️ May or may not call `rental-property-calculator` (clarification may be needed)
 **Status**: [ ] Pass / [ ] Fail
 
-### 17. Past Tense
-**Prompt**: "What class actions have I missed?"
-**Expected**: ✅ Calls `find-settlements` (should show expired ones at the end)
+### 17. VA Loan Scenario
+**Prompt**: "Analyze a rental with VA zero-down loan at $400,000"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=400000 and VA loan preset
 **Status**: [ ] Pass / [ ] Fail
 
-### 18. Specific Company
-**Prompt**: "Are there any Facebook class actions?"
-**Expected**: ✅ Calls `find-settlements`, possibly filters by Technology
+### 18. Appreciation Scenario
+**Prompt**: "How does 3% vs 4% appreciation affect profit when sold?"
+**Expected**: ✅ Calls `rental-property-calculator` to compare scenarios
 **Status**: [ ] Pass / [ ] Fail
 
-### 19. Multiple Categories
-**Prompt**: "Show me healthcare and financial settlements"
-**Expected**: ✅ Calls `find-settlements` twice or shows all with filtering
+### 19. Holding Period
+**Prompt**: "What's my return if I hold a $500k rental for 10 years?"
+**Expected**: ✅ Calls `rental-property-calculator` with purchase_price=500000, holding_length_years=10
 **Status**: [ ] Pass / [ ] Fail
 
-### 20. Deadline Urgency
-**Prompt**: "What class actions are expiring soon?"
-**Expected**: ✅ Calls `find-settlements`, widget should sort by deadline
+### 20. Expense-Heavy Query
+**Prompt**: "Analyze a $700k rental with $8,000 taxes, $2,400 insurance, $300/month HOA, and $2,000 maintenance"
+**Expected**: ✅ Calls `rental-property-calculator` with all expense parameters populated
 **Status**: [ ] Pass / [ ] Fail
 
 ---
@@ -130,7 +130,7 @@ Use these prompts to test:
 
 ### How to Test
 1. Open ChatGPT in **Developer Mode**
-2. Link your Class Action Finder connector
+2. Link your Rental Property Analyzer connector
 3. For each prompt above:
    - Enter the exact prompt
    - Observe which tool gets called
@@ -148,29 +148,23 @@ Use these prompts to test:
 Create a log entry for each test run:
 
 ```
-Date: 2025-10-25
+Date: 2025-03-29
 Metadata Version: v1.0
 Results:
 - Direct: 5/5 ✅
-- Indirect: 3/5 ⚠️ (missed prompts #7, #9)
+- Indirect: 4/5 ⚠️
 - Negative: 5/5 ✅
-- Edge: 3/5 ⚠️
+- Edge: 4/5 ⚠️
 
 Action Items:
-- Update description to mention "privacy violations"
-- Add "medical billing" to healthcare category description
+- (list any metadata tweaks needed)
 ```
 
 ---
 
 ## Iteration Log
 
-### Version 1.0 (2025-10-25)
-- Initial golden prompt set created
+### Version 1.0 (2025-03-29)
+- Rewritten for Rental Property Analyzer
 - 20 prompts covering direct, indirect, negative, and edge cases
-- Ready for first round of testing
-
-### Version 1.1 (TBD)
-- Update based on test results
-- Add prompts that failed unexpectedly
-- Remove prompts that are too similar
+- Aligned tool name and parameters with `rental-property-calculator` MCP tool

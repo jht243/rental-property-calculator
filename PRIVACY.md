@@ -1,54 +1,65 @@
 # Privacy Policy
 
-**Rental Property Calculator**  
-*Last Updated: January 2025*
+**Rental Property Analyzer**
+*Last Updated: March 2025*
 
 ## Overview
 
-Rental Property Calculator is a tool that runs entirely in your browser within ChatGPT. We are committed to protecting your privacy and being transparent about our data practices.
+Rental Property Analyzer is a tool that runs entirely in your browser within ChatGPT. We are committed to protecting your privacy and being transparent about our data practices.
 
 ## Data Collection
 
 ### What We Collect
-- **Usage Analytics**: Anonymous usage data including tool invocations, response times, and general device categories (iOS, Android, Desktop)
+- **Usage Analytics**: Anonymous usage data including tool invocations, response times, and general device categories (iOS, Android, macOS, Windows, Linux, ChromeOS) derived from your user agent string
+- **Coarse Location**: General location information (city, region, country, timezone) provided by the ChatGPT client, used to understand aggregate geographic usage patterns
+- **Locale**: Your browser/device locale setting, used to understand language and regional usage patterns
+- **User Agent**: Your browser's user agent string, used to classify device type for analytics
+- **Calculator Inputs**: The property analysis parameters you provide (such as purchase price, rent, and loan terms) are logged anonymously to improve the service
+- **Email Address**: If you voluntarily subscribe to receive tips or rate-drop alerts, your email address is collected and shared with our email delivery provider (Buttondown) for that purpose only
 - **Session Data**: Temporary session identifiers for MCP connection management
 - **Error Logs**: Anonymous error information to improve reliability
 
 ### What We Do NOT Collect
-- Personal identification information (name, email, address)
+- Names, physical addresses, or government-issued identifiers
 - Financial account credentials or banking information
 - Social Security Numbers or government IDs
 - Credit card or payment information
 - Health information
-- Precise location data
+- Precise GPS coordinates
 
 ## Data Processing
 
-All subscription analysis and recommendations are performed:
+All rental property calculations are performed:
 - **Client-side**: In your browser within the ChatGPT sandbox
-- **Locally**: Your subscription data is processed locally and not stored on our servers
+- **Locally**: Your property analysis data is processed locally and not stored on our servers beyond anonymous analytics logs
 - **Ephemerally**: Session data is not persisted beyond the active session
 
 ## Data Storage
 
-- **Browser LocalStorage**: Your subscription data may be cached in your browser's localStorage for convenience (30-day expiration). This data never leaves your device.
+- **Browser LocalStorage**: Your saved property calculations may be cached in your browser's localStorage for convenience. This data never leaves your device.
 - **Server Logs**: Anonymous analytics are logged for up to 30 days for service improvement.
+- **Email Subscriptions**: If you subscribe, your email address is stored by Buttondown (our email provider) subject to their privacy policy.
 
-## Third-Party Sharing
+## Third-Party Services
+
+- **Buttondown** (email delivery): Receives your email address only if you voluntarily subscribe. Used solely to deliver rate alerts and tips. See [Buttondown's privacy policy](https://buttondown.email/legal/privacy).
+- **FRED API** (Federal Reserve Economic Data): Used to fetch current average mortgage rates. No user data is sent to this service.
 
 We do not sell, rent, or share your data with third parties for marketing purposes. Anonymous, aggregated analytics may be used to improve the service.
 
 ## Data Retention
 
-- **LocalStorage**: Automatically expires after 30 days
+- **LocalStorage**: Persists until you clear it manually
 - **Server Logs**: Retained for up to 30 days, then deleted
+- **Email Subscriptions**: Retained until you unsubscribe
 
 ## Your Rights
 
 You can:
-- Clear your browser's localStorage at any time to remove cached data
+- Clear your browser's localStorage at any time to remove saved calculations
 - Use the tool without providing any personal information
-- Contact us with privacy concerns
+- Unsubscribe from emails at any time via the link in any email
+- Contact us to request deletion of your data
 
 ## Security
 
@@ -58,7 +69,7 @@ You can:
 
 ## Children's Privacy
 
-This service is not directed at children under 13. We do not knowingly collect information from children.
+This service is suitable for all ages but is not directed at children under 13. We do not knowingly collect information from children.
 
 ## Changes to This Policy
 

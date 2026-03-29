@@ -570,7 +570,6 @@ const tools: Tool[] = widgets.map((widget) => ({
     type: "object",
     properties: {
       ready: { type: "boolean" },
-      timestamp: { type: "string" },
       currentRate: { type: ["number", "null"] },
       loan_type: { type: "string" },
       home_value: { type: "number" },
@@ -625,7 +624,7 @@ const tools: Tool[] = widgets.map((widget) => ({
   annotations: {
     destructiveHint: false,
     openWorldHint: false,
-    readOnlyHint: true,
+    readOnlyHint: false,
   },
 }));
 
@@ -742,10 +741,6 @@ function createMortgageCalculatorServer(): Server {
       const startTime = Date.now();
       let userAgentString: string | null = null;
       let deviceCategory = "Unknown";
-      
-      // Log the full request to debug _meta location
-      console.log("Full request object:", JSON.stringify(request, null, 2));
-      
       try {
         const widget = widgetsById.get(request.params.name);
 
@@ -777,9 +772,6 @@ function createMortgageCalculatorServer(): Server {
         const userAgent = meta["openai/userAgent"];
         userAgentString = typeof userAgent === "string" ? userAgent : null;
         deviceCategory = classifyDevice(userAgentString);
-        
-        // Debug log
-        console.log("Captured meta:", { userLocation, userLocale, userAgent });
 
         // If ChatGPT didn't pass structured arguments, try to infer key numbers from freeform text in meta
         try {
@@ -944,7 +936,6 @@ function createMortgageCalculatorServer(): Server {
         // Build structured content once so we can log it and return it
         const structured = {
           ready: true,
-          timestamp: new Date().toISOString(),
           currentRate: fredRateCache?.payload?.ratePercent ?? null,
           // Flatten parsed parameters directly into structuredContent
           loan_type: args.loan_type,
@@ -1011,21 +1002,6 @@ function createMortgageCalculatorServer(): Server {
             },
           },
         } as const;
-
-        console.log("[MCP] Returning outputTemplate:", (metaForReturn as any)["openai/outputTemplate"]);
-        console.log("[MCP] Returning structuredContent:", structured);
-
-        // Log success analytics with rental parameters
-        try {
-          logAnalytics("tool_call_success", {
-            responseTime,
-            params: request.params.arguments || {},
-            inferredQuery: inferredQuery.join(", "),
-            userLocation,
-            userLocale,
-            device: deviceCategory,
-          });
-        } catch {}
 
         return {
           content: [],
