@@ -436,9 +436,9 @@ const widgets: MortgageWidget[] = [
     title: "Rental Property Calculator — calculate ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, and 20‑year projections for single‑family and multi‑family rentals",
     templateUri: `ui://widget/rental-property-calculator.html?v=${VERSION}`,
     invoking:
-      "Opening the Rental Property Calculator with inputs for purchase, financing, income, and expenses to compute ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, and 20‑year projections...",
+      "Opening the Rental Property Calculator…",
     invoked:
-      "Here is the Rental Property Calculator with Year‑1 KPIs, an expense donut, and a 20‑year investment summary (ROI on rental property, cash‑on‑cash return, IRR, cap rate, NOI, cash flow, equity, and profit when sold).",
+      "",
     html: readWidgetHtml("rental-property-calculator"),
   },
 ];
